@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
-import { searchPlaces } from "./KakaoMap";
+import { searchPlaces } from "../Search";
 
 const Nav = styled.header`
     display: flex;
