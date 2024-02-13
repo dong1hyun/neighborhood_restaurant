@@ -7,15 +7,13 @@ const { kakao } = window as any;
 let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
 // 키워드 검색을 요청하는 함수입니다
-export function searchPlaces() {
-    let keyword = (document.getElementById('keyword') as HTMLInputElement).value;
-
-    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+export function searchPlaces(inputKeyword:string) {
+    if (!inputKeyword.replace(/^\s+|\s+$/g, '')) {
         alert('키워드를 입력해주세요!');
         return false;
     }
 
-    afterSearch(keyword);
+    afterSearch(inputKeyword);
 }
 
 function afterSearch(keyword: string) {
