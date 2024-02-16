@@ -24,7 +24,7 @@ function Header() {
     const setSearchWord = useSetRecoilState(keyword);
     const onValid = ({search}: DataForm) => {
         setSearchWord(search);
-        // console.log("header:", search)
+        console.log("header:", search)
         navigate(`/search?keyword=${search}`);
     }
     return (
@@ -32,7 +32,9 @@ function Header() {
             <Nav>
                 <Logo to={'/'}>Logo</Logo>
                 <form onSubmit={handleSubmit(onValid)}>
+                    <button type="reset">지우기</button>
                     <input {...register("search", {required: true})} />
+                    <button type="submit">검색</button>
                 </form>
                 <span>Log in</span>
             </Nav>

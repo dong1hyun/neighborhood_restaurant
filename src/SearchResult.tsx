@@ -8,11 +8,13 @@ import { keyword } from "./atom";
 
 
 export function SearchResult() {
-    // const [searchParams, _] = useSearchParams();
-    const searchWord = useRecoilValue(keyword);
+    const [searchParams, _] = useSearchParams();
+    const [searchWord, setSearchWord] = useRecoilState(keyword);
+    
     useEffect(() => {
-        searchPlaces(searchWord);
-        // console.log("search:", searchWord);
+        searchPlaces(searchParams.get("keyword") + '');
+        setSearchWord(searchParams.get("keyword") + '');
+        console.log("search:", searchWord);
     }, [searchWord]);
     return (
         <div>
