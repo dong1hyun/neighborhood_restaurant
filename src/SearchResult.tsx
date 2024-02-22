@@ -14,7 +14,7 @@ export function SearchResult() {
     useEffect(() => {
         searchPlaces(searchParams.get("keyword") + '');
         setSearchWord(searchParams.get("keyword") + '');
-        console.log("search:", searchWord);
+        // console.log("search:", searchWord);
     }, [searchWord]);
     return (
         <div>

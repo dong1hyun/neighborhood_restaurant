@@ -5,8 +5,6 @@ import { useRecoilValue } from "recoil";
 import { keyword } from "./atom";
 
 function Home() {
-    const test = useRecoilValue(keyword)
-    console.log(test)
     return (
         <div>
             home
