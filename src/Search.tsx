@@ -3,11 +3,19 @@ import styled from 'styled-components'
 
 const { kakao } = window as any;
 
+interface placeType {
+    place_name: string,
+    road_address_name: string,
+    address_name: string,
+    phone: string,
+    place_url: string
+}
+
 // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
 // 키워드 검색을 요청하는 함수입니다
-export function searchPlaces(inputKeyword:string) {
+export function searchPlaces(inputKeyword: string) {
     if (!inputKeyword.replace(/^\s+|\s+$/g, '')) {
         alert('키워드를 입력해주세요!');
         return false;
@@ -33,8 +41,7 @@ function afterSearch(keyword: string) {
     let ps = new kakao.maps.services.Places();
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
 
-    // ps.keywordSearch(keyword, placesSearchCB);
-    ps.keywordSearch(keyword, placesSearchCB, { category_group_code: 'FD6' });
+    ps.keywordSearch(keyword, placesSearchCB, { category_group_code: 'FD6',/*location: new kakao.maps.LatLng(37.566826, 126.9786567), radius: 10000*/ });
 
     // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
     function placesSearchCB(data: any, status: any, pagination: any) {
@@ -117,12 +124,12 @@ function afterSearch(keyword: string) {
     }
 
     // 검색결과 항목을 Element로 반환하는 함수입니다
-    function getListItem(index: any, places: any) {
+    function getListItem(index: number, places: placeType) {
         // console.log(places)
-        let el = document.createElement('li'),
-            itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-                '<div class="info">' +
-                '   <h5>' + places.place_name + '</h5>';
+        let el = document.createElement('li')
+        let itemStr = `<a href="${places.place_url}"><span class="markerbg marker_${(index + 1)} + "></span>` +
+            '<div class="info">' +
+            '   <h5>' + places.place_name + '</h5>';
 
         if (places.road_address_name) {
             itemStr += '    <span>' + places.road_address_name + '</span>' +
@@ -132,7 +139,7 @@ function afterSearch(keyword: string) {
         }
 
         itemStr += '  <span class="tel">' + places.phone + '</span>' +
-            '</div>';
+            '</div></ya>';
 
         el.innerHTML = itemStr;
         el.className = 'item';

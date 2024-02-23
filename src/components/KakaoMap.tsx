@@ -60,7 +60,7 @@ overflow-y: scroll;
 #placesList .item .marker_14 {background-position: 0 -608px;}
 #placesList .item .marker_15 {background-position: 0 -654px;}
 #pagination {margin:10px auto;text-align: center;}
-#pagination a {display:inline-block;margin-right:10px;text-decoration-line: none;}
+#pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 border-radius: 10px;
     border: 2px solid skyblue;
