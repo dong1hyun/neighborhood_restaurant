@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NodeJS: {{title}}</title>
+</head>
+
+<body>
+
+<!-- //전체리뷰
+        <p>
+        <a href="http://localhost:{{port}}/users">http://localhost:{{port}}/users</a><br> 
+        <a href="http://localhost:{{port}}/comments">http://localhost:{{port}}/comments</a><br>   
+        <a href="http://localhost:{{port}}/data">http://localhost:{{port}}/data</a>
+    </p> 
+-->
+
+    <p>
+        <a href="http://localhost:{{port}}/user">마이페이지</a><br>
+    </p>
+
+    <p>
+        <a href="http://localhost:{{port}}/comment">리뷰작성</a><br>
+    </p>
+
+    <p>
+        {% if user %}
+            {% if user.description.startsWith('http') %}
+                <img src="{{user.description}}" width="100" height="100">
+            {% endif %}
+            {{user.name}}님 환영합니다!<br>
+            <a href="http://localhost:{{port}}/auth/logout">로그아웃</a>
+        {% else %}
+
+            <a href="http://localhost:{{port}}/auth/kakao">카카오 로그인</a>
+
+        {% endif %}
+
+
+        
+    </p>
+</body>
+
+</html>

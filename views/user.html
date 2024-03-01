@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NodeJS: {{title}}</title>
+</head>
+
+<body>
+    
+
+    <p>
+        <br>
+        {% for userId in users %}
+            <a href="http://localhost:{{port}}/user/delete/{{userId}}">회원탈퇴</a><br>
+        {% endfor %}
+    </p>
+
+    <p>
+        <br>
+        {% for userId in users %}
+            <a href="http://localhost:{{port}}/user/{{userId}}/comments">MY review</a><br>
+        {% endfor %}
+    </p>
+
+</body>
+
+</html>
