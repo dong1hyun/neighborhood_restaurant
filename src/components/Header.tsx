@@ -38,7 +38,15 @@ function Header() {
         // console.log("header:", search)
         navigate(`/search?keyword=${search}`);
     }
-    const searchTypeClick = () => {setIsNeighborhood((cur) => !cur)}
+    // const {User} = require('../models')
+    const searchTypeClick = () => {
+        setIsNeighborhood((cur) => !cur)
+        // User.create({
+        //     id:"test id",
+        //     nickName:"test nickName",
+        //     review: "test review"
+        // })
+    }
     return (
         <div>
             <Nav>
