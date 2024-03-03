@@ -1,29 +1,19 @@
-const Sequelize = require('sequelize');
-
-module.exports = class Review extends Sequelize.Model {
-    static init(sequelize) {
-        return super.init({
-            rating: {
-              type: Sequelize.INTEGER,
-              allowNull: false,
-            },
-            comment: {
-                type: Sequelize.STRING(20),
-                allowNull: false,
-            },
-        },{
-            sequelize,
-            timestamps: false,
-            underscored: false,
-            modelName: 'Review',
-            tableName: 'reviews',
-            paranoid: false,
-            charset: 'utf8',
-            collate: 'utf8_general_ci',
-        })
-    }
-    static associate(db) {
-        db.Review.belongsTo(db.User, { foreignKey: 'reviewer', targetKey: 'id' });
-        db.Review.belongsTo(db.Restaurant, { foreignKey: 'review', targetKey: 'id' });
-    }
-}
+module.exports = (sequelize, DataTypes) => {
+    const Review = sequelize.define("Review", {
+      rating: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+      },
+      comment: {
+        type: DataTypes.TEXT,
+      },
+    }, {
+      charset: "utf8", // 한국어 설정
+      collate: "utf8_general_ci", // 한국어 설정
+      tableName: "Review", // 테이블 이름
+      timestamps: true, // createAt & updateAt 활성화
+      paranoid: true, // timestamps 가 활성화 되어야 사용 가능 > deleteAt 옵션 on
+    });
+  
+    return Review;
+  };
