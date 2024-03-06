@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const basename = path.basename(__filename);
 const db = {};
-let sequelize;
 
+let sequelize;
 
 //config/config.js 파일에 있는 정보를 가져와 sequelize 객체를 생성한다.
 if (config.use_env_variable) {
@@ -18,30 +18,21 @@ if (config.use_env_variable) {
 // 우리가 작성한 Table파일을 찾아온다.
 fs
   .readdirSync(__dirname)
-  .filter((file) => {
+  .filter(file => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
-  .forEach((file) => {
+  .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
   });
 
 //DB에 모델이름을 연결한다.
 Object.keys(db).forEach(modelName => {
+
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
-
-// db['Users'].hasMany(db['Review'], {
-//   foreignKey: 'Review',
-//   allowNull: false,
-//   constraints: true,
-//   onDelete: 'cascade'
-// });
-// db['Review'].belongsTo(db['Users'], {
-//   foreignKey: 'Review',
-// })
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
