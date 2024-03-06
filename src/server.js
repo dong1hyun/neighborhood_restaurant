@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const nunjucks = require('nunjucks');
 const { sequelize } = require('./models')
 
+console.log("dd")
+
 app.set('port', 3000);
 nunjucks.configure('views', {
     express: app,
@@ -16,6 +18,7 @@ sequelize.sync({force:false})
     console.log("DB연결 성공");
 })
 .catch((err) => {
+    console.log("ddd")
     console.error(err);
 })
 

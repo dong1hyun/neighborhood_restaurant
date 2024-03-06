@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "k8867790**6",
-    "database": "nr_information",
+    "database": "new_schema",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

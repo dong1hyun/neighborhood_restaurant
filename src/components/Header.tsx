@@ -26,7 +26,8 @@ const Search = styled.form`
 
 interface DataForm {
     search: string
-} 
+}
+
 function Header() {
     const { register, handleSubmit } = useForm<DataForm>();
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ function Header() {
         // console.log("header:", search)
         navigate(`/search?keyword=${search}`);
     }
-   
+    // const {User} = require('../models')
     const searchTypeClick = () => {
         setIsNeighborhood((cur) => !cur)
         // User.create({

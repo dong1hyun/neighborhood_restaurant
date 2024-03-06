@@ -1,25 +1,45 @@
-module.exports = (sequelize, DataTypes) => {
-    const Users = sequelize.define("Users", {
-      id: {
-        type: DataTypes.STRING(20),
-        primaryKey: true,
-        comment: "고유번호",
-      },
-      nickName: {
-        type: DataTypes.STRING(100),
-        comment: "이름",
-      },
-      review: {
-        type: DataTypes.TEXT
-      }
+const Sequelize = require('sequelize');
 
-    }, {
-      charset: "utf8", // 한국어 설정
-      collate: "utf8_general_ci", // 한국어 설정
-      tableName: "Users", // 테이블 이름
-      timestamps: true, // createAt & updateAt 활성화
-      paranoid: true, // timestamps 가 활성화 되어야 사용 가능 > deleteAt 옵션 on
-    });
-  
-    return Users;
-  };
+module.exports = class User extends Sequelize.Model {
+    static init(sequelize) {
+        return super.init({
+            id: {
+              type: Sequelize.STRING(20),
+              allowNull: false,
+              primaryKey: true,
+            },
+            nickName: {
+                type: Sequelize.STRING(10),
+                allowNull: false,
+            },
+            review: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+            },
+            // rating: {
+            //     type: Sequelize.NUMBER,
+            //     allowNull: true,
+            // },
+            // comment: {
+            //     type: Sequelize.TEXT,
+            //     allowNull: true,
+            // },
+            // reviewed_restaurant: {
+            //     type: Sequelize.NUMBER,
+            //     allowNull: true,
+            // }
+        },{
+            sequelize,
+            timestamps: false,
+            underscored: false,
+            modelName: 'User',
+            tableName: 'users',
+            paranoid: false,
+            charset: 'utf8',
+            collate: 'utf8_general_ci',
+        })
+    }
+    static associate(db) {
+        db.User.hasmany(db.review, { foreignKey: 'reviewer', sourceKey: 'id' });
+    }
+}
