@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "build", "server.js"  ]
+, "build", "server.js", "models"  ]
 }
