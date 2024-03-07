@@ -1,9 +1,9 @@
 import { useSearchParams } from "react-router-dom";
-import { KakaoMap } from "./components/KakaoMap";
-import { searchPlaces } from "./Search";
+import { KakaoMap } from "../components/KakaoMap";
+import { searchPlaces } from "../Search";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { keyword } from "./atom";
+import { keyword } from "../atom";
 
 
 

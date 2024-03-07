@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Home from "./Home";
-import { SearchResult } from "./SearchResult";
+import Home from "./page/Home";
+import { SearchResult } from "./page/SearchResult";
 import Header from "./components/Header";
 import { KakaoMap } from "./components/KakaoMap";
 import { RecoilRoot } from "recoil";
