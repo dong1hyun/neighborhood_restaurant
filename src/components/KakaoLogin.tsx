@@ -28,19 +28,19 @@ const ButtoninnerText = styled.h3`
   font-size: 14px;
 `;
 
-// function requestUserInfo() {
-//   Kakao.API.request({
-//     url: '/v2/user/me',
-//   })
-//     .then(function (res: any) {
-//       alert(JSON.stringify(res));
-//     })
-//     .catch(function (err: any) {
-//       alert(
-//         'failed to request user information: ' + JSON.stringify(err)
-//       );
-//     });
-// }
+function requestUserInfo() {
+  Kakao.API.request({
+    url: '/v2/user/me',
+  })
+    .then(function (res: any) {
+      alert(JSON.stringify(res));
+    })
+    .catch(function (err: any) {
+      alert(
+        'failed to request user information: ' + JSON.stringify(err)
+      );
+    });
+}
 
 const SocialKakao = () => {
   const onSuccess = async (data: any) => {
@@ -50,7 +50,6 @@ const SocialKakao = () => {
   }
 
   function deleteCookie(name: string) {
-    console.log(document.cookie)
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
   deleteCookie("webid");
@@ -60,7 +59,7 @@ const SocialKakao = () => {
   }
   return (
     <Container>
-      {/* <button onClick={requestUserInfo}>사용자 정보 가져오기</button> */}
+      <button onClick={requestUserInfo}>사용자 정보 가져오기</button>
       <KakaoLogin
         token={`${process.env.REACT_APP_JAVASCRIPT_KEY}`}
         onSuccess={onSuccess}

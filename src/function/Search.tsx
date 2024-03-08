@@ -1,9 +1,11 @@
+import axios from 'axios';
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 const { kakao } = window as any;
 
 interface placeType {
+    id: Number
     place_name: string,
     road_address_name: string,
     address_name: string,
@@ -122,12 +124,18 @@ function afterSearch(keyword: string) {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         map.setBounds(bounds);
     }
-
+    const onRestaurantClick = (id: Number, name: string) => {
+        // e.preventDefault();
+        axios.post("http://localhost:8080/create/restaurant", {
+            id,
+            name
+        })
+    }
     // 검색결과 항목을 Element로 반환하는 함수입니다
     function getListItem(index: number, places: placeType) {
-        // console.log(places)
+        console.log(places)
         let el = document.createElement('li')
-        let itemStr = `<a href="${places.place_url}"><span class="markerbg marker_${(index + 1)} + "></span>` +
+        let itemStr = '<div><span class="markerbg marker_' + (index+1) + '"></span>' +
             '<div class="info">' +
             '   <h5>' + places.place_name + '</h5>';
 
@@ -139,11 +147,11 @@ function afterSearch(keyword: string) {
         }
 
         itemStr += '  <span class="tel">' + places.phone + '</span>' +
-            '</div></ya>';
+            '</div></div>';
 
         el.innerHTML = itemStr;
         el.className = 'item';
-
+        el.addEventListener('click', () => {onRestaurantClick(places.id, places.place_name)})
         return el;
     }
 

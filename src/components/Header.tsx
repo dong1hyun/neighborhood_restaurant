@@ -3,8 +3,9 @@ import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { keyword, neighborhood_search } from "../atom";
-import { kakaoLogout, loginWithKakao } from "../KakaoLogin2";
+import { kakaoLogout, loginWithKakao } from "../function/KakaoLogin2";
 import SocialKakao from "./KakaoLogin";
+import axios from "axios";
 
 
 
@@ -38,14 +39,24 @@ function Header() {
         // console.log("header:", search)
         navigate(`/search?keyword=${search}`);
     }
-    // const {User} = require('../models')
-    const searchTypeClick = () => {
+    const searchTypeClick = async() => {
         setIsNeighborhood((cur) => !cur)
-        // User.create({
-        //     id:"test id",
-        //     nickName:"test nickName",
-        //     review: "test review"
-        // })
+    }
+
+    const addData = async (e:any) => {
+        console.log("zzzz")
+        e.preventDefault();
+        await axios.post('http://localhost:8080/create', {
+            id: "test ID",
+            nickName: "test NickName",
+            review: "test Review"
+        })
+        .then(function(res){
+            console.log(res);
+        })
+        .catch(function(err){
+            console.error(err);
+        })
     }
     return (
         <div>
@@ -56,7 +67,8 @@ function Header() {
                     <input {...register("search", { required: true })} />
                     <button type="submit">검색</button>
                 </Search>
-                <button onClick={searchTypeClick}>{isNeighborhood ? "동네맛집" : "전국맛집"}</button>
+                <button onClick={addData}>go</button>
+                {/* <button onClick={searchTypeClick}>{isNeighborhood ? "동네맛집" : "전국맛집"}</button> */}
                 {/* <span>
                     <a id="kakao-login-btn" onClick={loginWithKakao}>
                         <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="222"

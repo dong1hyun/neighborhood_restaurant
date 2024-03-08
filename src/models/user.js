@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Users = sequelize.define("Users", {
+    const User = sequelize.define("User", {
         id: {
             type: DataTypes.STRING(20),
             primaryKey: true,
@@ -20,5 +20,5 @@ module.exports = (sequelize, DataTypes) => {
         paranoid: true, // timestamps 가 활성화 되어야 사용 가능 > deleteAt 옵션 on
     });
 
-    return Users;
+    return User;
 };
