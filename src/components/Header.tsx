@@ -6,7 +6,7 @@ import { keyword, neighborhood_search } from "../atom";
 import { kakaoLogout, loginWithKakao } from "../function/KakaoLogin2";
 import SocialKakao from "./KakaoLogin";
 import axios from "axios";
-
+import { motion } from "framer-motion"
 
 
 const Nav = styled.header`
@@ -14,15 +14,36 @@ const Nav = styled.header`
     justify-content: space-between;
 `
 
-const Logo = styled(Link)`
+const Logo = styled(motion.div)`
     text-decoration: none;
     color: black;
-    margin: 15px;
+    margin-left: 30px;
+    margin-top:20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 40px;
+    font-family: "Black Han Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 `
 
 const Search = styled.form`
-    margin: 15px;
-    margin-bottom: 5px;
+font-size: 16px;
+width: 325px;
+padding: 10px;
+border: 0px;
+outline: none;
+float: left;
+`
+
+const SearchBtn = styled.button`
+    width: 50px;
+height: 100%;
+border: 0px;
+background-color: #1b5ac2;
+outline: none;
+float: right;
+color: #ffffff
 `
 
 interface DataForm {
@@ -39,35 +60,19 @@ function Header() {
         // console.log("header:", search)
         navigate(`/search?keyword=${search}`);
     }
-    const searchTypeClick = async() => {
+    const searchTypeClick = async () => {
         setIsNeighborhood((cur) => !cur)
     }
 
-    const addData = async (e:any) => {
-        console.log("zzzz")
-        e.preventDefault();
-        await axios.post('http://localhost:8080/create', {
-            id: "test ID",
-            nickName: "test NickName",
-            review: "test Review"
-        })
-        .then(function(res){
-            console.log(res);
-        })
-        .catch(function(err){
-            console.error(err);
-        })
-    }
     return (
         <div>
             <Nav>
-                <Logo to={'/'}>동네맛집</Logo>
+                <Logo whileHover={{ scale: 1.2 }} onClick={() => navigate("/")}>동네맛집</Logo>
                 <Search onSubmit={handleSubmit(onValid)}>
-                    <button type="reset">지우기</button>
+                    <button type="reset">x</button>
                     <input {...register("search", { required: true })} />
                     <button type="submit">검색</button>
                 </Search>
-                <button onClick={addData}>go</button>
                 {/* <button onClick={searchTypeClick}>{isNeighborhood ? "동네맛집" : "전국맛집"}</button> */}
                 {/* <span>
                     <a id="kakao-login-btn" onClick={loginWithKakao}>
@@ -77,7 +82,8 @@ function Header() {
                     <p id="token-result"></p>
                     <button id="api-btn" onClick={kakaoLogout}>로그아웃</button>
                 </span> */}
-                <SocialKakao />   
+                {/* <SocialKakao /> */}
+                <div>로그인</div>
             </Nav>
             <hr />
         </div>

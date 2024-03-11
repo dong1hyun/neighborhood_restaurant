@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import { KakaoMap } from "./components/KakaoMap";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle } from "styled-components";
+import Place from "./page/Place";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -70,6 +71,7 @@ function App() {
         <Routes>
             <Route path="/" element={<Home />} /> 
             <Route path="/search" element={<SearchResult />} /> 
+            <Route path="/place/:id" element={<Place />} />
         </Routes>
     </BrowserRouter>
     </RecoilRoot>

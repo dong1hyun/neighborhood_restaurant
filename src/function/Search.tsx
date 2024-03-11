@@ -71,11 +71,13 @@ function afterSearch(keyword: string) {
 
     // 검색 결과 목록과 마커를 표출하는 함수입니다
     function displayPlaces(places: any) {
+        // console.log(places)
+        axios.post("http://localhost:8080/create/restaurant",places);
         let listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),
             fragment = document.createDocumentFragment(),
             bounds = new kakao.maps.LatLngBounds(),
-            listStr = '';
+            li0stStr = '';
 
         // 검색 결과 목록에 추가된 항목들을 제거합니다
         removeAllChildNods(listEl);
@@ -125,17 +127,17 @@ function afterSearch(keyword: string) {
         map.setBounds(bounds);
     }
     const onRestaurantClick = (id: Number, name: string) => {
-        // e.preventDefault();
         axios.post("http://localhost:8080/create/restaurant", {
             id,
             name
-        })
+        });
     }
     // 검색결과 항목을 Element로 반환하는 함수입니다
     function getListItem(index: number, places: placeType) {
-        console.log(places)
+        // console.log(places)
+        // axios.post("http://localhost:8080/create/restaurant",places)
         let el = document.createElement('li')
-        let itemStr = '<div><span class="markerbg marker_' + (index+1) + '"></span>' +
+        let itemStr = `<a href="/place/${places.id}">` + '<div><span class="markerbg marker_' + (index+1) + '"></span>' +
             '<div class="info">' +
             '   <h5>' + places.place_name + '</h5>';
 
@@ -147,11 +149,11 @@ function afterSearch(keyword: string) {
         }
 
         itemStr += '  <span class="tel">' + places.phone + '</span>' +
-            '</div></div>';
+            '</div></div></a>';
 
         el.innerHTML = itemStr;
         el.className = 'item';
-        el.addEventListener('click', () => {onRestaurantClick(places.id, places.place_name)})
+        // el.addEventListener('click', () => {onRestaurantClick(places.id, places.place_name)})
         return el;
     }
 

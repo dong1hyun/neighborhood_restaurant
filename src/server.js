@@ -6,6 +6,7 @@ const nunjucks = require('nunjucks');
 const { sequelize } = require('./models')
 const bodyParser = require('body-parser');
 const {User, Review, Restaurant} = require("./models");
+const { useNavigate } = require("react-router");
 
 app.set('port', 3000);
 nunjucks.configure('views', {
@@ -29,17 +30,20 @@ app.listen(8080, function() {
     console.log("listening on 8080");
 })
 
-app.post('/create', function(req, res) {
-    console.log(User);
-})
-
+console.log(Restaurant)
 app.post('/create/restaurant', function(req, res) {
-    console.log(req.body);
-    const {id, name} = req.body
-    Restaurant.create({
-        id,
-        name
-    })
+    // console.log(req.body);
+    const restaurantList = req.body;
+    restaurantList.forEach(place => {
+        console.log(place.place_name.length + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@)")
+        Restaurant.findOrCreate({
+            where: { id: place.id, name: place.place_name },
+            default: {
+                id: place.id,
+                name: place.place_name
+            }
+        })
+    }) 
 })
 
 

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       name: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(100),
       },
     }, {
       charset: "utf8", // 한국어 설정
