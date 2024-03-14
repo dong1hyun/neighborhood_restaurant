@@ -12,13 +12,15 @@ import { motion } from "framer-motion"
 const Nav = styled.header`
     display: flex;
     justify-content: space-between;
+    background-color: black;
+    height: 100px;
 `
 
 const Logo = styled(motion.div)`
     text-decoration: none;
-    color: black;
+    color: white;
     margin-left: 30px;
-    margin-top:20px;
+    margin-top:33px;
     margin-bottom: 10px;
     cursor: pointer;
     font-size: 40px;
@@ -27,31 +29,62 @@ const Logo = styled(motion.div)`
     font-style: normal;
 `
 
+// const SearchContainer = styled.div`
+//     position: relative;
+//     background-color: whitesmoke;
+//     width: 400px;
+//     height: 50px;
+//     margin: 25px;
+//     border-radius: 10px;
+// `
+
 const Search = styled.form`
-font-size: 16px;
-width: 325px;
-padding: 10px;
-border: 0px;
-outline: none;
-float: left;
+    position: relative;
+    background-color: whitesmoke;
+    width: 400px;
+    height: 50px;
+    margin: 25px;
+    border-radius: 10px;
+`
+
+const SearchInput = styled.input`
+    position: absolute;
+    left: 30px;
+    top: 10px;
+    width: 300px;
+    height: 30px;
+    font-size: 20px;
+    border-radius: 10px;
+    border-width: 0;
+    background-color: whitesmoke;
+    border-width: 0px;
+    outline: none;
 `
 
 const SearchBtn = styled.button`
+    position: absolute;
+    top: 15px;
+    right: 10px;
     width: 50px;
-height: 100%;
-border: 0px;
-background-color: #1b5ac2;
-outline: none;
-float: right;
-color: #ffffff
+`
+
+const DeleteBtn = styled(motion.button)`
+    position: absolute;
+    top: 18px;
+    left: 5px;
+    background-color: transparent;
+    border-radius: 5px;
+    background-color: #d8d8d8;
+    border-width: 0px;
+    hover: {scale: 1.2}
 `
 
 interface DataForm {
     search: string
 }
 
-function Header() {
-    const { register, handleSubmit } = useForm<DataForm>();
+export default function Header() {
+    const { register, handleSubmit, getValues, watch } = useForm<DataForm>();
     const navigate = useNavigate();
     const setSearchWord = useSetRecoilState(keyword);
     const [isNeighborhood, setIsNeighborhood] = useRecoilState(neighborhood_search);
@@ -67,11 +100,18 @@ function Header() {
     return (
         <div>
             <Nav>
-                <Logo whileHover={{ scale: 1.2 }} onClick={() => navigate("/")}>동네맛집</Logo>
+                <Logo
+                    transition={{ type: "spring", damping: 10 }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    whileHover={{ scale: 1.2 }}
+                    onClick={() => navigate("/")}>
+                    동네맛집
+                </Logo>
                 <Search onSubmit={handleSubmit(onValid)}>
-                    <button type="reset">x</button>
-                    <input {...register("search", { required: true })} />
-                    <button type="submit">검색</button>
+                    {watch('search') ? <DeleteBtn whileHover={{ scale: 1.2 }} type="reset">x</DeleteBtn> : null}
+                    <SearchInput {...register("search", { required: true })} />
+                    <SearchBtn type="submit">검색</SearchBtn>
                 </Search>
                 {/* <button onClick={searchTypeClick}>{isNeighborhood ? "동네맛집" : "전국맛집"}</button> */}
                 {/* <span>
@@ -85,9 +125,6 @@ function Header() {
                 {/* <SocialKakao /> */}
                 <div>로그인</div>
             </Nav>
-            <hr />
         </div>
     )
 }
-
-export default Header;

@@ -1,7 +1,11 @@
+import MyPlace from "../components/MyPlace";
+import WholePlace from "../components/WholePlace";
+
 function Home() {
     return (
         <div>
-            home
+            <MyPlace />
+            <WholePlace />
         </div>
     )
 }

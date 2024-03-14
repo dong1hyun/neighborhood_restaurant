@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
 const Map = styled.div`
-    width: 500px;
-    height: 400px;
+    width: 600px;
+    height: 500px;
     border-radius: 10px;
-    border: 2px solid skyblue;
+    border: 2px solid black;
 `
 const MapContainer = styled.div`
+    margin-top: 40px;
     display: flex;
     justify-content: center;
-    margin:0;
     padding:0;
     font-family:'Malgun Gothic',dotum,'돋움',sans-serif;
     font-size:12px;
@@ -25,7 +25,7 @@ const MapContainer = styled.div`
 
 const List = styled.div`
 background-color: whitesmoke;
-height: 400px;
+height: 500px;
 width: 300px;
 overflow-y: scroll;
     #placesList .item .markerbg {
@@ -63,7 +63,7 @@ overflow-y: scroll;
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 border-radius: 10px;
-    border: 2px solid skyblue;
+    border: 2px solid black;
     margin: 2px;
 `
 

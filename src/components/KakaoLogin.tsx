@@ -42,7 +42,7 @@ function requestUserInfo() {
     });
 }
 
-const SocialKakao = () => {
+export default function SocialKakao(){
   const onSuccess = async (data: any) => {
     console.log("로그인 성공");
     console.log(data)
@@ -72,5 +72,3 @@ const SocialKakao = () => {
     </Container>
   );
 };
-
-export default SocialKakao;
