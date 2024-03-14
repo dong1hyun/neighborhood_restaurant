@@ -6,12 +6,18 @@
     
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a2e1c8b0bd726e6522013b770aef13f&libraries=services"></script>
 
-</head>
+    <style>
+        #map {
+            width: 500px;
+            height: 400px;
+        }
+    </style>
+
 </head>
 
 <body>
 
- <!-- //전체리뷰
+    <!-- //전체리뷰
         <p>
         <a href="http://localhost:{{port}}/users">http://localhost:{{port}}/users</a><br> 
         <a href="http://localhost:{{port}}/comments">http://localhost:{{port}}/comments</a><br>   
@@ -42,193 +48,88 @@
         <form id="form" action="auth/login" method="post">
             <input type="text" name="id" placeholder="ID" /><br>
             <input type="text" name="password" placeholder="Password" /><br>
-            <button type="submit">http://localhost:{{port}}/auth/login</button>
+            <button type="submit">로그인</button>
         </form>
 
         {% endif %}
 
     </p>
 
-
-   위치 전송 테스트 클라이언트
+    <!-- 주소지 입력으로 검색 가능, ※ 건물 이름 불가 -->
     <p>
-        <button id="getLocationBtn" onclick="getLocation()">Get Location</button>
-    </p>
-
-    <!-- <script>
-        function getLocation() {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const { latitude, longitude } = position.coords;
-                    console.log('Latitude:', latitude);
-                    console.log('Longitude:', longitude);
-                    sendLocation(latitude, longitude);
-                    verifyLocation(latitude, longitude); // 위치 인증
-                }, error => {
-                    console.error('Error getting location:', error);
-                });
-            } else {
-                console.error('Geolocation is not supported');
-            }
-        }
-    
-        function sendLocation(latitude, longitude) {
-            fetch('/location', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ latitude, longitude })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to send location data');
-                }
-                console.log('Location data sent successfully');
-            })
-            .catch(error => {
-                console.error('Error sending location data:', error);
-            });
-        }
-    
-        function verifyLocation(latitude, longitude) {
-            // 임시로 남양주의 경도 및 위도 범위 설정
-            const gyunggiLatRange = [37.64];
-            const gyunggiLonRange = [127.21];
-    
-            // 사용자의 위치가 경기도 내에 있는지 확인
-            if (latitude >= gyunggiLatRange[0] && latitude <= gyunggiLatRange[1] &&
-                longitude >= gyunggiLonRange[0] && longitude <= gyunggiLonRange[1]) {
-                console.log("사용자는 남양주에 있습니다.");
-            } else {
-                console.log("사용자는 남양주에 있지 않습니다.");
-            }
-        }
-    </script> 
-      
-
-      <p>
         <input type="text" id="addressInput" placeholder="주소를 입력하세요">
         <button id="searchBtn">주소 검색</button>
         <div id="result"></div>
-      </p>
+        <div id="map"></div>
+    </p>
 
-      <script>
+    <script>
+        //페이지에 searchAddress() 로드
         window.onload = function () {
             document.getElementById('searchBtn').onclick = function () {
                 searchAddress();
             };
         };
 
+        //kakao Map APi를 통한 검색이 유용한 경우 검색한 주소의 위도와 경도를 가져옴.
         function searchAddress() {
             var address = document.getElementById('addressInput').value;
             var geocoder = new kakao.maps.services.Geocoder();
 
+            
             geocoder.addressSearch(address, function (result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    var lat = result[0].y; // 위도
-                    var lng = result[0].x; // 경도
-
-                    var resultDiv = document.getElementById('result');
-                    resultDiv.innerHTML = '입력한 주소의 위도: ' + lat + ', 경도: ' + lng;
-                } else {
-                    alert('검색 결과가 없거나 오류가 발생했습니다.');
-                }
-            });
-        }
-    </script> -->
-
-
-    <script>
-        function getLocation() {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const { latitude, longitude } = position.coords;
-                    console.log('Latitude:', latitude);
-                    console.log('Longitude:', longitude);
-                    sendLocation(latitude, longitude);
-                    verifyLocation(latitude, longitude); // 위치 인증
-                }, error => {
-                    console.error('Error getting location:', error);
-                });
-            } else {
-                console.error('Geolocation is not supported');
-            }
-        }
-    
-        function sendLocation(latitude, longitude) {
-            fetch('/location', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ latitude, longitude })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to send location data');
-                }
-                console.log('Location data sent successfully');
-            })
-            .catch(error => {
-                console.error('Error sending location data:', error);
-            });
-        }
-    
-        function verifyLocation(latitude, longitude) {
-            var address = document.getElementById('addressInput').value;
-            var geocoder = new kakao.maps.services.Geocoder();
-
-            geocoder.addressSearch(address, function (result, status) {
+                
+                // 주소 검색 결과가 성공적으로 반환되었는지 확인합니다.
                 if (status === kakao.maps.services.Status.OK) {
                     var searchedLat = result[0].y; // 검색한 장소의 위도
                     var searchedLng = result[0].x; // 검색한 장소의 경도
 
-                    var distance = Math.sqrt(Math.pow(latitude - searchedLat, 2) + Math.pow(longitude - searchedLng, 2));
+                    //사용자의 현재 위도와 경도를 가져오는 함수이며, 조건에 따른 결과 출력.
+                    navigator.geolocation.getCurrentPosition(position => {
+                        // 새로운 위치를 가져온 후에 이전 위치 초기화
+                         const { latitude, longitude } = position.coords;
 
-                    if (distance < 1) { // 임의의 거리 설정 단위 km이다. 곱하기 1000
-                        console.log("사용자는 검색한 장소에 있습니다.");
-                    } else {
-                        console.log("사용자는 검색한 장소에 있지 않습니다.");
-                    }
+                        // 검색한 장소(searchedLat)와 사용자의 위치(latitude, longitude)사이의 거리를 계산합니다.
+                        var distance = Math.sqrt(Math.pow(latitude - searchedLat, 2) + Math.pow(longitude - searchedLng, 2));
+
+                        // 검색 결과를 표시할 div 요소와 지도를 담을 div 요소를 가져옴.
+                        var resultDiv = document.getElementById('result');
+                        var mapContainer = document.getElementById('map');
+
+                        // 기능 변경 예정) 여기 부분에서 if면 작성 기능, else면 작성 불가.
+                        if (distance < 0.01) { // 임의의 거리 설정 [0.01 = 1km]
+                            resultDiv.innerHTML = "해당 지역 리뷰 작성이 가능합니다.";
+                        } else {
+                            resultDiv.innerHTML = "해당 지역 리뷰 작성이 불가합니다.";
+                        }
+
+                        // 지도 표시
+                        var mapOption = {
+                            center: new kakao.maps.LatLng(searchedLat, searchedLng), // 검색한 장소를 중심으로 지도 표시
+                            level: 5 // 지도의 확대 레벨
+                        };
+
+                        // 지도 생성
+                        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+                        // 마커 표시
+                        var markerPosition = new kakao.maps.LatLng(searchedLat, searchedLng);
+                        var marker = new kakao.maps.Marker({
+                            position: markerPosition
+                        });
+
+                        // 마커를 지도에 표시
+                        marker.setMap(map);
+                    }, error => {
+                        console.error('Error getting location:', error);
+                    });
                 } else {
-                    console.error('검색 결과가 없거나 오류가 발생했습니다.');
-                }
-            });
-        }
-    </script> 
-      
-
-      <!-- 위치 검색 테스트 클라이언트 -->
-      <p>
-        <input type="text" id="addressInput" placeholder="주소를 입력하세요">
-        <button id="searchBtn">주소 검색</button>
-        <div id="result"></div>
-      </p>
-
-      <script>
-        window.onload = function () {
-            document.getElementById('searchBtn').onclick = function () {
-                searchAddress();
-            };
-        };
-
-        function searchAddress() {
-            var address = document.getElementById('addressInput').value;
-            var geocoder = new kakao.maps.services.Geocoder();
-
-            geocoder.addressSearch(address, function (result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    var resultDiv = document.getElementById('result');
-                    resultDiv.innerHTML = '입력한 주소의 위도: ' + result[0].y + ', 경도: ' + result[0].x;
-
-                    verifyLocation(); // 위치 인증
-                } else {
-                    alert('검색 결과가 없거나 오류가 발생했습니다.');
+                    alert('도로명주소 검색으로 정보를 찾을 수 있습니다.');
                 }
             });
         }
     </script>
+
 </body>
 
 </html>
