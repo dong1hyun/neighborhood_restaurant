@@ -8,7 +8,7 @@ const { isLoggedIn , logout } = require('./helpers');
 const router = express.Router();
 
 router.route('/')
-    .get(isLoggedIn, async (req, res, next) => {
+    .get(async (req, res, next) => {
         try {
             const users = await User.findAll({
                 attributes: ['id']
@@ -108,5 +108,7 @@ router.get('/:id', async (req, res, next) => {
         next(err);
     }
 });
+
+
 
 module.exports = router;

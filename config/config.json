@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "qwer1234",
-    "database": "test",
+    "database": "neighborhood_restaurant_backend",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

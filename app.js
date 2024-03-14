@@ -9,6 +9,7 @@ const { sequelize } = require('./models');
 const passport = require('passport');
 const passportConfig = require('./passport');
 
+const locationRouter = require('./routes/location');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
@@ -51,7 +52,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/auth', authRouter);
+app.use('/location', locationRouter);  // 위치 정보 불러오기
+app.use('/auth', authRouter); // 1. kakao 로그인 요청
 app.use('/user', userRouter);
 app.use('/comment', commentRouter);
 app.use('/', indexRouter);
