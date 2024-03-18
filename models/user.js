@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 
+// 사용자ID, 사용자PW, 사용자닉네임, 사용자리뷰
 module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
@@ -13,11 +14,11 @@ module.exports = class User extends Sequelize.Model {
                 allowNull: false
             },
             name: {
-                type: Sequelize.STRING(20),
+                type: Sequelize.STRING(100),
                 allowNull: false
             },
             description: {
-                type: Sequelize.TEXT,
+                type: Sequelize.STRING(100),
                 allowNull: true
             }
         }, {

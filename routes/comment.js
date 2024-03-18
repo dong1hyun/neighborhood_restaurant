@@ -1,29 +1,20 @@
 const express = require('express');
 const Comment = require('../models/comment');
-
 const { isLoggedIn } = require('./helpers');
-
 
 const router = express.Router();
 
-router.route('/')
-    .get(isLoggedIn, (req, res) => {
-        res.render('comment', {
-            title: require('../package.json').name,
-            userId: req.user.id
-        });
-    })
-    .post(async (req, res, next) => {
-        const { comment } = req.body;
-        const userId = req.user.id;
+router.post('/', isLoggedIn, async (req, res, next) => {
+    const { comment } = req.body;
+    const userId = req.user.id;
 
-        try {
-            await Comment.create({ userId, comment });
-            res.redirect('/');
-        } catch (err) {
-            console.error(err);
-            next(err);
-        }
-    });
+    try {
+        await Comment.create({ userId, comment });
+        res.sendStatus(200); // 성공 상태 코드 반환
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500); // 서버 오류 상태 코드 반환
+    }
+});
 
 module.exports = router;
