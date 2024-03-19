@@ -6,6 +6,8 @@ import { KakaoMap } from "./components/KakaoMap";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle } from "styled-components";
 import Place from "./page/Place";
+import Register from "./page/Register";
+import Login from "./page/Login";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -70,6 +72,8 @@ function App() {
     <Header />
         <Routes>
             <Route path="/" element={<Home />} /> 
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/search" element={<SearchResult />} /> 
             <Route path="/place/:id" element={<Place />} />
         </Routes>

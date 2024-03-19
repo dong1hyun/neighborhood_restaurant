@@ -3,14 +3,12 @@ module.exports = (sequelize, DataTypes) => {
         id: {
             type: DataTypes.STRING(20),
             primaryKey: true,
-            comment: "고유번호",
         },
-        nickName: {
-            type: DataTypes.STRING(100),
-            comment: "이름",
+        password: {
+            type: DataTypes.STRING(20)
         },
-        review: {
-            type: DataTypes.TEXT
+        location: {
+            type: DataTypes.STRING(20)
         }
     }, {
         charset: "utf8", // 한국어 설정

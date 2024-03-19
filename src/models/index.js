@@ -15,6 +15,20 @@ if (config.use_env_variable) {
     sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+const user = require('./user')(sequelize, Sequelize.DataTypes);
+const review = require('./review')(sequelize, Sequelize.DataTypes);
+const restaurant = require('./restaurant')(sequelize, Sequelize.DataTypes);
+
+user.hasMany(review, {
+    foreignKey: 'userID',
+    allowNull: false,
+    constraints: true,
+    onDelete: 'cascade'
+});
+review.belongsTo(user, {
+    foreignKey: 'userID'
+})
+
 // 우리가 작성한 Table파일을 찾아온다.
 fs
     .readdirSync(__dirname)

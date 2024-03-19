@@ -6,7 +6,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { keyword } from "../atom";
 
 
-
 export function SearchResult() {
     const [searchParams, _] = useSearchParams();
     const [searchWord, setSearchWord] = useRecoilState(keyword);
