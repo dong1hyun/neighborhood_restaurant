@@ -53,6 +53,11 @@ app.post('/create/restaurant', function (req, res) {
     })
 })
 
+app.post('/register', function (req, res) {
+    console.log(req.body);
+    res.render('/')
+});
+
 
 
 app.use(express.static(path.join(__dirname, '../build')));

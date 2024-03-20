@@ -19,6 +19,7 @@ const Nav = styled.div`
         flex-direction: column;
         align-items: flex-start;
         height: 250px;
+        background-color: black;
 }
 `
 
@@ -46,18 +47,21 @@ const Logo = styled(motion.div)`
 
 const Search = styled.form`
     position: relative;
-    background-color: whitesmoke;
+    background-color: transparent;
     width: 400px;
     height: 50px;
     margin: 25px;
     border-radius: 10px;
+    @media screen and (max-width: 700px) {
+        width: 300px;
+    }
 `
 
 const SearchInput = styled.input`
     position: absolute;
     left: 35px;
     top: 10px;
-    width: 300px;
+    width: 350px;
     height: 30px;
     font-size: 20px;
     border-radius: 10px;
@@ -65,6 +69,10 @@ const SearchInput = styled.input`
     background-color: whitesmoke;
     border-width: 0px;
     outline: none;
+    align-items: center;
+    @media screen and (max-width: 700px) {
+        width: 200px;
+    }
 `
 
 const SearchBtn = styled.button`
@@ -74,6 +82,9 @@ const SearchBtn = styled.button`
     top: 15px;
     right: 10px;
     width: 50px;
+    @media screen and (max-width: 700px) {
+        right: 60px;
+    }
 `
 
 const DeleteBtn = styled(motion.button)`
@@ -90,6 +101,7 @@ const DeleteBtn = styled(motion.button)`
 
 const LoginContainer = styled.div`
     margin: 20px;
+    align-items: center;
 `
 
 const Login = styled(motion.div)`
@@ -98,16 +110,16 @@ const Login = styled(motion.div)`
     cursor: pointer;
 `
 
-interface DataForm {
+interface searchForm {
     search: string
 }
 
 export default function Header() {
-    const { register, handleSubmit, getValues, watch } = useForm<DataForm>();
+    const { register, handleSubmit, getValues, watch } = useForm<searchForm>();
     const navigate = useNavigate();
     const setSearchWord = useSetRecoilState(keyword);
     const [isNeighborhood, setIsNeighborhood] = useRecoilState(neighborhood_search);
-    const onValid = ({ search }: DataForm) => {
+    const onValid = ({ search }: searchForm) => {
         setSearchWord(search);
         // console.log("header:", search)
         navigate(`/search?keyword=${search}`);
@@ -133,13 +145,13 @@ export default function Header() {
                 <Search onSubmit={handleSubmit(onValid)}>
                     {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
                     <SearchInput {...register("search", { required: true })} />
-                    <SearchBtn type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                    <SearchBtn type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                     </svg></SearchBtn>
                 </Search>
                 <LoginContainer>
-                    <Login onClick={() => { navigate('/register') }}>회원가입</Login>
-                    <Login onClick={() => { navigate('/login') }}>로그인</Login>
+                    <Login onClick={() => { navigate('/registerPage') }}>회원가입</Login>
+                    <Login onClick={() => { navigate('/loginPage') }}>로그인</Login>
                 </LoginContainer>
             </Nav>
         </>
