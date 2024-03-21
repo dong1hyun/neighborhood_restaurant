@@ -41,7 +41,7 @@ export default function LoginBox() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // 폼 기본 제출 동작 방지
         try {
-            const response = await axios.post('/auth/login', formData); // '/auth/login'으로 POST 요청 보냄
+            const response = await axios.post('/register', formData); // '/auth/login'으로 POST 요청 보냄
             console.log(response.data); // 서버에서 받은 응답 데이터
             // 성공적으로 로그인되었음을 처리하는 코드 추가
         } catch (error) {
