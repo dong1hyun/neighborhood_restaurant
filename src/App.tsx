@@ -67,19 +67,19 @@ a {
 function App() {
   return (
     <RecoilRoot>
-    <BrowserRouter>
-    <GlobalStyle />
-    <Header />
+      <BrowserRouter>
+        <GlobalStyle />
+        <Header />
         <Routes>
-            <Route path="/" element={<Home />} /> 
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/search" element={<SearchResult />} /> 
-            <Route path="/place/:id" element={<Place />} />
+          <Route path="/" element={<Home />} /> 
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/search" element={<SearchResult />} /> 
+          <Route path="/place/:id" element={<Place />} />
         </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
     </RecoilRoot>
-)
+  )
 }
 
 export default App;

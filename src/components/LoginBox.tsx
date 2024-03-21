@@ -1,3 +1,5 @@
+import axios from 'axios'; // axios import 추가
+import React, { useState, ChangeEvent, FormEvent } from 'react'; // react 패키지에서 가져오는지 확인
 import { AnimatePresence, motion } from "framer-motion"
 import styled from "styled-components"
 
@@ -34,19 +36,54 @@ const boxVariants = {
 }
 
 export default function LoginBox() {
+    const [formData, setFormData] = useState({ username: '', password: '' });
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); // 폼 기본 제출 동작 방지
+        try {
+            const response = await axios.post('/auth/login', formData); // '/auth/login'으로 POST 요청 보냄
+            console.log(response.data); // 서버에서 받은 응답 데이터
+            // 성공적으로 로그인되었음을 처리하는 코드 추가
+        } catch (error) {
+            console.error('로그인 중 오류가 발생했습니다:', error);
+            // 로그인 실패에 대한 처리 코드 추가
+        }
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
     return (
         <LoginContainer
-        variants={boxVariants}
-        initial="initial"
-        animate="visible"
-        exit="leaving" 
+            variants={boxVariants}
+            initial="initial"
+            animate="visible"
+            exit="leaving"
         >
-        <form>
-            로그인<br />
-            아이디<input />
-            <br />
-            비밀번호<input />
-        </form>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    아이디:
+                    <input
+                        type="text"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                    />
+                </label>
+                <br />
+                <label>
+                    비밀번호:
+                    <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                    />
+                </label>
+                <br />
+                <button type="submit">로그인</button>
+            </form>
         </LoginContainer>
-    )
+    );
 }

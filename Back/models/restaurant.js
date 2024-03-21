@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
       restaurantID: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true // 자동으로 증가하는 기본키 설정
       },
       restaurantName: {
         type: DataTypes.STRING(50),

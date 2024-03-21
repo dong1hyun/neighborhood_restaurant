@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         userID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true // 자동으로 증가하는 기본키 설정
         },
         name: {
             type: DataTypes.STRING(50),
