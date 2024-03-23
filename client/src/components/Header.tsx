@@ -3,8 +3,6 @@ import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { keyword, neighborhood_search, register_showing } from "../atom";
-import { kakaoLogout, loginWithKakao } from "../function/KakaoLogin2";
-import SocialKakao from "./KakaoLogin";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion"
 

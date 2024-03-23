@@ -36,8 +36,12 @@ overflow-y: scroll;
         margin:10px 0 0 10px;
         background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
 }
+overflow-x: hidden;
 #placesList li {list-style: none;}
-#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+#placesList .item {position:relative;border-bottom:1px solid #888;cursor: pointer; overflow: hidden; min-height: 65px;}
+#placesList .item:hover {
+    scale: 1.05;
+}
 #placesList .item span {display: block;margin-top:4px;}
 #placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 #placesList .item .info{padding:10px 0 10px 55px;}
@@ -70,7 +74,7 @@ border-radius: 10px;
 export function KakaoMap() {
     return (
         <MapContainer>
-            <Map id="map" />
+            <Map id="keywordMap" />
             <List>
                 <ul id="placesList"></ul>
                 <div id="pagination"></div>

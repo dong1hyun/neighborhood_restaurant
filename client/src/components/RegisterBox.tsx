@@ -25,6 +25,13 @@ const RegisterList = styled.li`
     margin: 5px;
 `
 
+const RegisterInput = styled.input`
+    width: 300px;
+    height: 30;
+    border-radius: 5px;
+    border-width: 1px;
+`
+
 const RegisterBtn = styled.button`
     margin: 0 auto;
     margin-top: 15px;
@@ -72,9 +79,9 @@ export default function RegisterBox() {
         <form onSubmit={handleSubmit(onValid)}>
             <ul className="list-group list-group-flush">
                 <div className="card-header">회원가입</div>
-                <RegisterList className="list-group-item">아이디<input {...register("id")}/></RegisterList>
-                <RegisterList className="list-group-item">비밀번호<input {...register("password")}/></RegisterList>
-                <RegisterList className="list-group-item">닉네임<input {...register("nickName")}/></RegisterList>
+                <RegisterList className="list-group-item"><RegisterInput {...register("id")} placeholder="아이디를 입력해주세요" /></RegisterList>
+                <RegisterList className="list-group-item"><RegisterInput {...register("password")} placeholder="비밀번호를 입력해주세요"/></RegisterList>
+                <RegisterList className="list-group-item"><RegisterInput {...register("nickName")} placeholder="닉네임을 입력해주세요"/></RegisterList>
                 <RegisterBtn type="submit">확인</RegisterBtn>
             </ul>
         </form>

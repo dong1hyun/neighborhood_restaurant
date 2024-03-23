@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING(100),
       },
+      x: { //x좌표
+        type: DataTypes.DOUBLE
+      },
+      y: { //y좌표
+        type: DataTypes.DOUBLE
+      }
     }, {
       charset: "utf8", // 한국어 설정
       collate: "utf8_general_ci", // 한국어 설정

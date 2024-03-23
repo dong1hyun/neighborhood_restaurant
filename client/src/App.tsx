@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Home from "./page/Home";
-import { SearchResult } from "./page/SearchResult";
+import { KeywordSearchResult } from "./page/KeywordSearchResult";
 import Header from "./components/Header";
 import { KakaoMap } from "./components/KakaoMap";
 import { RecoilRoot } from "recoil";
@@ -75,7 +75,7 @@ function App() {
             <Route path="/" element={<Home />} /> 
             <Route path="/registerPage" element={<Register />} />
             <Route path="/loginpage" element={<Login />} />
-            <Route path="/search" element={<SearchResult />} /> 
+            <Route path="/search" element={<KeywordSearchResult />} /> 
             <Route path="/place/:id" element={<Place />} />
         </Routes>
     </BrowserRouter>

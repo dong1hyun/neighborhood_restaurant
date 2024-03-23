@@ -1,13 +1,13 @@
 import { useSearchParams } from "react-router-dom";
 import { KakaoMap } from "../components/KakaoMap";
-import { searchPlaces } from "../function/Search";
+import { searchPlaces } from "../function/keywordSearch";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { keyword } from "../atom";
 import React from 'react';
 
 
-export function SearchResult() {
+export function KeywordSearchResult() {
     const [searchParams, _] = useSearchParams();
     const [searchWord, setSearchWord] = useRecoilState(keyword);
     

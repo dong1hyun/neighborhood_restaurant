@@ -6,17 +6,7 @@ const bodyParser = require('body-parser');
 const { User, Review, Restaurant } = require("./models");
 const app = express();
 
-// async function fetchdata() {
-//     const { data } = await axios.get('/m/15849177');
-//     console.log(data);
-// }
-// fetchdata()
-
 app.set('port', 3000);
-// nunjucks.configure('views', {
-//     express: app,
-//     watch: true,
-// });
 
 sequelize.sync({ force: false })
     .then(() => {
@@ -39,12 +29,23 @@ app.post('/create/restaurant', function (req, res) {
     const restaurantList = req.body;
     restaurantList.forEach(place => {
         Restaurant.findOrCreate({
-            where: { id: place.id, name: place.place_name },
+            where: { id: place.id, name: place.place_name, x: place.x, y: place.y },
             default: {
                 id: place.id,
-                name: place.place_name
+                name: place.place_name,
+                x: place.x,
+                y: place.y
             }
         })
+    })
+});
+
+app.get('/placeDetail/:id', function(req, res) {
+    Restaurant.findOne({
+        where: { id: req.params.id }
+    })
+    .then(result => {
+        res.json(result.dataValues)
     })
 })
 
@@ -59,9 +60,9 @@ app.post('/register', function (req, res) {
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build/index/html'))
+    res.sendFile(path.join(__dirname, '../client/build/index.html'))
 });
 
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build/index/html'))
+    res.sendFile(path.join(__dirname, '../client/build/index.html'))
 });

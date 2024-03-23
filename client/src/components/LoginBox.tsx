@@ -24,6 +24,13 @@ const LoginList = styled.li`
     margin: 5px;
 `
 
+const LoginInput = styled.input`
+    width: 300px;
+    height: 30;
+    border-radius: 5px;
+    border-width: 1px;
+`
+
 const LoginBtn = styled.button`
     margin: 0 auto;
     margin-top: 15px;
@@ -74,8 +81,8 @@ export default function LoginBox() {
                     로그인
                 </div>
                 <ul className="list-group list-group-flush">
-                    <LoginList className="list-group-item">아이디<input {...register("id")}/></LoginList>
-                    <LoginList className="list-group-item">비밀번호<input {...register("password")}/></LoginList>
+                    <LoginList className="list-group-item"><LoginInput {...register("id")} placeholder="아이디를 입력하세요"/></LoginList>
+                    <LoginList className="list-group-item"><LoginInput {...register("password")} placeholder="비밀번호를 입력하세요"/></LoginList>
                     <LoginBtn type="submit">로그인</LoginBtn>
                 </ul>
             </form>

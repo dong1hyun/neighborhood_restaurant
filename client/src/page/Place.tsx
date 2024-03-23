@@ -1,29 +1,33 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import getNews from '../function/crawl'
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import React from 'react';
+import setMarker from "../function/placeMarker";
+import PlaceDetail from "../components/PlaceDetail";
 
 const PlaceName = styled.div`
     
 `
 
-function Place() {
-    // const params = useParams();
+const Map = styled.div`
 
-    // getNews(params.id)
-    // useEffect(() => {
-    //     axios.get('https://place.map.kakao.com/8029124')
-    //     .then(res => {
-    //       console.log(res.data)
-    //     })
-    // }, [])
-    
+    width: 600px;
+    height: 500px;
+    border-radius: 10px;
+    border: 2px solid black;
+`
+
+const Container = styled.div`
+    display: flex;
+    margin: 50px;
+`
+function Place() {
     return (
-        <div>
-            Place
-        </div>
+        <Container>
+            <Map id="placeMap" />
+            <PlaceDetail />
+        </Container>
     )
 }
 
