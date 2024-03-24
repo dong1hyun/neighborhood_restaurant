@@ -8,25 +8,32 @@ const DetailContainer = styled.div`
     margin: 30px;
 `
 
-const PlaceName = styled.div`
-  font-family: "Nanum Gothic Coding", monospace;
-  font-weight: 400;
-  font-style: normal;
+const Detail = styled.div`
+    font-family: "Nanum Gothic Coding", monospace;
+    font-weight: 400;
+    font-style: normal;
     font-size: 50px;
+    margin-bottom: 40px;
 `
 
 export default function PlaceDetail() {
     const { id } = useParams()
+    const [name, setName] = useState();
+    const [address, setAddress] = useState();
+    const [category, setCategory] = useState();
+    const [phone, setPhone] = useState();
     const [x, setX] = useState();
     const [y, setY] = useState();
-    const [name, setName] = useState("");
 
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
+                setName(res.data.name);
+                setAddress(res.data.address);
+                setCategory(res.data.category);
+                setPhone(res.data.phone);
                 setX(res.data.x);
                 setY(res.data.y);
-                setName(res.data.name);
             })
             .catch(function (error) {
                 // 에러 핸들링
@@ -40,7 +47,10 @@ export default function PlaceDetail() {
     })
     return (
         <DetailContainer>   
-            <PlaceName>{name}</PlaceName>
+            <Detail>{name}</Detail>
+            <Detail>{address}</Detail>
+            <Detail>{category}</Detail>
+            <Detail>{phone}</Detail>
         </DetailContainer>
     )
 }

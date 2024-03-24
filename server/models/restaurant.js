@@ -7,6 +7,15 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING(100),
       },
+      address: {
+        type: DataTypes.STRING(50)
+      },
+      category: {
+        type: DataTypes.STRING(50)
+      },
+      phone: {
+        type: DataTypes.STRING(15)
+      },
       x: { //x좌표
         type: DataTypes.DOUBLE
       },

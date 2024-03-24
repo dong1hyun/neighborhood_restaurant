@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 const Map = styled.div`
-    width: 600px;
+    position: relative;
+    width: 80%;
     height: 500px;
     border-radius: 10px;
     border: 2px solid black;
 `
 const MapContainer = styled.div`
-    margin-top: 40px;
+    position: relative;
     display: flex;
     justify-content: center;
     padding:0;
@@ -24,9 +25,13 @@ const MapContainer = styled.div`
 `
 
 const List = styled.div`
-background-color: whitesmoke;
-height: 500px;
+position: absolute;
+z-index: 10;
+background-color: rgb(255,255,255, 0.7);
+height: 480px;
 width: 300px;
+right: 11%;
+top: 10px;
 overflow-y: scroll;
     #placesList .item .markerbg {
         float:left;

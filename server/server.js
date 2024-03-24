@@ -29,10 +29,13 @@ app.post('/create/restaurant', function (req, res) {
     const restaurantList = req.body;
     restaurantList.forEach(place => {
         Restaurant.findOrCreate({
-            where: { id: place.id, name: place.place_name, x: place.x, y: place.y },
+            where: { id: place.id, name: place.place_name, address: place.address_name, category: place.category_name, phone: place.phone ,x: place.x, y: place.y },
             default: {
                 id: place.id,
                 name: place.place_name,
+                address: place.address_name, 
+                category: place.category_name, 
+                phone: place.phone,
                 x: place.x,
                 y: place.y
             }

@@ -5,7 +5,16 @@ import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { keyword } from "../atom";
 import React from 'react';
+import styled from "styled-components";
 
+
+const Keyword = styled.div`
+    font-family: "Nanum Gothic Coding", monospace;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+    margin: 20px;
+`
 
 export function KeywordSearchResult() {
     const [searchParams, _] = useSearchParams();
@@ -14,10 +23,10 @@ export function KeywordSearchResult() {
     useEffect(() => {
         searchPlaces(searchParams.get("keyword") + '');
         setSearchWord(searchParams.get("keyword") + '');
-        // console.log("search:", searchWord);
     }, [searchWord]);
     return (
         <div>
+            <Keyword>{searchWord} 검색결과 </Keyword>
             <KakaoMap />
         </div>
     );

@@ -15,9 +15,11 @@ export default function setMarker(x, y) {
 
     // 마커를 생성합니다
     const marker = new kakao.maps.Marker({
-        position: markerPosition
+        position: markerPosition,
     });
 
     // 마커가 지도 위에 표시되도록 설정합니다
+    
     marker.setMap(map);
+    // marker.setTitle('타이틀');
 }

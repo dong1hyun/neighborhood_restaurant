@@ -34,15 +34,6 @@ const Logo = styled(motion.div)`
     font-style: normal;
 `
 
-// const SearchContainer = styled.div`
-//     position: relative;
-//     background-color: whitesmoke;
-//     width: 400px;
-//     height: 50px;
-//     margin: 25px;
-//     border-radius: 10px;
-// `
-
 const Search = styled.form`
     position: relative;
     background-color: transparent;
