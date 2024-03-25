@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { keyword, neighborhood_search, register_showing } from "../atom";
+import { keyword, neighborhood_search } from "../atom";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion"
 
@@ -43,6 +43,7 @@ const Search = styled.form`
     border-radius: 10px;
     @media screen and (max-width: 700px) {
         width: 300px;
+        margin-left: 0;
     }
 `
 
@@ -80,7 +81,7 @@ const DeleteBtn = styled(motion.button)`
     position: absolute;
     top: 13px;
     left: 5px;
-    margin-right: 100yypx;
+    margin-right: 100px;
     background-color: transparent;
     border-radius: 5px;
     background-color: #d8d8d8;
@@ -115,10 +116,6 @@ export default function Header() {
     }
     const searchTypeClick = async () => {
         setIsNeighborhood((cur) => !cur)
-    }
-    const setRegisterShowing = useSetRecoilState(register_showing);
-    const onRegisterClick = () => {
-        setRegisterShowing((cur) => !cur);
     }
     return (
         <>

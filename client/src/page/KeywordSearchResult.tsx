@@ -9,11 +9,17 @@ import styled from "styled-components";
 
 
 const Keyword = styled.div`
+    position: absolute;
+    background-color: white;
+    border-radius: 5px;
+    border: solid 5px white;
+    z-index: 10;
     font-family: "Nanum Gothic Coding", monospace;
     font-weight: 400;
     font-style: normal;
-    font-size: 30px;
+    font-size: 20px;
     margin: 20px;
+    left: 10%;
 `
 
 export function KeywordSearchResult() {

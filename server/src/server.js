@@ -1,9 +1,10 @@
 const express = require("express");
 const morgan = require('morgan');
 const path = require('path')
-const { sequelize } = require('./models')
+const { sequelize } = require('../models')
 const bodyParser = require('body-parser');
-const { User, Review, Restaurant } = require("./models");
+const { User, Review, Restaurant } = require("../models");
+// const getHTML = require("./fetch");
 const app = express();
 
 app.set('port', 3000);
@@ -28,6 +29,7 @@ app.post('/create/restaurant', function (req, res) {
     // console.log(req.body);
     const restaurantList = req.body;
     restaurantList.forEach(place => {
+        // console.log(getHTML(place.id));
         Restaurant.findOrCreate({
             where: { id: place.id, name: place.place_name, address: place.address_name, category: place.category_name, phone: place.phone ,x: place.x, y: place.y },
             default: {
@@ -60,12 +62,12 @@ app.post('/register', function (req, res) {
 
 
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../../client/build')));
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'))
+    res.sendFile(path.join(__dirname, '../../client/build/index.html'))
 });
 
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'))
+    res.sendFile(path.join(__dirname, '../../client/build/index.html'))
 });
