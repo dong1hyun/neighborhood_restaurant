@@ -30,20 +30,15 @@ app.post('/create/restaurant', function (req, res) {
     const restaurantList = req.body;
     restaurantList.forEach(async place => {
         const crawlingData = await axios.get(`https://place.map.kakao.com/m/main/v/${place.id}`)
-        let img_url;
-        if(crawlingData.data.photo?.sortedPhotoList) {
-            img_url = crawlingData.data.photo?.sortedPhotoList[0]?.orgurl  
-        }
-         
-        
+        let img_url = crawlingData.data?.basicInfo?.mainphotourl;
         img_url = img_url ? img_url : "none"
         Restaurant.findOrCreate({
-            where: { id: place.id, name: place.place_name, address: place.address_name, category: place.category_name, phone: place.phone, img: img_url, x: place.x, y: place.y },
+            where: { id: place.id, name: place.place_name, address: place.address_name, category: place.category_name.substr(6), phone: place.phone, img: img_url, x: place.x, y: place.y },
             default: {
                 id: place.id,
                 name: place.place_name,
                 address: place.address_name, 
-                category: place.category_name, 
+                category: place.category_name.substr(6), 
                 phone: place.phone,
                 img: img_url,
                 x: place.x,
@@ -59,6 +54,7 @@ app.get('/placeDetail/:id', function(req, res) {
     })
     .then(result => {
         res.json(result.dataValues)
+        console.log(result.dataValues);
     })
 })
 

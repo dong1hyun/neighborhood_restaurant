@@ -1,3 +1,4 @@
+//검색한 식당 또는 위치의 지도와 식당 목록을 리턴하는 컴포넌트
 import styled from "styled-components";
 
 const MapContainer = styled.div`
@@ -104,6 +105,5 @@ export function KakaoMap() {
                 <div id="pagination"></div>
             </List>
         </MapContainer>
-
     )
 }

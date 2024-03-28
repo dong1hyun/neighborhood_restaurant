@@ -5,7 +5,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(100)
+      },
+      rating: {
+        type: DataTypes.FLOAT()
       },
       address: {
         type: DataTypes.STRING(50)
@@ -17,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(15)
       },
       img: {
-        type: DataTypes.STRING(300)
+        type: DataTypes.STRING(1000)
       },
       x: { //x좌표
         type: DataTypes.DOUBLE
