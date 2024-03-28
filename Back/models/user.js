@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: true // 이름은 null이 될 수 있음
         },
-        password: { // Password 대문자로 변경
+        password: {
             type: DataTypes.STRING(100),
             allowNull: true // 비밀번호는 null이 될 수 있음
         },
@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         paranoid: true
     });
 
+    // 직접 findByPk 함수 구현
     User.findByPk = async function(id) {
         return await User.findOne({ where: { id } });
     };
