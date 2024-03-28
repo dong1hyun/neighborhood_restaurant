@@ -8,7 +8,7 @@ const db = {};
 
 let sequelize;
 
-//config/config.js 파일에 있는 정보를 가져와 sequelize 객체를 생성한다.
+// config/config.js 파일에 있는 정보를 가져와 sequelize 객체를 생성한다.
 if (config.use_env_variable) {
     sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
@@ -16,51 +16,46 @@ if (config.use_env_variable) {
 }
 
 // user 모델 정의
-const user = require('./user')(sequelize, Sequelize.DataTypes);
+const User = require('./user')(sequelize, Sequelize.DataTypes);
 // review 모델 정의
-const review = require('./review')(sequelize, Sequelize.DataTypes);
+const Review = require('./review')(sequelize, Sequelize.DataTypes);
 // restaurant 모델 정의
-const restaurant = require('./restaurant')(sequelize, Sequelize.DataTypes);
+const Restaurant = require('./restaurant')(sequelize, Sequelize.DataTypes);
 // favorites 모델 정의
-const favorites = require('./Favorites')(sequelize, Sequelize.DataTypes);
-
+const Favorites = require('./Favorites')(sequelize, Sequelize.DataTypes);
 
 // User 모델과 Review 모델 간의 관계 설정
-user.hasMany(review, {
-    foreignKey: 'userID', // Review 테이블의 userID 컬럼이 외래키
+User.hasMany(Review, {
+    foreignKey: 'id', // Review 테이블의 userID 컬럼이 외래키
     allowNull: false, // userID가 null이 아니어야 함
     onDelete: 'CASCADE' // User 테이블의 레코드가 삭제될 때 Review 테이블에서 해당 userID를 가진 레코드를 자동으로 삭제
 });
-review.belongsTo(user, {
-    foreignKey: 'userID' // Review 테이블의 userID 컬럼이 외래키
+Review.belongsTo(User, {
+    foreignKey: 'id' // Review 테이블의 userID 컬럼이 외래키
 });
 
 // User 모델과 Favorites 모델 간의 관계 설정
-user.hasMany(favorites, {
-    foreignKey: 'userID', // Favorites 테이블의 userID 컬럼이 외래키
+User.hasMany(Favorites, {
+    foreignKey: 'id', // Favorites 테이블의 userID 컬럼이 외래키
     allowNull: false, // userID가 null이 아니어야 함
     onDelete: 'CASCADE' // User 테이블의 레코드가 삭제될 때 Favorites 테이블에서 해당 userID를 가진 레코드를 자동으로 삭제
 });
-favorites.belongsTo(user, {
-    foreignKey: 'userID' // Favorites 테이블의 userID 컬럼이 외래키
+Favorites.belongsTo(User, {
+    foreignKey: 'id' // Favorites 테이블의 userID 컬럼이 외래키
 });
 
 // Review 모델과 Restaurant 모델 간의 관계 설정
-review.belongsTo(restaurant, {
+Review.belongsTo(Restaurant, {
     foreignKey: 'restaurantID' // Review 테이블의 restaurantID 컬럼이 외래키
 });
-restaurant.hasMany(review, {
+Restaurant.hasMany(Review, {
     foreignKey: 'restaurantID', // Review 테이블의 restaurantID 컬럼이 외래키
     allowNull: false, // restaurantID가 null이 아니어야 함
     onDelete: 'CASCADE' // Restaurant 테이블의 레코드가 삭제될 때 Review 테이블에서 해당 restaurantID를 가진 레코드를 자동으로 삭제
 });
 
-
-
-
-// 우리가 작성한 Table파일을 찾아온다.
-fs
-    .readdirSync(__dirname)
+// 우리가 작성한 Table 파일을 찾아온다.
+fs.readdirSync(__dirname)
     .filter(file => {
         return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
     })
@@ -69,7 +64,7 @@ fs
         db[model.name] = model;
     });
 
-//DB에 모델이름을 연결한다.
+// DB에 모델 이름을 연결한다.
 Object.keys(db).forEach(modelName => {
     if (db[modelName].associate) {
         db[modelName].associate(db);

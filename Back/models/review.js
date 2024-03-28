@@ -1,22 +1,30 @@
 module.exports = (sequelize, DataTypes) => {
-    const Review = sequelize.define("Review", {
+  const Review = sequelize.define("Review", {
       reviewID: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true // 자동으로 증가하는 기본키 설정
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true // 자동으로 증가하는 기본 키 설정
       },
       comment: {
-        type: DataTypes.STRING(100),
+          type: DataTypes.STRING(100),
+          allowNull: true // 댓글은 null이 될 수 있음
       },
-    }, 
+      userID: {
+          type: DataTypes.INTEGER,
+          allowNull: false // userID는 null이 될 수 없음
+      },
+      restaurantID: {
+          type: DataTypes.INTEGER,
+          allowNull: false // restaurantID는 null이 될 수 없음
+      }
+  }, 
+  {
+      charset: "utf8",
+      collate: "utf8_general_ci",
+      tableName: "Review",
+      timestamps: false,
+      paranoid: true
+  });
 
-    {
-      charset: "utf8", // 한국어 설정
-      collate: "utf8_general_ci", // 한국어 설정
-      tableName: "Review", // 테이블 이름
-      timestamps: false, 
-      paranoid: true, // timestamps 가 활성화 되어야 사용 가능 > deleteAt 옵션 on
-    });
-  
-    return Review;
-  };
+  return Review;
+};

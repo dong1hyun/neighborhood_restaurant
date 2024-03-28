@@ -13,8 +13,9 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
 const indexRouter = require('./routes');
-const authRouter = require('./routes/auth');
-const registerRouter = require('./routes/register'); // signup 라우터 추가
+const loginRouter = require('./routes/login');
+const registerRouter = require('./routes/register');
+const restaurantRouter = require('./routes/restaurant');
 
 dotenv.config();
 passportConfig();
@@ -27,7 +28,7 @@ sequelize.sync({ force: false })
     .catch(err => console.error(err));
 
     app.use(
-        morgan('dev'),
+        morgan('dev'), //HTTP 요청을 콘솔에 로그로 기록
         express.static(path.join(__dirname, 'index')),
         express.json(),
         express.urlencoded({ extended: false }),
@@ -50,8 +51,9 @@ app.use(passport.session());
 app.use(cors());
 
 app.use('/', indexRouter);
-app.use('/auth', authRouter); 
+app.use('/login', loginRouter); 
 app.use('/register', registerRouter); 
+app.use('/restaurant', restaurantRouter);
 
 app.post('/create/restaurant', function (req, res) {
     const restaurantList = req.body;
@@ -66,14 +68,15 @@ app.post('/create/restaurant', function (req, res) {
     })
 });
 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../build/index.html'))
+    res.sendFile(path.join(__dirname, '../client/build/index.html'))
 });
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../build/index.html'))
+    res.sendFile(path.join(__dirname, '../client/build/index.html'))
 });
+
 
 app.listen(app.get('port'), () => {
     console.log(`Server is running on port ${app.get('port')}`);

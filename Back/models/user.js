@@ -1,31 +1,38 @@
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define("User", {
-        userID: {
-            type: DataTypes.INTEGER,
+        id: {
+            type: DataTypes.STRING(100),
             primaryKey: true,
-            autoIncrement: true // 자동으로 증가하는 기본키 설정
+            allowNull: false // id는 null이 될 수 없음
         },
         name: {
             type: DataTypes.STRING(100),
+            allowNull: true // 이름은 null이 될 수 있음
         },
-        id: {
+        password: { // Password 대문자로 변경
             type: DataTypes.STRING(100),
+            allowNull: true // 비밀번호는 null이 될 수 있음
         },
-        password: {
-            type: DataTypes.STRING(100)
+        x: {
+            type: DataTypes.DOUBLE,
+            allowNull: true // 사용자 경도는 null이 될 수 있음
         },
-        location: {
-            type: DataTypes.FLOAT,
+        y: {
+            type: DataTypes.DOUBLE,
+            allowNull: true // 사용자 위도는 null이 될 수 있음
         }
     }, 
-    
     {
-        charset: "utf8", // 한국어 설정
-        collate: "utf8_general_ci", // 한국어 설정
-        tableName: "Users", // 테이블 이름
-        timestamps: false, 
-        paranoid: true, // timestamps 가 활성화 되어야 사용 가능 > deleteAt 옵션 on
+        charset: "utf8",
+        collate: "utf8_general_ci",
+        tableName: "Users",
+        timestamps: false,
+        paranoid: true
     });
 
+    User.findByPk = async function(id) {
+        return await User.findOne({ where: { id } });
+    };
+    
     return User;
 };
