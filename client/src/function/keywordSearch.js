@@ -71,7 +71,7 @@ function afterSearch(keyword) {
     // 검색 결과 목록과 마커를 표출하는 함수입니다
     function displayPlaces(places) {
         // console.log(places)
-        // axios.post("http://localhost:8080/create/restaurant",places);
+        axios.post("http://localhost:8080/create/restaurant",places);
         let listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),
             fragment = document.createDocumentFragment(),
@@ -128,7 +128,7 @@ function afterSearch(keyword) {
 
     // 검색결과 항목을 Element로 반환하는 함수입니다
     function getListItem(index, places) {
-        console.log(places)
+        // console.log(places)
         let el = document.createElement('li')
         let itemStr = `<a href="/place/${places.id}">` + '<div><span class="markerbg marker_' + (index+1) + '"></span>' +
             '<div class="info">' +

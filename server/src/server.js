@@ -4,7 +4,8 @@ const path = require('path')
 const { sequelize } = require('../models')
 const bodyParser = require('body-parser');
 const { User, Review, Restaurant } = require("../models");
-// const getHTML = require("./fetch");
+const getHTML = require("./fetch");
+const { default: axios } = require("axios");
 const app = express();
 
 app.set('port', 3000);
@@ -26,18 +27,25 @@ app.listen(8080, function () {
 })
 
 app.post('/create/restaurant', function (req, res) {
-    // console.log(req.body);
     const restaurantList = req.body;
-    restaurantList.forEach(place => {
-        // console.log(getHTML(place.id));
+    restaurantList.forEach(async place => {
+        const crawlingData = await axios.get(`https://place.map.kakao.com/m/main/v/${place.id}`)
+        let img_url;
+        if(crawlingData.data.photo?.sortedPhotoList) {
+            img_url = crawlingData.data.photo?.sortedPhotoList[0]?.orgurl  
+        }
+         
+        
+        img_url = img_url ? img_url : "none"
         Restaurant.findOrCreate({
-            where: { id: place.id, name: place.place_name, address: place.address_name, category: place.category_name, phone: place.phone ,x: place.x, y: place.y },
+            where: { id: place.id, name: place.place_name, address: place.address_name, category: place.category_name, phone: place.phone, img: img_url, x: place.x, y: place.y },
             default: {
                 id: place.id,
                 name: place.place_name,
                 address: place.address_name, 
                 category: place.category_name, 
                 phone: place.phone,
+                img: img_url,
                 x: place.x,
                 y: place.y
             }

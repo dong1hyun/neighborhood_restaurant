@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       phone: {
         type: DataTypes.STRING(15)
       },
+      img: {
+        type: DataTypes.STRING(300)
+      },
       x: { //x좌표
         type: DataTypes.DOUBLE
       },
