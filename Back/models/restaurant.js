@@ -28,7 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       y: {
           type: DataTypes.DOUBLE,
           allowNull: true // 음식점 위도는 null이 될 수 있음
-      }
+      },
+      img: {
+        type: DataTypes.STRING(255),
+        allowNull: false // 음식점 카테고리는 null이 될 수 없음
+    },
   }, 
   {
       charset: "utf8",

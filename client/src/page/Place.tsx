@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import getNews from '../function/crawl'
 import { useEffect } from "react";
 
 

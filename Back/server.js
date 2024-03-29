@@ -16,6 +16,7 @@ const indexRouter = require('./routes');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const restaurantRouter = require('./routes/restaurant');
+const locationRouter = require('./routes/location');
 
 dotenv.config();
 passportConfig();
@@ -54,19 +55,8 @@ app.use('/', indexRouter);
 app.use('/login', loginRouter); 
 app.use('/register', registerRouter); 
 app.use('/restaurant', restaurantRouter);
+app.use('/location', locationRouter);
 
-app.post('/create/restaurant', function (req, res) {
-    const restaurantList = req.body;
-    restaurantList.forEach(place => {
-        Restaurant.findOrCreate({
-            where: { id: place.id, name: place.place_name },
-            default: {
-                id: place.id,
-                name: place.place_name
-            }
-        })
-    })
-});
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 

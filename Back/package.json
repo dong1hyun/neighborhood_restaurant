@@ -2,7 +2,7 @@
   "name": "Back",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "author": "sungjun",
   "license": "ISC",
   

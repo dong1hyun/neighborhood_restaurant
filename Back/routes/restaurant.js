@@ -1,26 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const { Restaurant } = require('../models');
+const axios = require('axios'); // axios 모듈 가져오기
+
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+
+//client/function/search P.79 -> Back/server/restaurant 
 router.post('/', async (req, res) => {
     try {
-        //요청 받은 값의 body를 restaurantList변수에 넣어줌. 
         const restaurantList = req.body;
-        // restaurantList변수 순회하면서 place에 맞게 키 배열해서 넣어줌.
         for (const place of restaurantList) {
-
-            // 새로운 레스토랑을 생성하거나 기존 레스토랑을 찾습니다.
-            // 조회 후 있으면 false할당. 없으면 true할당
+            const crawlingData = await axios.get(`https://place.map.kakao.com/m/main/v/${place.id}`)
+            let img_url = crawlingData.data?.basicInfo?.mainphotourl;
+            img_url = img_url ? img_url : "none";
             const [restaurant, created] = await Restaurant.findOrCreate({
                 where: { restaurantID: place.id },
                 defaults: {
                     restaurantName: place.place_name,
                     address: place.address_name,
+                    restaurantCategory: place.category_name.substr(6),
                     restaurantNumber: place.phone,
-                    restaurantCategory: place.category_name,
+                    img: img_url,
                     x: place.x,
                     y: place.y
                 }
@@ -32,8 +35,5 @@ router.post('/', async (req, res) => {
         res.status(500).send('내부 서버 오류가 발생했습니다.');
     }
 });
-
-module.exports = router;
-
 
 module.exports = router;
