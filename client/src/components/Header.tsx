@@ -5,9 +5,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { keyword, neighborhood_search, register_showing } from "../atom";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion"
-import MyLocationBox from "./MylocationBox";
-import { useState } from "react"; // useState 추가
-
+import { useEffect, useState } from "react"; // useEffect 추가
 
 
 const Nav = styled.div`
@@ -102,28 +100,18 @@ const Login = styled(motion.div)`
 interface DataForm {
     search: string
 }
-interface MyLocationBoxProps {
-    userId: string; // id 변수의 타입을 명시적으로 지정
-}
 
 export default function Header() {
     const { register, handleSubmit, getValues, watch } = useForm<DataForm>();
     const navigate = useNavigate();
     const setSearchWord = useSetRecoilState(keyword);
     const [isNeighborhood, setIsNeighborhood] = useRecoilState(neighborhood_search);
-    const [userId, setUserId] = useState<string>(''); // userId 상태 추가
     const onValid = ({ search }: DataForm) => {
         setSearchWord(search);
         // console.log("header:", search)
         navigate(`/search?keyword=${search}`);
     }
-    const searchTypeClick = async () => {
-        setIsNeighborhood((cur) => !cur)
-    }
-    const setRegisterShowing = useSetRecoilState(register_showing);
-    const onRegisterClick = () => {
-        setRegisterShowing((cur) => !cur);
-    }
+   
     return (
         <>
             <Nav>
@@ -146,7 +134,7 @@ export default function Header() {
                     <Login onClick={() => { navigate('/register') }}>회원가입</Login>
                     <Login onClick={() => { navigate('/login') }}>로그인</Login>
                 </LoginContainer>
-                <MyLocationBox userId={userId} /> {/* MyLocationBox 컴포넌트 추가 */}
+                
             </Nav>
         </>
     )

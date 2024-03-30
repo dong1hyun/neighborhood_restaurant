@@ -13,7 +13,6 @@ router.post('/', async (req, res) => {
 
         console.log('Received user id:', id);
 
-
         // 사용자를 찾아서 위치 정보 업데이트
         const user = await User.findOne({ where: { id } });
         if (user) {
@@ -30,5 +29,6 @@ router.post('/', async (req, res) => {
         res.status(500).send('내부 서버 오류가 발생했습니다.');
     }
 });
+
 
 module.exports = router;

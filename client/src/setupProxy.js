@@ -16,5 +16,13 @@ module.exports = function(app) {
       changeOrigin: true
     })
   );
+
+  app.use(
+    '/location',
+    createProxyMiddleware({
+      target: 'http://localhost:3001',
+      changeOrigin: true
+    })
+  );
 };
   
