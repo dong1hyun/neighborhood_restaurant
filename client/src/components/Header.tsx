@@ -112,7 +112,6 @@ export default function Header() {
     const [isNeighborhood, setIsNeighborhood] = useRecoilState(neighborhood_search);
     const onValid = ({ search }: searchForm) => {
         setSearchWord(search);
-        // console.log("header:", search)
         navigate(`/search?keyword=${search}`);
     }
     const searchTypeClick = async () => {
@@ -121,12 +120,12 @@ export default function Header() {
     return (
         <>
             <Nav>
-            <Logo
-                transition={{ type: "spring", damping: 10 }}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                whileHover={{ scale: 1.2 }}
-                onClick={() => navigate("/")}>
+                <Logo
+                    transition={{ type: "spring", damping: 10 }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    whileHover={{ scale: 1.2 }}
+                    onClick={() => navigate("/")}>
                     동네맛집
                 </Logo>
                 <Search onSubmit={handleSubmit(onValid)}>

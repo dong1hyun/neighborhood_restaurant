@@ -4,7 +4,6 @@ const path = require('path')
 const { sequelize } = require('../models')
 const bodyParser = require('body-parser');
 const { User, Review, Restaurant } = require("../models");
-const getHTML = require("./fetch");
 const { default: axios } = require("axios");
 const app = express();
 
@@ -28,12 +27,27 @@ app.listen(8080, function () {
 
 app.post('/create/restaurant', function (req, res) {
     const restaurantList = req.body;
+    console.log("@@@@@@@")
     restaurantList.forEach(async place => {
         const crawlingData = await axios.get(`https://place.map.kakao.com/m/main/v/${place.id}`)
         let img_url = crawlingData.data?.basicInfo?.mainphotourl;
-        img_url = img_url ? img_url : "none"
+        let timeList = JSON.stringify(crawlingData.data.basicInfo?.openHour?.periodList[0]?.timeList);
+        console.log(timeList);
+        img_url = img_url ? img_url : "none";
+        timeList = timeList ? timeList : "none";
+
         Restaurant.findOrCreate({
-            where: { id: place.id, name: place.place_name, address: place.address_name, category: place.category_name.substr(6), phone: place.phone, img: img_url, x: place.x, y: place.y },
+            where: { 
+                id: place.id, 
+                name: place.place_name, 
+                address: place.address_name, 
+                category: place.category_name.substr(6), 
+                phone: place.phone, 
+                img: img_url, 
+                timeList: timeList,
+                x: place.x, 
+                y: place.y 
+            },
             default: {
                 id: place.id,
                 name: place.place_name,
@@ -41,6 +55,7 @@ app.post('/create/restaurant', function (req, res) {
                 category: place.category_name.substr(6), 
                 phone: place.phone,
                 img: img_url,
+                timeList: timeList,
                 x: place.x,
                 y: place.y
             }
@@ -54,7 +69,6 @@ app.get('/placeDetail/:id', function(req, res) {
     })
     .then(result => {
         res.json(result.dataValues)
-        console.log(result.dataValues);
     })
 })
 

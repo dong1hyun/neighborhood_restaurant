@@ -19,8 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       phone: {
         type: DataTypes.STRING(15)
       },
+      timeList: {
+        type: DataTypes.STRING(300)
+      },
       img: {
-        type: DataTypes.STRING(1000)
+        type: DataTypes.STRING(300)
       },
       x: { //x좌표
         type: DataTypes.DOUBLE
