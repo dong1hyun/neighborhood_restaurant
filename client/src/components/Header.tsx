@@ -97,6 +97,7 @@ const Login = styled(motion.div)`
     cursor: pointer;
 `
 
+
 interface DataForm {
     search: string
 }

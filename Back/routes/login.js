@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { logout } = require('./helpers');
-const localStrategy = require('../passport/local'); // 수정된 부분
+const localStrategy = require('../passport/local'); 
+
+// 카카오로그인 추가해보기
 
 // body-parser 미들웨어 추가
 router.use(express.json());
@@ -28,6 +30,6 @@ router.post('/', (req, res, next) => {
     })(req, res, next);
 });
 
-router.get('/logout', logout);
+// router.get('/logout', logout);
 
 module.exports = router;

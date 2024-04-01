@@ -43,6 +43,7 @@ function afterSearch(keyword: string) {
     let ps = new kakao.maps.services.Places();
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
 
+//자신의 위치로 음식점 조회
     ps.keywordSearch(keyword, placesSearchCB, { category_group_code: 'FD6',/*location: new kakao.maps.LatLng(37.566826, 126.9786567), radius: 10000*/ });
 
     // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다

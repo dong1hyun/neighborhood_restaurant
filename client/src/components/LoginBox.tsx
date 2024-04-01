@@ -43,15 +43,17 @@ const boxVariants = {
 export default function LoginBox() {
     const [formData, setFormData] = useState<FormData>({ id: '', password: '' });
     const [userId, setUserId] = useState<string>('');
+    const [userName, setUserName] = useState<string>('');
     const [isLocationSaved, setIsLocationSaved] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (userId && isLocationSaved) {
-            // 위치가 저장되었으면 홈 화면으로 이동
-            navigate('/');
+        // 페이지 로드 시 저장된 로그인 정보 확인
+        const loggedInUserId = sessionStorage.getItem('userId'); // 세션 스토리지에서 아이디 가져오기
+        if (loggedInUserId) {
+            setUserId(loggedInUserId);
         }
-    }, [userId, isLocationSaved, navigate]); 
+    }, []);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -62,7 +64,10 @@ export default function LoginBox() {
             if (response.data.message === '로그인 성공' && user && user.id) {
                 // 로그인 성공 시 사용자 id 저장
                 setUserId(user.id);
+                setUserName(user.name); // 사용자 이름 설정
+                sessionStorage.setItem('userId', user.id); // 사용자 id 세션 스토리지에 저장
                 console.log("사용자 ID:", user.id); // 사용자 ID 콘솔에 출력
+                console.log("사용자 이름:", user.name);
                 // 위치 저장 요청 보내기
                 saveLocation(user.id); // 사용자 ID를 saveLocation 함수에 전달
             } else {
@@ -90,6 +95,18 @@ export default function LoginBox() {
         } catch (error) {
             console.error('위치 저장 중 오류가 발생했습니다:', error);
             alert('위치를 저장하는 도중 오류가 발생했습니다.');
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            await axios.get('/logout'); // 서버로 로그아웃 요청 보냄
+            sessionStorage.removeItem('userId'); // 세션 스토리지에서 사용자 정보 제거
+            setUserId(''); // 사용자 ID 상태 초기화
+            setUserName('');
+            navigate('/'); // 홈 페이지로 이동
+        } catch (error) {
+            console.error('로그아웃 중 오류가 발생했습니다:', error);
         }
     };
 
@@ -123,6 +140,15 @@ export default function LoginBox() {
                 <br />
                 <button type="submit">로그인</button>
             </form>
+            {userId && (
+                <>
+                    <p>안녕하세요, {userName}님</p> {/* 사용자 이름 표시 */}
+                    <button onClick={handleLogout}>로그아웃</button>
+                </>
+            )}
         </LoginContainer>
     );
 }
+
+
+// 로그아웃 완료, 유저이름도 세션에 저장해야 함.

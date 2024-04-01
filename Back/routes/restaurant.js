@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
                 defaults: {
                     restaurantName: place.place_name,
                     address: place.address_name,
-                    restaurantCategory: place.category_name.substr(6),
+                    Category: place.category_name.substr(6),
                     restaurantNumber: place.phone,
                     img: img_url,
                     x: place.x,

@@ -5,11 +5,11 @@ exports.isLoggedIn = (req, res, next) => {
 
 exports.isNotLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) next();
-    else res.redirect(`/`);
+    // else res.redirect(`/`);
 };
 
 exports.logout = (req, res) => {
     req.logout();
     req.session.destroy();
-    res.redirect('/');
+    res.sendStatus(200); // 클라이언트에 성공 상태 코드 응답
 };

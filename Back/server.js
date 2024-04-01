@@ -17,6 +17,7 @@ const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const restaurantRouter = require('./routes/restaurant');
 const locationRouter = require('./routes/location');
+const logoutRouter = require('./routes/logout');
 
 dotenv.config();
 passportConfig();
@@ -56,6 +57,7 @@ app.use('/login', loginRouter);
 app.use('/register', registerRouter); 
 app.use('/restaurant', restaurantRouter);
 app.use('/location', locationRouter);
+app.use('/logout', logoutRouter);
 
 
 app.use(express.static(path.join(__dirname, '../client/build')));

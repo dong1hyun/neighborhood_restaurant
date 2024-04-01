@@ -1,7 +1,7 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { Strategy: LocalStrategy } = require('passport-local');
-const { User } = require('../models/index');
+const { User } = require('../models');
 
 
 module.exports = () => {
@@ -10,7 +10,7 @@ module.exports = () => {
     passwordField: 'password' // 사용자 비밀번호 필드 이름
   }, async (id, password, done) => {
     try {
-      const user = await User.findByPk(id); // 수정된 부분
+      const user = await User.findByPk(id) // 수정된 부분
 
       if (!user) {
         return done(null, false, { message: '가입되지 않은 회원입니다.' });
