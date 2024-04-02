@@ -50,9 +50,13 @@ export default function LoginBox() {
     useEffect(() => {
         // 페이지 로드 시 저장된 로그인 정보 확인
         const loggedInUserId = sessionStorage.getItem('userId'); // 세션 스토리지에서 아이디 가져오기
+        const loggedInUserName = sessionStorage.getItem('userName'); // 세션 스토리지에서 이름 가져오기
         if (loggedInUserId) {
             setUserId(loggedInUserId);
         }
+        if (loggedInUserName) {
+            setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
+    }
     }, []);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -66,6 +70,7 @@ export default function LoginBox() {
                 setUserId(user.id);
                 setUserName(user.name); // 사용자 이름 설정
                 sessionStorage.setItem('userId', user.id); // 사용자 id 세션 스토리지에 저장
+                sessionStorage.setItem('userName', user.name); // 사용자 이름 세션 스토리지에 저장
                 console.log("사용자 ID:", user.id); // 사용자 ID 콘솔에 출력
                 console.log("사용자 이름:", user.name);
                 // 위치 저장 요청 보내기
@@ -140,15 +145,13 @@ export default function LoginBox() {
                 <br />
                 <button type="submit">로그인</button>
             </form>
+
             {userId && (
                 <>
-                    <p>안녕하세요, {userName}님</p> {/* 사용자 이름 표시 */}
+                    <p>안녕하세요, {userName}님</p> 
                     <button onClick={handleLogout}>로그아웃</button>
                 </>
             )}
         </LoginContainer>
     );
 }
-
-
-// 로그아웃 완료, 유저이름도 세션에 저장해야 함.

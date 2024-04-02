@@ -15,7 +15,10 @@ router.post('/', async (req, res) => {
         for (const place of restaurantList) {
             const crawlingData = await axios.get(`https://place.map.kakao.com/m/main/v/${place.id}`)
             let img_url = crawlingData.data?.basicInfo?.mainphotourl;
+            let timeList = JSON.stringify(crawlingData.data.basicInfo?.openHour?.periodList[0]?.timeList);
             img_url = img_url ? img_url : "none";
+            timeList = timeList ? timeList : "none";
+
             const [restaurant, created] = await Restaurant.findOrCreate({
                 where: { restaurantID: place.id },
                 defaults: {
@@ -24,6 +27,7 @@ router.post('/', async (req, res) => {
                     Category: place.category_name.substr(6),
                     restaurantNumber: place.phone,
                     img: img_url,
+                    timeList: timeList,
                     x: place.x,
                     y: place.y
                 }
@@ -35,5 +39,6 @@ router.post('/', async (req, res) => {
         res.status(500).send('내부 서버 오류가 발생했습니다.');
     }
 });
+
 
 module.exports = router;

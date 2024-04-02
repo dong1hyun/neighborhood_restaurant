@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(255),
             allowNull: false // 음식점 이미지는 null이 될 수 없음
         },
+        timeList: {
+            type: DataTypes.STRING(300),
+            allowNull: true
+        }
     }, 
     {
         charset: "utf8",
