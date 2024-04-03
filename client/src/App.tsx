@@ -9,6 +9,7 @@ import Place from "./page/Place";
 import Register from "./page/Register";
 import Login from "./page/Login";
 import React from 'react';
+import Footer from "./components/Footer";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -68,19 +69,20 @@ a {
 function App() {
   return (
     <RecoilRoot>
-    <BrowserRouter>
-    <GlobalStyle />
-    <Header />
+      <BrowserRouter>
+        <GlobalStyle />
+        <Header />
         <Routes>
-            <Route path="/" element={<Home />} /> 
-            <Route path="/registerPage" element={<Register />} />
-            <Route path="/loginpage" element={<Login />} />
-            <Route path="/search" element={<KeywordSearchResult />} /> 
-            <Route path="/place/:id" element={<Place />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/registerPage" element={<Register />} />
+          <Route path="/loginpage" element={<Login />} />
+          <Route path="/search" element={<KeywordSearchResult />} />
+          <Route path="/place/:id" element={<Place />} />
         </Routes>
-    </BrowserRouter>
+        <Footer />
+      </BrowserRouter>
     </RecoilRoot>
-)
+  )
 }
 
 export default App;

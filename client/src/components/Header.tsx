@@ -14,6 +14,7 @@ const Nav = styled.div`
     background-color: black;
     height: 100px;
     width: 100%;
+    margin-bottom: 50px;
     @media screen and (max-width: 700px) {
         flex-direction: column;
         align-items: flex-start;

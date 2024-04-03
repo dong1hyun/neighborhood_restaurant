@@ -6,10 +6,28 @@ import React from 'react';
 import setMarker from "../function/placeMarker";
 import PlaceImg from "../components/PlaceImg";
 import { motion } from "framer-motion";
+import Review from "../components/Review";
 
-const Container = styled.div`
+const WholeContainer = styled.div`
     display: flex;
     justify-content: center;
+    @media screen and (max-width: 700px) {
+        flex-direction: column;
+    }
+`
+
+const BoxContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    border-radius: 15px;
+    height: 100%;
+    width: 55%;
+    margin-top: 50px;
+    @media screen and (max-width: 700px) {
+        width: 90%;
+        margin: 0 auto;
+    }
 `
 
 const SideBar = styled.div`
@@ -25,11 +43,11 @@ const SideBar = styled.div`
 `
 const PlaceContainer = styled.div`
     display: flex;
-    background-color: black;
-    border-radius: 15px;
-    height: 100%;
-    width: 55%;
-    margin-top: 50px;
+    margin: 40px;
+    @media screen and (max-width: 700px) {
+        flex-direction: column;
+        text-align: center;
+    }
 `
 const PlaceName = styled.div`
     font-size: 50px;
@@ -102,8 +120,7 @@ function Place() {
     const [moreInf, showMoreInf] = useState(false);
     const [breakTime, setBreakTime] = useState(false);
     const [lastOrder, setLastOrder] = useState(false);
-    
-    /* let test = JSON.parse('[{ "timeName": "영업시간", "timeSE": "11:00 ~ 21:30", "dayOfWeek": "매일" }, { "timeName": "라스트오더", "timeSE": "~ 21:00", "dayOfWeek": "매일" }, { "timeName": "휴게시간", "timeSE": "14:30 ~ 17:00", "dayOfWeek": "월~금" }, { "timeName": "휴게시간", "timeSE": "15:00 ~ 17:00", "dayOfWeek": "토,일" }]') */
+
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
@@ -117,10 +134,10 @@ function Place() {
                 timeList.forEach((i) => {
                     if (i["timeName"] == "휴게시간") {
                         setBreakTime(true)
-                    } else if(i["timeName"] == "라스트오더") {
+                    } else if (i["timeName"] == "라스트오더") {
                         setLastOrder(true);
                     }
-                }); 
+                });
             })
             .catch(function (error) {
                 // 에러 핸들링
@@ -128,19 +145,20 @@ function Place() {
             })
     }
     useEffect(() => {
-        getPlaceData();
-        setMarker(x, y);
+        /* getPlaceData();
+        setMarker(x, y); */
     }, [x, y, breakTime])
     return (
-        <Container>
+        <WholeContainer>
+         <BoxContainer>
             <PlaceContainer>
                 <PlaceImg />
                 <DetailContainer>
-                    <PlaceName>{name}</PlaceName>
-                    <Category>{category}</Category>
+                    <PlaceName>name</PlaceName>
+                    <Category>category</Category>
                     <Rating>평점: <>4.6</></Rating>
-                    <Detail>{phone}</Detail>
-                    <Detail>{address}</Detail>
+                    <Detail>phone</Detail>
+                    <Detail>address</Detail>
                     영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                     {
                         moreInf ?
@@ -162,13 +180,14 @@ function Place() {
                             </ TimeContainer>
                             : null
                     }
-                </DetailContainer>
-        </PlaceContainer>
+                </DetailContainer>    
+            </PlaceContainer>
+            <Review />
+            </BoxContainer>
             <SideBar>
                 <Map id="placeMap" />
-                
             </SideBar>
-        </ Container>
+        </ WholeContainer>
     )
 }
 

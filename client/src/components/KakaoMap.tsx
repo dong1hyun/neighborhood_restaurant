@@ -6,7 +6,6 @@ const MapContainer = styled.div`
     padding:0;
     font-family:'Malgun Gothic',dotum,'돋움',sans-serif;
     font-size:12px;
-    margin-top: 45px;
     @media screen and (max-width: 700px) {
         position: none;
         display: flex;
