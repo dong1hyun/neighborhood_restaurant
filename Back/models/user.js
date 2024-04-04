@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         y: {
             type: DataTypes.DOUBLE,
             allowNull: true // 사용자 위도는 null이 될 수 있음
+        },
+        sessionID: {
+            type: DataTypes.STRING(100),
+            allowNull: true // null이 될 수 있음
         }
     }, 
     {
