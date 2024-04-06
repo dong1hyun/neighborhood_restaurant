@@ -90,8 +90,17 @@ const TimeBtn = styled.button`
 const TimeContainer = styled(motion.div)`
     
 `
+
+const BookmarkBtn = styled.button`
+    border: none;
+    border-radius: 3px;
+    background-color: whitesmoke;
+    width: 100px;
+    margin-top: 20px;
+`
+
 function Place() {
-    const { id } = useParams()
+    const { id } = useParams();
     const [name, setName] = useState();
     const [address, setAddress] = useState();
     const [category, setCategory] = useState();
@@ -102,35 +111,79 @@ function Place() {
     const [moreInf, showMoreInf] = useState(false);
     const [breakTime, setBreakTime] = useState(false);
     const [lastOrder, setLastOrder] = useState(false);
-    
-    /* let test = JSON.parse('[{ "timeName": "영업시간", "timeSE": "11:00 ~ 21:30", "dayOfWeek": "매일" }, { "timeName": "라스트오더", "timeSE": "~ 21:00", "dayOfWeek": "매일" }, { "timeName": "휴게시간", "timeSE": "14:30 ~ 17:00", "dayOfWeek": "월~금" }, { "timeName": "휴게시간", "timeSE": "15:00 ~ 17:00", "dayOfWeek": "토,일" }]') */
+    const [sessionID, setSessionID] = useState('');
+
     const getPlaceData = async () => {
-        await axios.get(`/placeDetail/${id}`)
-            .then((res) => {
-                setName(res.data.restaurantName);
-                setAddress(res.data.address);
-                setCategory(res.data.Category);
-                setPhone(res.data.restaurantNumber);
-                setX(res.data.x);
-                setY(res.data.y);
-                setTimeList(JSON.parse(res.data.timeList))
-                timeList.forEach((i) => {
-                    if (i["timeName"] == "휴게시간") {
-                        setBreakTime(true)
-                    } else if(i["timeName"] == "라스트오더") {
-                        setLastOrder(true);
-                    }
-                }); 
-            })
-            .catch(function (error) {
-                // 에러 핸들링
-                console.log(error);
-            })
+        try {
+            const response = await axios.get(`/placeDetail/${id}`);
+            setName(response.data.restaurantName);
+            setAddress(response.data.address);
+            setCategory(response.data.Category);
+            setPhone(response.data.restaurantNumber);
+            setX(response.data.x);
+            setY(response.data.y);
+            setTimeList(JSON.parse(response.data.timeList));
+            setTimeStatus(response.data.timeList);
+        } catch (error) {
+            console.error('장소 데이터를 불러오는 중 오류가 발생했습니다:', error);
+        }
     }
+    
+    const setTimeStatus = (timeListString: string) => {
+        const parsedTimeList = JSON.parse(timeListString);
+        parsedTimeList.forEach((time: any) => {
+            if (time["timeName"] === "휴게시간") {
+                setBreakTime(true);
+            } else if(time["timeName"] === "라스트오더") {
+                setLastOrder(true);
+            }
+        });
+    };
+    
     useEffect(() => {
         getPlaceData();
+    }, []);
+
+    useEffect(() => {
         setMarker(x, y);
-    }, [x, y, breakTime])
+    }, [x, y]);
+
+    useEffect(() => {
+        const loggedInSessionID = sessionStorage.getItem('sessionID');
+        if (loggedInSessionID) {
+            setSessionID(loggedInSessionID);
+        }
+    }, []);
+
+    // 즐겨찾기 api /상태에 따른 메시지 출력 추가 예정
+    const handleBookmark = async () => {
+        if (sessionID) {
+            try {
+                // 즐겨찾기 추가할 장소의 정보
+                const favoritePlaceInfo = {
+                    sessionID: sessionID,
+                    restaurantID: id
+                };
+    
+                // 서버로 POST 요청을 보냅니다.
+                const response = await axios.post('/favorite', favoritePlaceInfo);
+    
+                // 서버 응답 확인
+                console.log('서버 응답:', response.data);
+    
+                // 즐겨찾기가 성공적으로 추가되었을 경우 메시지 출력
+                console.log('장소를 즐겨찾기에 추가했습니다.');
+            } catch (error) {
+                // 요청이 실패하거나 서버 응답에 오류가 있을 경우 에러 처리
+                console.error('즐겨찾기 추가 중 오류가 발생했습니다:', error);
+            }
+        } else {
+            console.log('로그인이 필요합니다.');
+        }
+    };
+    
+    
+
     return (
         <Container>
             <PlaceContainer>
@@ -138,37 +191,31 @@ function Place() {
                 <DetailContainer>
                     <PlaceName>{name}</PlaceName>
                     <Category>{category}</Category>
-                    <Rating>평점: <>4.6</></Rating>
+                    <Rating>평점: 4.6</Rating>
                     <Detail>{phone}</Detail>
                     <Detail>{address}</Detail>
-                    영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
-                    {
-                        moreInf ?
+                    <BookmarkBtn onClick={handleBookmark}>즐겨찾기에 추가</BookmarkBtn>
+                    <div>
+                        영업시간 <TimeBtn onClick={() => showMoreInf(!moreInf)}>더보기</TimeBtn>
+                        {moreInf && (
                             <TimeContainer
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                             >
-                                {timeList.map((time: any) => {
-                                    if (time["timeName"] == "영업시간") return <Time>{time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                })}
-                                {breakTime ? "휴게시간" : null}
-                                {timeList.map((time: any) => {
-                                    if (time["timeName"] == "휴게시간") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                })}
-                                {lastOrder ? "라스트오더" : null}
-                                {timeList.map((time: any) => {
-                                    if (time["timeName"] == "라스트오더") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                })}
-                            </ TimeContainer>
-                            : null
-                    }
+                                {timeList.map((time: any) => (
+                                    <Time key={time.timeName}>{time.dayOfWeek}: {time.timeSE}</Time>
+                                ))}
+                                {breakTime && <Time>휴게시간</Time>}
+                                {lastOrder && <Time>라스트오더</Time>}
+                            </TimeContainer>
+                        )}
+                    </div>
                 </DetailContainer>
-        </PlaceContainer>
+            </PlaceContainer>
             <SideBar>
                 <Map id="placeMap" />
-                
             </SideBar>
-        </ Container>
+        </Container>
     )
 }
 

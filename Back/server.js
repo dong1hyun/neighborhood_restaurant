@@ -19,6 +19,7 @@ const restaurantRouter = require('./routes/restaurant');
 const locationRouter = require('./routes/location');
 const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
+const favoriteRouter = require('./routes/favorite');
 
 dotenv.config();
 passportConfig();
@@ -43,6 +44,7 @@ sequelize.sync({ force: false })
             cookie: {
                 httpOnly: true,
                 secure: false
+                //maxAge: 60000  
             },
             name: 'session-cookie'
         })
@@ -60,6 +62,9 @@ app.use('/restaurant', restaurantRouter);
 app.use('/location', locationRouter);
 app.use('/logout', logoutRouter);
 app.use('/placeDetail', placeDetailRouter);
+app.use('/favorite', favoriteRouter);
+
+
 
 
 app.use(express.static(path.join(__dirname, '../client/build')));
@@ -75,3 +80,5 @@ app.get('*', function (req, res) {
 app.listen(app.get('port'), () => {
     console.log(`Server is running on port ${app.get('port')}`);
 });
+
+

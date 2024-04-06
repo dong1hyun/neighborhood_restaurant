@@ -24,6 +24,12 @@ const LoginContainer = styled(motion.div)`
     text-align: center;
 `;
 
+// 이 코드는 세션 만료 시간을 표시합니다.
+const SessionExpirationInfo = styled.div`
+    margin-top: 10px;
+    font-size: 14px;
+`;
+
 // 모션 변형
 const boxVariants = {
     initial: {
@@ -46,6 +52,8 @@ export default function LoginBox() {
     const [userName, setUserName] = useState<string>('');
     const [isLocationSaved, setIsLocationSaved] = useState<boolean>(false);
     const navigate = useNavigate();
+    const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
+
 
     useEffect(() => {
         // 페이지 로드 시 저장된 로그인 정보 확인
@@ -58,6 +66,28 @@ export default function LoginBox() {
             setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
     }
     }, []);
+
+// 세션 만료 시간 정하기. 테스트로 1분만 설정함.
+    useEffect(() => {
+        // 세션 ID가 있는 경우에만 실행합니다.
+        if (sessionID) {
+            // 만료 시간을 현재 시간에서 1분 후로 설정합니다.
+            const expiration = new Date();
+            expiration.setMilliseconds(expiration.getMilliseconds() + 60000);
+            setSessionExpiration(expiration);
+
+            // 1분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
+            const timer = setTimeout(() => {
+                handleLogout();
+            }, 60000);
+
+            // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
+            return () => clearTimeout(timer);
+        }
+    }, [sessionID]);
+
+    
+
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -147,6 +177,12 @@ export default function LoginBox() {
                     <button onClick={handleLogout}>로그아웃</button>
                 </>
             )}
+            {sessionExpiration && (
+                <SessionExpirationInfo>
+                    세션 만료 시간: {sessionExpiration.toLocaleTimeString()}까지
+                </SessionExpirationInfo>
+            )}
         </LoginContainer>
     );
+    
 }
