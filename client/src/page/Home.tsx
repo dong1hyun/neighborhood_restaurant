@@ -7,15 +7,16 @@ import Overlay from "../components/Overlay";
 import React from 'react';
 
 const HomeContainer = styled.div`
-
+    display: flex;
+    flex-direction: column;
 `
 
 function Home() {
     return (
-        <div>
+        <HomeContainer>
             <MyPlace />
             <WholePlace />
-        </div>
+        </HomeContainer>
     )
 }
 
