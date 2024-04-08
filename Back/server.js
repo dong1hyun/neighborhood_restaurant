@@ -20,6 +20,7 @@ const locationRouter = require('./routes/location');
 const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
 const favoriteRouter = require('./routes/favorite');
+const reviewRouter = require('./routes/review');
 
 dotenv.config();
 passportConfig();
@@ -63,7 +64,7 @@ app.use('/location', locationRouter);
 app.use('/logout', logoutRouter);
 app.use('/placeDetail', placeDetailRouter);
 app.use('/favorite', favoriteRouter);
-
+app.use('/review', reviewRouter);
 
 
 

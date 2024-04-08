@@ -13,6 +13,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER, // 추가: rating 컬럼 정의
             allowNull: true // rating은 null이 될 수 있음
         },
+        id: {
+            type: DataTypes.STRING(100),
+            allowNull: false
+        },
+        restaurantID: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
     }, 
     {
         charset: "utf8",
