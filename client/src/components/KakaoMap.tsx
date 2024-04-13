@@ -38,7 +38,7 @@ const Map = styled.div`
 
 const List = styled.div`
 position: absolute;
-z-index: 10;
+z-index: 3;
 background-color: rgb(255,255,255, 0.7);
 height: 480px;
 width: 300px;

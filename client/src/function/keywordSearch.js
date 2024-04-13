@@ -1,8 +1,7 @@
 import axios from 'axios';
 import styled from 'styled-components'
 
-const { kakao } = window
-
+const { kakao } = window;
 // interface placeType {
 //     id: Number
 //     place_name: string,

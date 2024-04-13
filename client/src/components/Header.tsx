@@ -3,25 +3,29 @@ import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { keyword, neighborhood_search } from "../atom";
+import { keyword, neighborhood_search, loginState, signinState } from "../atom";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion"
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { useState } from "react";
+import Register from "./Register";
+import Login from "./Login";
 
 
-const Nav = styled.div`
-    display: flex;
-    justify-content: space-between;
-    background-color: black;
-    height: 100px;
-    width: 100%;
-    margin-bottom: 50px;
-    @media screen and (max-width: 700px) {
-        flex-direction: column;
-        align-items: flex-start;
-        height: 250px;
-        background-color: black;
-}
-`
+// const Nav = styled.div`
+//     display: flex;
+//     justify-content: space-between;
+//     background-color: black;
+//     height: 100px;
+//     width: 100%;
+//     margin-bottom: 50px;
+//     @media screen and (max-width: 700px) {
+//         flex-direction: column;
+//         align-items: flex-start;
+//         height: 250px;
+//         background-color: black;
+// }
+// `
 
 const Logo = styled(motion.div)`
     text-decoration: none;
@@ -42,6 +46,7 @@ const Search = styled.form`
     width: 400px;
     height: 50px;
     margin: 25px;
+    /* margin-right: 450px; */
     border-radius: 10px;
     @media screen and (max-width: 700px) {
         width: 300px;
@@ -96,7 +101,7 @@ const LoginContainer = styled.div`
     align-items: center;
 `
 
-const Login = styled(motion.div)`
+const LoginBox = styled(motion.div)`
     color: white;
     margin: 10px;
     cursor: pointer;
@@ -111,6 +116,8 @@ export default function Header() {
     const navigate = useNavigate();
     const setSearchWord = useSetRecoilState(keyword);
     const [isNeighborhood, setIsNeighborhood] = useRecoilState(neighborhood_search);
+    const [signin, setSignin] = useRecoilState(signinState)
+    const [login, setLogin] = useRecoilState(loginState);
     const onValid = ({ search }: searchForm) => {
         setSearchWord(search);
         navigate(`/search?keyword=${search}`);
@@ -119,28 +126,62 @@ export default function Header() {
         setIsNeighborhood((cur) => !cur)
     }
     return (
-        <>
-            <Nav>
-                <Logo
-                    transition={{ type: "spring", damping: 10 }}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    whileHover={{ scale: 1.2 }}
-                    onClick={() => navigate("/")}>
-                    동네맛집
-                </Logo>
-                <Search onSubmit={handleSubmit(onValid)}>
-                    {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
-                    <SearchInput {...register("search", { required: true })} />
-                    <SearchBtn type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                    </svg></SearchBtn>
-                </Search>
-                <LoginContainer>
-                    <Login onClick={() => { navigate('/registerPage') }}>회원가입</Login>
-                    <Login onClick={() => { navigate('/loginPage') }}>로그인</Login>
-                </LoginContainer>
-            </Nav>
+        <> 
+            {signin ? <Register /> : null}
+            {login ? <Login /> : null}
+            <Navbar expand="md" className="bg-black mb-5">
+                <Navbar.Toggle className="bg-white" aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse className="" id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                        <Logo
+                            className=""
+                            transition={{ type: "spring", damping: 10 }}
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            whileHover={{ scale: 1.2 }}
+                            onClick={() => navigate("/")}>
+                            동네맛집
+                        </Logo>
+                    </Nav>
+                    <Nav className="ml-auto">
+                        <Search onSubmit={handleSubmit(onValid)}>
+                            {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
+                            <SearchInput {...register("search", { required: true })} />
+                            <SearchBtn type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                            </svg></SearchBtn>
+                        </Search>
+                        <LoginContainer>
+                            <LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox>
+                            <LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox>
+                        </LoginContainer>
+                    </Nav>
+                </Navbar.Collapse>
+            </Navbar>
+
+            {/* <Navbar expand="lg" className="bg-body-tertiary">
+                <Container>
+                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="#home">Home</Nav.Link>
+                            <Nav.Link href="#link">Link</Nav.Link>
+                            <NavDropdown title="Dropdown" id="">
+                                <NavDropdown.Item href="#action/3.1">Action</Navbasic-nav-dropdownDropdown.Item>
+                                <NavDropdown.Item href="#action/3.2">
+                                    Another action
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action/3.4">
+                                    Separated link
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar> */}
         </>
     )
 }

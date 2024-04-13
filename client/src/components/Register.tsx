@@ -1,3 +1,4 @@
+import Overlay from "./Overlay";
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { useForm } from "react-hook-form"
@@ -5,7 +6,7 @@ import styled from "styled-components"
 
 const RegisterContainer = styled(motion.div)`
     position: absolute;
-    z-index: 1;
+    z-index: 5;
     top: 300px;
     text-align: center;
     background-color: whitesmoke;
@@ -64,27 +65,31 @@ interface loginForm {
         y: Number
     }
 }
-export default function RegisterBox() {
+
+export default function Register() {
     const { register, handleSubmit, getValues, watch } = useForm<loginForm>()
     const onValid = (data: loginForm) => {
         axios.post("http://localhost:8080/register", data);
     }
     return (
-        <RegisterContainer className="card"
-        variants={boxVariants}
-        initial="initial"
-        animate="visible"
-        exit="leaving" 
-        >
-        <form onSubmit={handleSubmit(onValid)}>
-            <ul className="list-group list-group-flush">
-                <div className="card-header">회원가입</div>
-                <RegisterList className="list-group-item"><RegisterInput {...register("id")} placeholder="아이디를 입력해주세요" /></RegisterList>
-                <RegisterList className="list-group-item"><RegisterInput {...register("password")} placeholder="비밀번호를 입력해주세요"/></RegisterList>
-                <RegisterList className="list-group-item"><RegisterInput {...register("nickName")} placeholder="닉네임을 입력해주세요"/></RegisterList>
-                <RegisterBtn type="submit">확인</RegisterBtn>
-            </ul>
-        </form>
-        </RegisterContainer>
+        <div>
+            <RegisterContainer className="card"
+                variants={boxVariants}
+                initial="initial"
+                animate="visible"
+                exit="leaving"
+            >
+                <form onSubmit={handleSubmit(onValid)}>
+                    <ul className="list-group list-group-flush">
+                        <div className="card-header">회원가입</div>
+                        <RegisterList className="list-group-item"><RegisterInput {...register("id")} placeholder="아이디를 입력해주세요" /></RegisterList>
+                        <RegisterList className="list-group-item"><RegisterInput {...register("password")} placeholder="비밀번호를 입력해주세요" /></RegisterList>
+                        <RegisterList className="list-group-item"><RegisterInput {...register("nickName")} placeholder="닉네임을 입력해주세요" /></RegisterList>
+                        <RegisterBtn type="submit">확인</RegisterBtn>
+                    </ul>
+                </form>
+            </RegisterContainer>
+            <Overlay />
+        </div>
     )
 }

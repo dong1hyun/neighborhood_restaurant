@@ -6,8 +6,8 @@ import { KakaoMap } from "./components/KakaoMap";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle } from "styled-components";
 import Place from "./page/Place";
-import Register from "./page/Register";
-import Login from "./page/Login";
+import Register from "./components/Register";
+import Login from "./components/Login";
 import React from 'react';
 import Footer from "./components/Footer";
 

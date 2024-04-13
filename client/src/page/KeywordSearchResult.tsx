@@ -13,7 +13,7 @@ const Keyword = styled.div`
     background-color: white;
     border-radius: 5px;
     border: solid 5px white;
-    z-index: 10;
+    z-index: 3;
     font-family: "Nanum Gothic Coding", monospace;
     font-weight: 400;
     font-style: normal;

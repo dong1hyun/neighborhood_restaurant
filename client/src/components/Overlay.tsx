@@ -1,20 +1,24 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { loginState, signinState } from "../atom";
 
 const OverLay = styled(motion.div)`
   position: fixed;
+  z-index: 4;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.7);
 `;
 
 function Overlay() {
-    const navigate = useNavigate();
+    const setLogin = useSetRecoilState(loginState)
+    const setSignin = useSetRecoilState(signinState)
     const onOverlayClicked = () => {
-      navigate("/");
+      setLogin(false);
+      setSignin(false);
     }
     return (
         <OverLay

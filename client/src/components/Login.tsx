@@ -1,10 +1,13 @@
+import Overlay from "./Overlay";
+import React from 'react';
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
 
 const LoginContainer = styled(motion.div)`
-    position: absolute;z-index: 1;
+    position: absolute;
+    z-index: 5;
     top: 300px;
     text-align: center;
     background-color: whitesmoke;
@@ -64,28 +67,32 @@ interface loginForm {
         y: Number
     }
 }
-export default function LoginBox() {
+
+export default function Login() {
     const { register, handleSubmit, getValues, watch } = useForm<loginForm>()
     const onValid = (data: loginForm) => {
         axios.post("http://localhost:8080/register", data);
     }
     return (
-        <LoginContainer className="card"
-        variants={boxVariants}
-        initial="initial"
-        animate="visible"
-        exit="leaving" 
-        >
-        <form onSubmit={handleSubmit(onValid)}>
-                <div className="card-header">
-                    로그인
-                </div>
-                <ul className="list-group list-group-flush">
-                    <LoginList className="list-group-item"><LoginInput {...register("id")} placeholder="아이디를 입력하세요"/></LoginList>
-                    <LoginList className="list-group-item"><LoginInput {...register("password")} placeholder="비밀번호를 입력하세요"/></LoginList>
-                    <LoginBtn type="submit">로그인</LoginBtn>
-                </ul>
-            </form>
-        </LoginContainer>
+        <div>
+            <LoginContainer className="card"
+                variants={boxVariants}
+                initial="initial"
+                animate="visible"
+                exit="leaving"
+            >
+                <form onSubmit={handleSubmit(onValid)}>
+                    <div className="card-header">
+                        로그인
+                    </div>
+                    <ul className="list-group list-group-flush">
+                        <LoginList className="list-group-item"><LoginInput {...register("id")} placeholder="아이디를 입력하세요" /></LoginList>
+                        <LoginList className="list-group-item"><LoginInput {...register("password")} placeholder="비밀번호를 입력하세요" /></LoginList>
+                        <LoginBtn type="submit">로그인</LoginBtn>
+                    </ul>
+                </form>
+            </LoginContainer>
+            <Overlay />
+        </div>
     )
 }

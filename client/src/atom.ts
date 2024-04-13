@@ -9,3 +9,13 @@ export const neighborhood_search = atom({
     key:"neighborhood_search",
     default: false
 })
+
+export const loginState = atom({
+    key:"login",
+    default: false
+})
+
+export const signinState = atom({
+    key:"signin",
+    default: false
+})
