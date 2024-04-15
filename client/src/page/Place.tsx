@@ -11,7 +11,7 @@ import Review from "../components/Review";
 const WholeContainer = styled.div`
     display: flex;
     justify-content: center;
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 900px) {
         flex-direction: column;
     }
 `
@@ -24,7 +24,7 @@ const BoxContainer = styled.div`
     height: 100%;
     width: 55%;
     margin-top: 50px;
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 900px) {
         width: 90%;
         margin: 0 auto;
     }
@@ -44,7 +44,7 @@ const SideBar = styled.div`
 const PlaceContainer = styled.div`
     display: flex;
     margin: 40px;
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 900px) {
         flex-direction: column;
         text-align: center;
     }

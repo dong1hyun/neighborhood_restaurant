@@ -20,6 +20,9 @@ const RegisterContainer = styled(motion.div)`
     right: 0px;
     margin: 0 auto;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+    @media screen and (max-width: 700px) {
+        width: 250px;
+    }
 `
 
 const RegisterList = styled.li`
@@ -27,8 +30,8 @@ const RegisterList = styled.li`
 `
 
 const RegisterInput = styled.input`
-    width: 300px;
-    height: 30;
+    width: 100%;
+    height: 30px;
     border-radius: 5px;
     border-width: 1px;
 `

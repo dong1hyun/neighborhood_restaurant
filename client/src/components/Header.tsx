@@ -101,10 +101,12 @@ const LoginContainer = styled.div`
     align-items: center;
 `
 
-const LoginBox = styled(motion.div)`
+const LoginBox = styled(motion.button)`
     color: white;
     margin: 10px;
-    cursor: pointer;
+    margin-top: 20px;
+    background-color: transparent;
+    border: none;
 `
 
 interface searchForm {
@@ -126,7 +128,7 @@ export default function Header() {
         setIsNeighborhood((cur) => !cur)
     }
     return (
-        <> 
+        <>
             {signin ? <Register /> : null}
             {login ? <Login /> : null}
             <Navbar expand="md" className="bg-black mb-5">
@@ -158,30 +160,6 @@ export default function Header() {
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
-
-            {/* <Navbar expand="lg" className="bg-body-tertiary">
-                <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href="#home">Home</Nav.Link>
-                            <Nav.Link href="#link">Link</Nav.Link>
-                            <NavDropdown title="Dropdown" id="">
-                                <NavDropdown.Item href="#action/3.1">Action</Navbasic-nav-dropdownDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    Another action
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">
-                                    Separated link
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar> */}
         </>
     )
 }

@@ -8,7 +8,7 @@ const Place_Img = styled.img`
     width: 400px;
     height: 400px;
     /* border-radius: 10px; */
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 900px) {
         margin: 0 auto;
         width: 200px;
         height: 200px;
