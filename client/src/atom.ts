@@ -19,3 +19,13 @@ export const signinState = atom({
     key:"signin",
     default: false
 })
+
+export const session = atom({
+    key:"session",
+    default: ''
+})
+
+export const name = atom({
+    key:"name",
+    default: ''
+})

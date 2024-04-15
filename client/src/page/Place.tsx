@@ -7,6 +7,8 @@ import setMarker from "../function/placeMarker";
 import PlaceImg from "../components/PlaceImg";
 import { motion } from "framer-motion";
 import Review from "../components/Review";
+import { session } from "../atom";
+import { useRecoilState } from "recoil";
 
 const WholeContainer = styled.div`
     display: flex;
@@ -24,6 +26,7 @@ const BoxContainer = styled.div`
     height: 100%;
     width: 55%;
     margin-top: 50px;
+    margin-bottom: 100px;
     @media screen and (max-width: 900px) {
         width: 90%;
         margin: 0 auto;
@@ -120,6 +123,7 @@ function Place() {
     const [moreInf, showMoreInf] = useState(false);
     const [breakTime, setBreakTime] = useState(false);
     const [lastOrder, setLastOrder] = useState(false);
+    const [sessionID, setSessionID] = useRecoilState(session)
 
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
@@ -150,39 +154,39 @@ function Place() {
     }, [x, y, breakTime])
     return (
         <WholeContainer>
-         <BoxContainer>
-            <PlaceContainer>
-                <PlaceImg />
-                <DetailContainer>
-                    <PlaceName>name</PlaceName>
-                    <Category>category</Category>
-                    <Rating>평점: <>4.6</></Rating>
-                    <Detail>phone</Detail>
-                    <Detail>address</Detail>
-                    영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
-                    {
-                        moreInf ?
-                            <TimeContainer
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                            >
-                                {timeList.map((time: any) => {
-                                    if (time["timeName"] == "영업시간") return <Time>{time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                })}
-                                {breakTime ? "휴게시간" : null}
-                                {timeList.map((time: any) => {
-                                    if (time["timeName"] == "휴게시간") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                })}
-                                {lastOrder ? "라스트오더" : null}
-                                {timeList.map((time: any) => {
-                                    if (time["timeName"] == "라스트오더") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                })}
-                            </ TimeContainer>
-                            : null
-                    }
-                </DetailContainer>    
-            </PlaceContainer>
-            <Review />
+            <BoxContainer>
+                <PlaceContainer>
+                    <PlaceImg />
+                    <DetailContainer>
+                        <PlaceName>name</PlaceName>
+                        <Category>category</Category>
+                        <Rating>평점: <>4.6</></Rating>
+                        <Detail>phone</Detail>
+                        <Detail>address</Detail>
+                        영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
+                        {
+                            moreInf ?
+                                <TimeContainer
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                >
+                                    {timeList.map((time: any) => {
+                                        if (time["timeName"] == "영업시간") return <Time>{time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                                    })}
+                                    {breakTime ? "휴게시간" : null}
+                                    {timeList.map((time: any) => {
+                                        if (time["timeName"] == "휴게시간") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                                    })}
+                                    {lastOrder ? "라스트오더" : null}
+                                    {timeList.map((time: any) => {
+                                        if (time["timeName"] == "라스트오더") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                                    })}
+                                </ TimeContainer>
+                                : null
+                        }
+                    </DetailContainer>
+                </PlaceContainer>
+                <Review />
             </BoxContainer>
             <SideBar>
                 <Map id="placeMap" />

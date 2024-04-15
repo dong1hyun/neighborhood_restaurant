@@ -70,7 +70,7 @@ function afterSearch(keyword) {
     // 검색 결과 목록과 마커를 표출하는 함수입니다
     function displayPlaces(places) {
         // console.log(places)
-        // axios.post("http://localhost:8080/create/restaurant",places);
+        // axios.post("http://localhost:3001/create/restaurant",places);
         let listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),
             fragment = document.createDocumentFragment(),

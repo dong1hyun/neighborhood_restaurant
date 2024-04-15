@@ -3,29 +3,13 @@ import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { keyword, neighborhood_search, loginState, signinState } from "../atom";
+import { keyword, neighborhood_search, loginState, signinState, session, name } from "../atom";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion"
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Register from "./Register";
 import Login from "./Login";
-
-
-// const Nav = styled.div`
-//     display: flex;
-//     justify-content: space-between;
-//     background-color: black;
-//     height: 100px;
-//     width: 100%;
-//     margin-bottom: 50px;
-//     @media screen and (max-width: 700px) {
-//         flex-direction: column;
-//         align-items: flex-start;
-//         height: 250px;
-//         background-color: black;
-// }
-// `
 
 const Logo = styled(motion.div)`
     text-decoration: none;
@@ -45,8 +29,7 @@ const Search = styled.form`
     background-color: transparent;
     width: 400px;
     height: 50px;
-    margin: 25px;
-    /* margin-right: 450px; */
+    margin-top: 25px;
     border-radius: 10px;
     @media screen and (max-width: 700px) {
         width: 300px;
@@ -120,6 +103,8 @@ export default function Header() {
     const [isNeighborhood, setIsNeighborhood] = useRecoilState(neighborhood_search);
     const [signin, setSignin] = useRecoilState(signinState)
     const [login, setLogin] = useRecoilState(loginState);
+    const [sessionID, setSessionID] = useRecoilState(session)
+    const [userName, setUserName] = useRecoilState(name);
     const onValid = ({ search }: searchForm) => {
         setSearchWord(search);
         navigate(`/search?keyword=${search}`);
@@ -127,6 +112,25 @@ export default function Header() {
     const searchTypeClick = async () => {
         setIsNeighborhood((cur) => !cur)
     }
+    const handleLogout = async () => {
+        try {
+            await axios.get('/logout'); // 서버로 로그아웃 요청 보냄
+            sessionStorage.removeItem('sessionID'); // 세션 스토리지에서 세션 ID 제거
+            setSessionID(''); // 세션 ID 초기화
+            setUserName('');
+            navigate('/'); // 홈 페이지로 이동
+        } catch (error) {
+            console.error('로그아웃 중 오류가 발생했습니다:', error);
+        }
+    };
+
+    useEffect(() => {
+        const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
+
+        if (loggedInSessionID) {
+            setSessionID(loggedInSessionID);
+        }
+    }, [])
     return (
         <>
             {signin ? <Register /> : null}
@@ -155,7 +159,7 @@ export default function Header() {
                         </Search>
                         <LoginContainer>
                             <LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox>
-                            <LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox>
+                            {sessionID ? <LoginBox onClick={handleLogout}>로그아웃</LoginBox> : <LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox>}
                         </LoginContainer>
                     </Nav>
                 </Navbar.Collapse>

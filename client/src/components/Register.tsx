@@ -2,7 +2,9 @@ import Overlay from "./Overlay";
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { useForm } from "react-hook-form"
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components"
+import { signinState } from "../atom";
 
 const RegisterContainer = styled(motion.div)`
     position: absolute;
@@ -63,19 +65,28 @@ interface loginForm {
     id: string,
     password: string,
     nickName: string,
-    location: {
-        x: Number,
-        y: Number
-    }
+    // location: {
+    //     x: Number,
+    //     y: Number
+    // }
 }
 
 export default function Register() {
     const { register, handleSubmit, getValues, watch } = useForm<loginForm>()
+    const setSignin = useSetRecoilState(signinState);
     const onValid = (data: loginForm) => {
-        axios.post("http://localhost:8080/register", data);
+        axios.post("/register", data)
+        .then((data) => {
+            setSignin(false);
+            alert("회원가입에 성공했습니다!!!")
+        })
+        .catch((err) => {
+            console.log(err);
+            if(err.request.status == 400) alert("이미 존재하는 아이디입니다.");
+        })
     }
     return (
-        <div>
+        <>
             <RegisterContainer className="card"
                 variants={boxVariants}
                 initial="initial"
@@ -93,6 +104,6 @@ export default function Register() {
                 </form>
             </RegisterContainer>
             <Overlay />
-        </div>
+        </>
     )
 }
