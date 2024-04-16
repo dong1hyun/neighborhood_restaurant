@@ -17,9 +17,9 @@ router.use(async (req, res, next) => {
         const user = await User.findOne({ where: { sessionID: sessionID } });
         
         if (user) {
-            // 사용자가 존재하는 경우 해당 사용자의 ID를 요청 본문에 추가
-            req.body.id = user.id;
-            req.userLocation = { x: user.x, y: user.y }; // 사용자의 위치 저장
+            // 사용자가 존재하는 경우 해당 사용자의 주소 정보를 가져옴
+            req.userID = user.id; // 사용자의 ID 저장
+            req.userAddress = user.address; // 사용자의 주소 저장
         }
     } catch (error) {
         console.error('사용자 정보를 가져오는 중 오류가 발생했습니다:', error);
@@ -32,28 +32,28 @@ router.use(async (req, res, next) => {
 router.post('/', async (req, res) => {
     try {
         // 요청으로부터 필요한 데이터 추출
-        const { id, restaurantID, comment, rating } = req.body;
+        const { restaurantID, comment, rating } = req.body;
         
-        // 사용자의 위치 정보 가져오기
-        const userLocation = req.userLocation;
+        // 사용자의 ID 및 주소 정보 가져오기
+        const userID = req.userID;
+        const userAddress = req.userAddress;
         
-        // 음식점의 위치 정보 가져오기
+        // 음식점의 주소 정보 가져오기
         const restaurant = await Restaurant.findOne({ where: { restaurantID: restaurantID } });
-        const restaurantLocation = { x: restaurant.x, y: restaurant.y };
+        const restaurantAddress = restaurant.address;
         
-        console.log('사용자 위치:', userLocation);
-        console.log('음식점 위치:', restaurantLocation);
+        console.log('사용자 ID:', userID);
+        console.log('사용자 주소:', userAddress);
+        console.log('음식점 주소:', restaurantAddress);
         
-        // 사용자와 음식점의 위치를 비교하여 거리 계산 (단위: km)
-        const distance = calculateDistance(userLocation.x, userLocation.y, restaurantLocation.x, restaurantLocation.y);
-
-        // 거리가 1km 이내인 경우에만 리뷰 작성 가능
-        const allowedDistance = 1.1; // 허용할 최대 거리 (단위: km) - 오차 범위 + 0.1km
-        if (distance <= allowedDistance) {
-            // 리뷰 작성 가능한 경우
+        // 사용자와 음식점의 주소를 비교하여 동일한 지역인지 확인
+        const isSameLocation = isAddressMatch(userAddress, restaurantAddress);
+        
+        if (isSameLocation) {
+            // 사용자와 음식점이 동일한 지역에 있는 경우에만 리뷰 작성 가능
             // Review 모델을 사용하여 데이터베이스에 새로운 리뷰 생성
             const newReview = await Review.create({
-                id: id,
+                id: userID, // 사용자 ID
                 restaurantID: restaurantID,
                 comment: comment,
                 rating: rating
@@ -62,8 +62,8 @@ router.post('/', async (req, res) => {
             // 새로운 리뷰가 성공적으로 생성되었을 경우 클라이언트에 응답
             res.status(200).json({ success: true, message: '리뷰가 성공적으로 작성되었습니다.' });
         } else {
-            // 리뷰 작성 불가능한 경우
-            res.status(400).json({ success: false, message: '음식점이 너무 멀어 리뷰를 작성할 수 없습니다.' });
+            // 사용자와 음식점이 동일한 지역에 있지 않은 경우
+            res.status(400).json({ success: false, message: '리뷰를 작성할 수 있는 지역이 아닙니다.' });
         }
     } catch (error) {
         // 오류 발생 시 클라이언트에 오류 메시지 응답
@@ -72,22 +72,13 @@ router.post('/', async (req, res) => {
     }
 });
 
-// 두 지점 간의 거리를 계산하는 함수
-function calculateDistance(x1, y1, x2, y2) {
-    const R = 6371; // 지구의 반지름 (단위: km)
-    const dLat = deg2rad(x2 - x1);
-    const dLon = deg2rad(y2 - y1); 
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
-            Math.cos(deg2rad(x1)) * Math.cos(deg2rad(x2)) * 
-            Math.sin(dLon/2) * Math.sin(dLon/2); 
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    const d = R * c; // 두 지점 사이의 거리 (단위: km)
-    return d;
-}
 
-// 각도를 라디안으로 변환하는 함수
-function deg2rad(deg) {
-    return deg * (Math.PI/180);
+// 두 주소가 동일한 지역인지 확인하는 함수
+function isAddressMatch(address1, address2) {
+    const regex = /(.+?(읍|면|동))/;
+    const match1 = address1.match(regex);
+    const match2 = address2.match(regex);
+    return !!match1 && !!match2 && match1[1] === match2[1];
 }
 
 module.exports = router;

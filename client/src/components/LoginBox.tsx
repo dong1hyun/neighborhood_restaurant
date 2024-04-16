@@ -17,20 +17,22 @@ const LoginContainer = styled(motion.div)`
     right: 0;
     margin: 0 auto;
     width: 400px;
-    height: 200px;
+    height: 300px; /* Increased height to accommodate the search section */
     background-color: rgba(255, 255, 255, 1);
     border-radius: 40px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
     text-align: center;
 `;
 
-// 이 코드는 세션 만료 시간을 표시합니다.
+const SearchContainer = styled.div`
+    margin-top: 20px; /* Increased margin for better spacing */
+`;
+
 const SessionExpirationInfo = styled.div`
     margin-top: 10px;
     font-size: 14px;
 `;
 
-// 모션 변형
 const boxVariants = {
     initial: {
         opacity: 0,
@@ -50,58 +52,49 @@ export default function LoginBox() {
     const [formData, setFormData] = useState<FormData>({ id: '', password: '' });
     const [sessionID, setSessionID] = useState<string>('');
     const [userName, setUserName] = useState<string>('');
-    const [isLocationSaved, setIsLocationSaved] = useState<boolean>(false);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [searchResult, setSearchResult] = useState<string>('');
+    const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
+    const [userAddress, setUserAddress] = useState<string>('');
     const navigate = useNavigate();
     const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
 
-
     useEffect(() => {
-        // 페이지 로드 시 저장된 로그인 정보 확인
-        const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
-        const loggedInUserName = sessionStorage.getItem('userName'); // 세션 스토리지에서 이름 가져오기
+        const loggedInSessionID = sessionStorage.getItem('sessionID');
+        const loggedInUserName = sessionStorage.getItem('userName');
         if (loggedInSessionID) {
             setSessionID(loggedInSessionID);
         }
         if (loggedInUserName) {
-            setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
-    }
+            setUserName(loggedInUserName);
+        }
     }, []);
 
-// 세션 만료 시간 정하기. 테스트로 1분만 설정함.
     useEffect(() => {
-        // 세션 ID가 있는 경우에만 실행합니다.
         if (sessionID) {
-            // 만료 시간을 현재 시간에서 1분 후로 설정합니다.
             const expiration = new Date();
-            expiration.setMilliseconds(expiration.getMilliseconds() + 60000);
+            expiration.setMinutes(expiration.getMinutes() + 10); // 10분으로 변경
             setSessionExpiration(expiration);
-
-            // 1분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
+    
             const timer = setTimeout(() => {
                 handleLogout();
-            }, 60000);
-
-            // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
+            }, 10 * 60 * 1000); // 밀리초 단위로 변경
+    
             return () => clearTimeout(timer);
         }
     }, [sessionID]);
-
     
-
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const response = await axios.post('/login', formData);
-            console.log('로그인 응답 데이터:', response.data); // 로그인 응답 데이터 확인
-            const { sessionID, userName } = response.data; // 세션 ID 및 사용자 이름 받아오기
+            const { sessionID, userName } = response.data;
             if (response.data.message === '로그인 성공' && sessionID) {
-                setSessionID(sessionID); // 세션 ID 설정
-                setUserName(userName); // 사용자 이름 설정
-                sessionStorage.setItem('sessionID', sessionID); // 세션 스토리지에 세션 ID 저장
-                sessionStorage.setItem('userName', userName); // 세션 스토리지에 사용자 이름 저장
-                // 위치 저장 요청 보내기
-                saveLocation(sessionID); // 세션 ID를 인자로 사용하여 위치 저장 요청 보내기
+                setSessionID(sessionID);
+                setUserName(userName);
+                sessionStorage.setItem('sessionID', sessionID);
+                sessionStorage.setItem('userName', userName);
             } else {
                 console.error('로그인 실패:', response.data.message);
             }
@@ -114,29 +107,91 @@ export default function LoginBox() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const saveLocation = async (sessionID: string) => {
+    
+    const handleSearch = async () => {
         try {
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                const { latitude, longitude } = position.coords;
-                await axios.post('/location', { sessionID, x: longitude, y: latitude }); // 세션 ID로 위치 저장 요청 보내기
-                setIsLocationSaved(true); // 위치 저장됨을 표시
-                alert('위치가 성공적으로 저장되었습니다.');
+            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
+                headers: {
+                    Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
+                }
             });
+            if (response.data.documents && response.data.documents.length > 0) {
+                const { address_name } = response.data.documents[0];
+                setSearchResult(address_name);
+                if (isAddressMatch(address_name, userAddress)) {
+                    console.log('검색된 위치와 사용자 위치가 동일합니다.');
+                    // 여기서 서버로 값을 보내는 작업 수행
+                    sendLocationToServer(sessionID, address_name);
+                } else {
+                    console.log('검색된 위치와 사용자 위치가 동일하지 않습니다.');
+                }
+            } else {
+                console.error('검색 결과를 찾을 수 없습니다.');
+            }
         } catch (error) {
-            console.error('위치 저장 중 오류가 발생했습니다:', error);
-            alert('위치를 저장하는 도중 오류가 발생했습니다.');
+            console.error('검색 중 오류가 발생했습니다:', error);
+        }
+    };
+    
+
+    const handleGetUserLocation = () => {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+            setUserLocation({ x: longitude, y: latitude });
+            const address = await getAddressFromCoordinates(latitude, longitude);
+            if (address) {
+                setUserAddress(address);
+                console.log('사용자 위치:', address);
+            }
+        });
+    };
+
+    
+    const getAddressFromCoordinates = async (latitude: number, longitude: number) => {
+        try {
+            const response = await axios.get(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`, {
+                headers: {
+                    Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
+                }
+            });
+            if (response.data.documents && response.data.documents.length > 0) {
+                const address = response.data.documents[0].address.address_name;
+                return address;
+            } else {
+                console.error('주소를 찾을 수 없습니다.');
+                return null;
+            }
+        } catch (error) {
+            console.error('주소를 가져오는 중 오류가 발생했습니다:', error);
+            return null;
         }
     };
 
     const handleLogout = async () => {
         try {
-            await axios.get('/logout'); // 서버로 로그아웃 요청 보냄
-            sessionStorage.removeItem('sessionID'); // 세션 스토리지에서 세션 ID 제거
-            setSessionID(''); // 세션 ID 초기화
+            await axios.get('/logout');
+            sessionStorage.removeItem('sessionID');
+            setSessionID('');
             setUserName('');
-            navigate('/'); // 홈 페이지로 이동
+            navigate('/');
         } catch (error) {
             console.error('로그아웃 중 오류가 발생했습니다:', error);
+        }
+    };
+
+    const isAddressMatch = (address1: string, address2: string): boolean => {
+        const regex = /(.+?(읍|면|동))/;
+        const match1 = address1.match(regex);
+        const match2 = address2.match(regex);
+        return !!match1 && !!match2 && match1[1] === match2[1];
+    };
+
+    const sendLocationToServer = async (sessionID: string, address: string) => {
+        try {
+            const response = await axios.post('/location', { sessionID, address });
+            console.log('서버로부터의 응답:', response.data);
+        } catch (error) {
+            console.error('서버로 위치 전송 중 오류가 발생했습니다:', error);
         }
     };
 
@@ -182,7 +237,22 @@ export default function LoginBox() {
                     세션 만료 시간: {sessionExpiration.toLocaleTimeString()}까지
                 </SessionExpirationInfo>
             )}
+
+            <SearchContainer>
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button onClick={handleSearch}>지역 검색</button>
+                <button onClick={handleGetUserLocation}>내 위치 가져오기</button>
+                {searchResult && (
+                    <p>검색된 주소: {searchResult}</p>
+                )}
+                {userLocation && (
+                    <p>사용자 위치: {userAddress}</p>
+                )}
+            </SearchContainer>
         </LoginContainer>
     );
-    
 }

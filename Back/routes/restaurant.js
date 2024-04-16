@@ -3,16 +3,22 @@ const router = express.Router();
 const { Restaurant } = require('../models');
 const axios = require('axios'); // axios 모듈 가져오기
 
-
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-
 
 //client/function/search P.79 -> Back/server/restaurant 
 router.post('/', async (req, res) => {
     try {
         const restaurantList = req.body;
         for (const place of restaurantList) {
+            // 데이터베이스에 이미 해당 식당이 존재하는지 확인
+            const existingRestaurant = await Restaurant.findOne({ where: { restaurantID: place.id } });
+            if (existingRestaurant) {
+                console.log(`식당 ID ${place.id}는 이미 데이터베이스에 존재합니다.`);
+                continue; // 이미 존재하면 다음 식당으로 넘어감
+            }
+
+            // 존재하지 않는 경우에만 데이터베이스에 저장
             const crawlingData = await axios.get(`https://place.map.kakao.com/m/main/v/${place.id}`)
             let img_url = crawlingData.data?.basicInfo?.mainphotourl;
             let timeList = JSON.stringify(crawlingData.data.basicInfo?.openHour?.periodList[0]?.timeList);
@@ -32,6 +38,12 @@ router.post('/', async (req, res) => {
                     y: place.y
                 }
             });
+
+            if (created) {
+                console.log(`식당 ID ${place.id}가 성공적으로 추가되었습니다.`);
+            } else {
+                console.log(`식당 ID ${place.id}가 이미 데이터베이스에 존재합니다.`);
+            }
         }
         res.status(200).send('레스토랑이 성공적으로 추가되었습니다.');
     } catch (error) {
@@ -39,6 +51,5 @@ router.post('/', async (req, res) => {
         res.status(500).send('내부 서버 오류가 발생했습니다.');
     }
 });
-
 
 module.exports = router;

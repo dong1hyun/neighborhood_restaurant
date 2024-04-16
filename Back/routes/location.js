@@ -7,7 +7,7 @@ router.use(express.urlencoded({ extended: true }));
 
 router.post('/', async (req, res) => {
     try {
-        const { sessionID, x, y } = req.body; // 요청에서 세션 ID, x 좌표, y 좌표 추출
+        const { sessionID, address } = req.body; // 요청에서 세션 ID와 주소 정보 추출
 
         console.log('Received user sessionID:', sessionID);
 
@@ -15,10 +15,9 @@ router.post('/', async (req, res) => {
         const user = await User.findOne({ where: { sessionID } });
         if (user) {
             // 위치 정보 업데이트
-            user.x = x;
-            user.y = y;
+            user.address = address;
             await user.save(); // 변경사항 저장
-            console.log('위치 정보가 성공적으로 업데이트되었습니다:', user.id, x, y);
+            console.log('위치 정보가 성공적으로 업데이트되었습니다:', user.id, address);
             res.status(200).send('위치 정보가 성공적으로 저장되었습니다.');
         } else {
             console.log('사용자를 찾을 수 없습니다:', sessionID);
