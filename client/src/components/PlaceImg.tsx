@@ -25,10 +25,10 @@ export default function PlaceImg() {
             })
     }
     useEffect(() => {
-        // getPlaceImg();
+        getPlaceImg();
     }, [])
     return (
-        <Place_Img src="https://t1.kakaocdn.net/mystore/D9EC1E16FC734163811D77FF1FDDA9FA" alt="음식 사진" />
+        <Place_Img src={imgURL} alt="음식 사진" />
     )
 }
 

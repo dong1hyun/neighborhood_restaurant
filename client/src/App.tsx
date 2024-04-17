@@ -10,6 +10,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import React from 'react';
 import Footer from "./components/Footer";
+import MyPage from "./page/MyPage";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -76,6 +77,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/registerPage" element={<Register />} />
           <Route path="/loginpage" element={<Login />} />
+          <Route path="/myPage" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
           <Route path="/place/:id" element={<Place />} />
         </Routes>

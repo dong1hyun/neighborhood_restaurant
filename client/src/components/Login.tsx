@@ -67,7 +67,7 @@ const boxVariants = {
 interface LoginForm {
     id: string,
     password: string,
-    nickName: string,
+    // nickName: string,
     // location: {
     //     x: Number,
     //     y: Number
@@ -82,7 +82,7 @@ export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
     const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
     const [sessionID, setSessionID] = useRecoilState(session);
-    const [userName, setUserName] = useRecoilState(name);
+    const [userId, setUserId] = useRecoilState(name);
     const [isLocationSaved, setIsLocationSaved] = useState<boolean>(false);
     const setLogin = useSetRecoilState(loginState);
     const navigate = useNavigate();
@@ -104,12 +104,12 @@ export default function Login() {
         try {
             const response = await axios.post('/login', data);
             // console.log('로그인 응답 데이터:', response.data); // 로그인 응답 데이터 확인
-            const { sessionID, userName } = response.data; // 세션 ID 및 사용자 이름 받아오기
+            const { sessionID, userId } = response.data; // 세션 ID 및 사용자 이름 받아오기
             if (response.data.message === '로그인 성공' && sessionID) {
                 setSessionID(sessionID); // 세션 ID 설정
-                setUserName(userName); // 사용자 이름 설정
+                setUserId(userId); // 사용자 아이디 설정
                 sessionStorage.setItem('sessionID', sessionID); // 세션 스토리지에 세션 ID 저장
-                sessionStorage.setItem('userName', userName); // 세션 스토리지에 사용자 이름 저장
+                sessionStorage.setItem('userId', userId); // 세션 스토리지에 사용자 아이디 저장
                 // 위치 저장 요청 보내기
                 saveLocation(sessionID); // 세션 ID를 인자로 사용하여 위치 저장 요청 보내기
                 alert("로그인에 성공했습니다.");
@@ -127,42 +127,12 @@ export default function Login() {
             await axios.get('/logout'); // 서버로 로그아웃 요청 보냄
             sessionStorage.removeItem('sessionID'); // 세션 스토리지에서 세션 ID 제거
             setSessionID(''); // 세션 ID 초기화
-            setUserName('');
+            setUserId('');
             navigate('/'); // 홈 페이지로 이동
         } catch (error) {
             console.error('로그아웃 중 오류가 발생했습니다:', error);
         }
     };
-
-    useEffect(() => {
-        // 페이지 로드 시 저장된 로그인 정보 확인
-        const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
-        const loggedInUserName = sessionStorage.getItem('userName'); // 세션 스토리지에서 이름 가져오기
-        
-        if (loggedInSessionID) {
-            setSessionID(loggedInSessionID);
-        }
-        if (loggedInUserName) {
-            setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
-        }
-
-        // 세션 ID가 있는 경우에만 실행합니다.
-        if (sessionID) {
-            // 만료 시간을 현재 시간에서 1분 후로 설정합니다.
-            const expiration = new Date();
-            expiration.setMilliseconds(expiration.getMilliseconds() + 60000);
-            setSessionExpiration(expiration);
-
-            // 1분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
-            const timer = setTimeout(() => {
-                handleLogout();
-            }, 600000);
-
-            // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
-            return () => clearTimeout(timer);
-        }
-    }, [sessionID]);
-
     return (
         <div>
             <LoginContainer className="card"

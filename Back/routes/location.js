@@ -14,9 +14,6 @@ router.post('/', async (req, res) => {
         // 사용자를 찾아서 위치 정보 업데이트
         const user = await User.findOne({ where: { sessionID } });
         if (user) {
-            // 위치 정보 업데이트
-            user.x = x;
-            user.y = y;
             await user.save(); // 변경사항 저장
             console.log('위치 정보가 성공적으로 업데이트되었습니다:', user.id, x, y);
             res.status(200).send('위치 정보가 성공적으로 저장되었습니다.');

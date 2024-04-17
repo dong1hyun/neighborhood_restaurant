@@ -70,6 +70,7 @@ function Review() {
                 rating,
                 comment,
                 userID: loggedInUserId, // 세션에 저장된 로그인 ID를 함께 전달
+                sessionID
             });
             // 리뷰 제출 후 입력 폼 초기화
             setRating(0);

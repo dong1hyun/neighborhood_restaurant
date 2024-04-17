@@ -105,6 +105,7 @@ export default function Header() {
     const [login, setLogin] = useRecoilState(loginState);
     const [sessionID, setSessionID] = useRecoilState(session)
     const [userName, setUserName] = useRecoilState(name);
+    const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
     const onValid = ({ search }: searchForm) => {
         setSearchWord(search);
         navigate(`/search?keyword=${search}`);
@@ -131,6 +132,34 @@ export default function Header() {
             setSessionID(loggedInSessionID);
         }
     }, [])
+    useEffect(() => {
+        // 페이지 로드 시 저장된 로그인 정보 확인
+        // const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
+        // const loggedInUserName = sessionStorage.getItem('userName'); // 세션 스토리지에서 이름 가져오기
+        
+        // if (loggedInSessionID) {
+        //     setSessionID(loggedInSessionID);
+        // }
+        // if (loggedInUserName) {
+        //     setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
+        // }
+
+        // 세션 ID가 있는 경우에만 실행합니다.
+        if (sessionID) {
+            // 만료 시간을 현재 시간에서 1분 후로 설정합니다.
+            const expiration = new Date();
+            expiration.setMilliseconds(expiration.getMilliseconds() + 60000);
+            setSessionExpiration(expiration);
+
+            // 1분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
+            const timer = setTimeout(() => {
+                handleLogout();
+            }, 600000);
+
+            // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
+            return () => clearTimeout(timer);
+        }
+    }, [sessionID]);
     return (
         <>
             {signin ? <Register /> : null}
@@ -158,8 +187,10 @@ export default function Header() {
                             </svg></SearchBtn>
                         </Search>
                         <LoginContainer>
-                            <LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox>
-                            {sessionID ? <LoginBox onClick={handleLogout}>로그아웃</LoginBox> : <LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox>}
+                            
+                            {sessionID ? 
+                            <><LoginBox onClick={() => navigate("/myPage")}>마이페이지</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
+                            : <><LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox><LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox></>}
                         </LoginContainer>
                     </Nav>
                 </Navbar.Collapse>

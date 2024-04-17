@@ -27,32 +27,26 @@ app.listen(8080, function () {
 
 app.post('/create/restaurant', function (req, res) {
     const restaurantList = req.body;
-    console.log("@@@@@@@")
     restaurantList.forEach(async place => {
         const crawlingData = await axios.get(`https://place.map.kakao.com/m/main/v/${place.id}`)
         let img_url = crawlingData.data?.basicInfo?.mainphotourl;
-        let timeList = JSON.stringify(crawlingData.data.basicInfo?.openHour?.periodList[0]?.timeList);
-        console.log(timeList);
+        let timeList;
+        if (crawlingData.data.basicInfo?.openHour?.periodList) {
+            timeList = JSON.stringify(crawlingData.data.basicInfo?.openHour?.periodList[0]?.timeList);
+        }
         img_url = img_url ? img_url : "none";
         timeList = timeList ? timeList : "none";
 
         Restaurant.findOrCreate({
-            where: { 
-                id: place.id, 
-                name: place.place_name, 
-                address: place.address_name, 
-                category: place.category_name.substr(6), 
-                phone: place.phone, 
-                img: img_url, 
-                timeList: timeList,
-                x: place.x, 
-                y: place.y 
+            where: {
+                id: place.id,
+
             },
             default: {
                 id: place.id,
                 name: place.place_name,
-                address: place.address_name, 
-                category: place.category_name.substr(6), 
+                address: place.address_name,
+                category: place.category_name.substr(6),
                 phone: place.phone,
                 img: img_url,
                 timeList: timeList,
@@ -63,19 +57,19 @@ app.post('/create/restaurant', function (req, res) {
     })
 });
 
-app.get('/placeDetail/:id', function(req, res) {
+app.get('/placeDetail/:id', function (req, res) {
     Restaurant.findOne({
         where: { id: req.params.id }
     })
-    .then(result => {
-        res.json(result.dataValues)
-    })
+        .then(result => {
+            res.json(result.dataValues)
+        })
 })
 
 app.post('/register', function (req, res) {
     console.log(req.body);
     const userData = req.body;
-    
+
 });
 
 

@@ -128,9 +128,10 @@ function Place() {
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
-                setName(res.data.name);
-                setAddress(res.data.address);
-                setCategory(res.data.category);
+                console.log(res.data)
+                setName(res.data.restaurantName);
+                setAddress(res.data.restaurantAddress);
+                setCategory(res.data.restaurantCategory);
                 setPhone(res.data.phone);
                 setX(res.data.x);
                 setY(res.data.y);
@@ -148,21 +149,22 @@ function Place() {
                 console.log(error);
             })
     }
+ 
     useEffect(() => {
-        /* getPlaceData();
-        setMarker(x, y); */
-    }, [x, y, breakTime])
+        getPlaceData();
+        setMarker(x, y);
+    }, [x, y, breakTime]);
     return (
         <WholeContainer>
             <BoxContainer>
                 <PlaceContainer>
                     <PlaceImg />
                     <DetailContainer>
-                        <PlaceName>name</PlaceName>
-                        <Category>category</Category>
+                        <PlaceName>{name}</PlaceName>
+                        <Category>{category}</Category>
                         <Rating>평점: <>4.6</></Rating>
-                        <Detail>phone</Detail>
-                        <Detail>address</Detail>
+                        <Detail>{phone}</Detail>
+                        <Detail>{address}</Detail>
                         영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?
