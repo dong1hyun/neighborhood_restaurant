@@ -19,3 +19,27 @@ router.get('/:id', function(req, res) {
 });
 
 module.exports = router;
+
+
+// 수정) 음식점 상세 정보 안에서 작성된 해당 음식점 리뷰 조회하기. 클라이언트 Place?에서 요청하는 걸로 예상중입니다.
+
+// router.get('/:id', async function(req, res) {
+//     try {
+//         const restaurant = await Restaurant.findOne({
+//             where: { restaurantID: req.params.id }
+//         });
+
+//         if (!restaurant) {
+//             return res.status(404).json({ error: "Restaurant not found" });
+//         }
+
+//         const reviews = await Review.findAll({
+//             where: { restaurantID: req.params.id }
+//         });
+
+//         res.json({ restaurant, reviews });
+//     } catch (error) {
+//         console.error("Error fetching restaurant:", error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
