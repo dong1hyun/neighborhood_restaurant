@@ -120,8 +120,10 @@ function MyPage() {
         }
     };
 
-    // getReviewData = 
-    // axios.get()
+    // const getReviewData = async () => {
+    //     await axios.get(`/myPage/reviews/${id}`)
+    // }
+    
 
     //위치, 리뷰, 즐겨찾기
     return (

@@ -132,7 +132,7 @@ function Place() {
                 setName(res.data.restaurantName);
                 setAddress(res.data.restaurantAddress);
                 setCategory(res.data.restaurantCategory);
-                setPhone(res.data.phone);
+                setPhone(res.data.restaurantNumber);
                 setX(res.data.x);
                 setY(res.data.y);
                 setTimeList(JSON.parse(res.data.timeList))
