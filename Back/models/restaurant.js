@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Restaurant = sequelize.define("Restaurant", {
-        restaurantID: {
+        restaurantId: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true // 자동으로 증가하는 기본 키 설정
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: false // 음식점 이름은 null이 될 수 없음
         },
-        address: {
+        restaurantAddress: {
             type: DataTypes.STRING(100),
             allowNull: false // 주소는 null이 될 수 없음
         },
@@ -17,9 +17,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: false // 음식점 번호는 null이 될 수 없음
         },
-        Category: {
+        restaurantCategory: {
             type: DataTypes.STRING(100),
             allowNull: false // 음식점 카테고리는 null이 될 수 없음
+        },
+        img: {
+            type: DataTypes.STRING(300),
+            allowNull: false // 음식점 이미지는 null이 될 수 없음
+        },
+        timeList: {
+            type: DataTypes.STRING(500),
+            allowNull: true
         },
         x: {
             type: DataTypes.DOUBLE,
@@ -28,14 +36,6 @@ module.exports = (sequelize, DataTypes) => {
         y: {
             type: DataTypes.DOUBLE,
             allowNull: true // 음식점 위도는 null이 될 수 있음
-        },
-        img: {
-            type: DataTypes.STRING(300),
-            allowNull: false // 음식점 이미지는 null이 될 수 없음
-        },
-        timeList: {
-            type: DataTypes.STRING(300),
-            allowNull: true
         }
     }, 
     {

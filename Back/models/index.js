@@ -47,11 +47,11 @@ Favorites.belongsTo(User, {
 
 // Favorites 모델과 Restaurant 모델 간의 일대일 관계 설정
 Favorites.belongsTo(Restaurant, {
-    foreignKey: 'restaurantID', // Favorites 테이블의 restaurantID 컬럼이 외래키
+    foreignKey: 'restaurantId', // Favorites 테이블의 restaurantID 컬럼이 외래키
     onDelete: 'CASCADE' // Restaurant 테이블의 레코드가 삭제될 때 Favorites 테이블에서 해당 restaurantID를 가진 레코드를 자동으로 삭제
 });
 Restaurant.hasOne(Favorites, {
-    foreignKey: 'restaurantID' // Favorites 테이블의 restaurantID 컬럼이 외래키
+    foreignKey: 'restaurantId' // Favorites 테이블의 restaurantID 컬럼이 외래키
 });
 
 

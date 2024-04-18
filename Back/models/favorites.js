@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Favorites = sequelize.define("Favorites", {
-      favoritesID: {
+      favoritesId: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true // 자동으로 증가하는 기본 키 설정
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING(100),
           allowNull: false
       },
-      restaurantID: {
+      restaurantId: {
           type: DataTypes.INTEGER,
           allowNull: false
       }
@@ -22,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true
   });
   
-  Favorites.findFavorite = async (id, restaurantID) => {
+  Favorites.findFavorite = async (id, restaurantId) => {
       try {
-        const favorite = await Favorites.findOne({ where: { id, restaurantID } });
+        const favorite = await Favorites.findOne({ where: { id, restaurantId } });
         return favorite;
       } catch (error) {
         throw new Error('즐겨찾기를 찾는 중에 오류가 발생했습니다.');

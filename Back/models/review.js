@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Review = sequelize.define("Review", {
-        reviewID: {
+        reviewId: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true // 자동으로 증가하는 기본 키 설정
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: false
         },
-        restaurantID: {
+        restaurantId: {
             type: DataTypes.INTEGER,
             allowNull: false
         }

@@ -7,7 +7,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.post('/', async (req, res) => {
-    const { sessionID, restaurantID } = req.body;
+    const { sessionID, restaurantId } = req.body;
 
     try {
         // 세션 ID를 사용하여 사용자를 찾습니다.
@@ -17,13 +17,13 @@ router.post('/', async (req, res) => {
         }
 
         // 사용자의 즐겨찾기에 이미 레스토랑이 있는지 확인합니다.
-        const existingFavorite = await Favorites.findFavorite(user.id, restaurantID);
+        const existingFavorite = await Favorites.findFavorite(user.id, restaurantId);
         if (existingFavorite) {
             return res.status(400).json({ error: '이미 즐겨찾기에 추가된 레스토랑입니다.' });
         }
 
         // 새로운 즐겨찾기 항목을 생성합니다.
-        await Favorites.create({ id: user.id, restaurantID });
+        await Favorites.create({ id: user.id, restaurantId });
 
         // 성공적인 응답을 전송합니다.
         res.json({ message: '즐겨찾기가 성공적으로 추가되었습니다.' });
