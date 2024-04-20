@@ -10,7 +10,7 @@ router.use(express.urlencoded({ extended: true }));
 
 router.post('/', async (req, res, next) => {
     const { name, id, password } = req.body; // 아이디와 비밀번호만 받음
-    console.log(req.body);
+    
     try {
         // 이미 존재하는 아이디인지 확인
         const existingUser = await User.findOne({ where: { id } });

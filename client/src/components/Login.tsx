@@ -111,7 +111,7 @@ export default function Login() {
                 sessionStorage.setItem('sessionID', sessionID); // 세션 스토리지에 세션 ID 저장
                 sessionStorage.setItem('userId', userId); // 세션 스토리지에 사용자 아이디 저장
                 // 위치 저장 요청 보내기
-                saveLocation(sessionID); // 세션 ID를 인자로 사용하여 위치 저장 요청 보내기
+                // saveLocation(sessionID); // 세션 ID를 인자로 사용하여 위치 저장 요청 보내기
                 alert("로그인에 성공했습니다.");
                 setLogin(false);
             } else {

@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false // 음식점 이미지는 null이 될 수 없음
         },
         timeList: {
-            type: DataTypes.STRING(300),
+            type: DataTypes.STRING(500),
             allowNull: true
         },
         x: {

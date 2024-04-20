@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useRecoilValue } from "recoil"
 import { session } from "../atom"
@@ -59,27 +59,44 @@ function Review() {
     const [hover, setHover] = useState(0);
     const [totalStars, setTotalStars] = useState(5);
     const sessionID = useRecoilValue(session)
-    const { register, handleSubmit } = useForm<reviewForm>();
+    const [reviews, setReviews] = useState([]);
+    const { register, handleSubmit, reset } = useForm<reviewForm>();
     const { id } = useParams();
+    console.log("값:",useForm())
     const onValid = async ({ comment }: reviewForm) => {
         try {
-            const loggedInUserId = sessionStorage.getItem('userId'); // 세션 스토리지에서 로그인 된 사용자 id 가져오기
             // 리뷰를 서버로 전송하여 데이터베이스에 저장
             await axios.post("/review", {
-                restaurantID: id,
+                restaurantId: id,
                 rating,
                 comment,
-                userID: loggedInUserId, // 세션에 저장된 로그인 ID를 함께 전달
                 sessionID
             });
             // 리뷰 제출 후 입력 폼 초기화
-            setRating(0);
-            // setComment("");
+           setRating(0); 
+           reset();
+            
             // 부모 컴포넌트로부터 전달받은 onSubmit 콜백 호출
         } catch (error) {
             console.error("리뷰 제출 에러:", error);
         }
+        getReviews();
     }
+    const getReviews = async () => {
+        try {
+            const response = await axios.get(`/review/${id}`); // 엔드포인트를 '/review/:restaurantId'에 맞게 수정
+            if (!response.data) {
+                throw new Error("No data received from server");
+            }
+            setReviews(response.data);
+            console.log('리뷰 데이터:', response.data); // 리뷰 데이터를 콘솔에 출력
+        } catch (error) {
+            console.error('리뷰 데이터를 불러오는 중 오류가 발생했습니다:', error);
+        }
+    }
+    useEffect(() => {
+        getReviews();
+    }, [])
     return (
         <Container>
             <form onSubmit={handleSubmit(onValid)}>
@@ -108,23 +125,16 @@ function Review() {
                         </label>
                     );
                 })}
-                {/* {rating} */}
                 <br /><br />
                 {sessionID ? <ReviewBox {...register("comment", { required: true })} /> : "로그인을 먼저해주세요!"}
             </form>
             <Title>방문자 평가</Title>
-            <ReviewContainer>
-                <Rating>&#9733; 4.3</Rating>
-                <Comment>test comment</Comment>
-            </ReviewContainer>
-            <ReviewContainer>
-                <Rating>&#9733; 4.3</Rating>
-                <Comment>test comment</Comment>
-            </ReviewContainer>
-            <ReviewContainer>
-                <Rating>&#9733; 4.3</Rating>
-                <Comment>test comment</Comment>
-            </ReviewContainer>
+            {reviews.map((review: { comment: string; rating: number }, index: number) => (
+                <ReviewContainer key={index}>
+                    <Rating>&#9733; {review.rating}</Rating>
+                    <Comment>{review.comment}</Comment>
+                </ReviewContainer>
+            ))}
         </Container>
     )
 }

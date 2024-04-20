@@ -22,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true
   });
   
-  Favorites.findFavorite = async (id, restaurantID) => {
+  Favorites.findFavorite = async (id, restaurantId) => {
       try {
-        const favorite = await Favorites.findOne({ where: { id, restaurantID } });
+        const favorite = await Favorites.findOne({ where: { id, restaurantId } });
         return favorite;
       } catch (error) {
         throw new Error('즐겨찾기를 찾는 중에 오류가 발생했습니다.');

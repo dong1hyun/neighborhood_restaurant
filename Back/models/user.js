@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         address: {
             type: DataTypes.STRING(100),
-            allowNull: true
+            allowNull: true // 비밀번호는 null이 될 수 있음
         },
         sessionID: {
             type: DataTypes.STRING(100),

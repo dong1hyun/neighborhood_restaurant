@@ -1,3 +1,5 @@
+// routes/review.js
+
 const express = require('express');
 const router = express.Router();
 const { Review, User, Restaurant } = require('../models'); // 모델 가져오기
@@ -33,28 +35,30 @@ router.post('/', async (req, res) => {
     try {
         // 요청으로부터 필요한 데이터 추출
         const { restaurantId, comment, rating } = req.body;
+        console.log(req.body)
         
         // 사용자의 ID 및 주소 정보 가져오기
         const userID = req.userID;
         const userAddress = req.userAddress;
         
         // 음식점의 주소 정보 가져오기
-        const restaurant = await Restaurant.findOne({ where: { restaurantID: restaurantID } });
-        const restaurantAddress = restaurant.address;
+        console.log(restaurantId)
+        const restaurant = await Restaurant.findOne({ where: { restaurantId: restaurantId } });
+        const restaurantAddress = restaurant.restaurantAddress; // 수정된 부분
         
         console.log('사용자 ID:', userID);
         console.log('사용자 주소:', userAddress);
         console.log('음식점 주소:', restaurantAddress);
         
         // 사용자와 음식점의 주소를 비교하여 동일한 지역인지 확인
-        const isSameLocation = isAddressMatch(userAddress, restaurantAddress);
+        // const isSameLocation = isAddressMatch(userAddress, restaurantAddress);
         
-        if (isSameLocation) {
+        if (true) {
             // 사용자와 음식점이 동일한 지역에 있는 경우에만 리뷰 작성 가능
             // Review 모델을 사용하여 데이터베이스에 새로운 리뷰 생성
             const newReview = await Review.create({
                 id: userID, // 사용자 ID
-                restaurantID: restaurantID,
+                restaurantId: restaurantId, // 수정된 부분
                 comment: comment,
                 rating: rating
             });
@@ -71,6 +75,27 @@ router.post('/', async (req, res) => {
         res.status(500).json({ success: false, message: '리뷰 작성 중 오류가 발생했습니다.' });
     }
 });
+
+// 리뷰 조회 요청 처리
+router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/reviews/:restaurantId'로 변경
+    try {
+        const reviews = await Review.findAll({ 
+            where: { restaurantId: req.params.restaurantId }, // 음식점 아이디로 리뷰 검색
+            attributes: ['comment', 'rating'] // 가져올 속성 지정에 rating 추가
+        });
+        // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
+        const commentsWithRating = reviews.map(review => ({
+            comment: review.comment,
+            rating: review.rating
+        }));
+        console.log(commentsWithRating)
+        res.status(200).json(commentsWithRating); // 클라이언트에게 comment와 rating 배열을 응답으로 보냄
+    } catch (error) {
+        console.error('리뷰 조회 중 오류가 발생했습니다:', error);
+        res.status(500).json({ success: false, message: '리뷰 조회 중 오류가 발생했습니다.' });
+    }
+});
+
 
 
 // 두 주소가 동일한 지역인지 확인하는 함수
