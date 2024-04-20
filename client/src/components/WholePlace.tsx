@@ -8,28 +8,36 @@ const Container = styled.div`
     position: relative;
     margin: auto;
     margin-bottom: 100px;
+    margin-top: 30px;
     background-color: black;
     height: 300px;
-    width: 1200px;
+    width: 90%;
     overflow: hidden;
+    @media screen and (max-width: 700px){
+        height: 330px;
+    }
 `
 
 const Slider = styled(motion.div)`
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(4, 1fr);
   position: absolute;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
-  top: 50px;
+  @media screen and (max-width: 700px){
+    grid-template-columns: repeat(2, 1fr);
+  }
 `
 
 const PlaceBox = styled(motion.img)`
     background-color: white;
     width: 100%;
-    height: 200px;
+    height: 300px;
     background-size: cover;
     background-position: center center;
     color: black;
+    @media screen and (max-width: 700px){
+        height: 170px;
+    }
 `
 
 const NextBtn = styled.button`
@@ -45,13 +53,13 @@ const PrevBtn = styled.button`
 
 const SliderVar = {
     hidden: (isBack: boolean) => ({
-        x: isBack ? -1200 - 10 : 1200 + 10,
+        x: isBack ? -window.outerWidth + (window.outerWidth / 10) : window.outerWidth - (window.outerWidth / 10),
     }),
     visible: {
         x: 0,
     },
     exit: (isBack: boolean) => ({
-        x: isBack ? 1200 + 10 : -1200 - 10,
+        x: isBack ? window.outerWidth - (window.outerWidth / 10) : -window.outerWidth + (window.outerWidth / 10),
     }),
 };
 
@@ -76,7 +84,7 @@ export default function MyPlace() {
     }
     const toggleLeaving = () => setLeaving((cur) => !cur);
 
-    const handleImageClick = async (imageUrl:any) => {
+    const handleImageClick = async (imageUrl: any) => {
         try {
             // 클릭된 이미지의 URL을 서버로 전송하여 음식점 ID를 받아옵니다.
             console.log('Sending request for imageUrl:', imageUrl); // URL 요청 콘솔 로깅
@@ -99,7 +107,7 @@ export default function MyPlace() {
             }
         }
 
-        fetchImages();
+        // fetchImages();
     }, []);
     return (
         <Container>
@@ -113,14 +121,8 @@ export default function MyPlace() {
                     transition={{ type: "tween", duration: 1 }}
                     key={Index}
                 >
-                    {imageUrls.slice(Index, Index + 4).map(
-                        (imageUrl, idx) => (
-                            <PlaceBox
-                                src={imageUrl}
-                                key={idx}
-                                onClick={() => handleImageClick(imageUrl)} // 클릭 시 handleImageClick 함수 호출
-                            />
-                        )
+                    {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67"].slice(Index, Index + 4).map(
+                        (i, idx) => (<PlaceBox whileHover={{ scale: 1.1 }} src={i} key={idx} alt="Loding" />)
                     )}
                 </Slider>
                 <PrevBtn onClick={prevPlease}>prev</PrevBtn>
@@ -130,6 +132,16 @@ export default function MyPlace() {
     )
 }
 
+
+// {imageUrls.slice(Index, Index + 4).map(
+//     (imageUrl, idx) => (
+//         <PlaceBox
+//             src={imageUrl}
+//             key={idx}
+//             onClick={() => handleImageClick(imageUrl)} // 클릭 시 handleImageClick 함수 호출
+//         />
+//     )
+// )}
 
 // {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67"].slice(Index, Index + 4).map(
 //                         (i, idx) => (<PlaceBox src={i} key={idx} alt="Loding" />)
