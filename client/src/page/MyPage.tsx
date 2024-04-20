@@ -1,4 +1,5 @@
 import axios from "axios";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -14,6 +15,24 @@ const BoxContainer = styled.div`
     margin-bottom: 100px;
     @media screen and (max-width: 900px) {
         width: 90%;
+    }
+`
+
+const PlaceContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0 auto;
+`
+
+const PlaceBox = styled(motion.img)`
+    margin: 30px;
+    background-color: white;
+    width: 300px;
+    height: 300px;
+    background-size: cover;
+    background-position: center center;
+    color: black;
+    @media screen and (max-width: 700px){
     }
 `
 
@@ -123,11 +142,17 @@ function MyPage() {
     // const getReviewData = async () => {
     //     await axios.get(`/myPage/reviews/${id}`)
     // }
-    
+
 
     //위치, 리뷰, 즐겨찾기
     return (
         <BoxContainer>
+            <Title>즐겨 찾는 식당</Title>
+            <PlaceContainer>
+                {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"].map((i) => {
+                    return <PlaceBox src={i} />;
+                })}
+            </PlaceContainer>
             <Title>나의 리뷰</Title>
             {["리뷰 1", "리뷰 2", "리뷰 3", "리뷰 4"].map((comment) => {
                 return (
