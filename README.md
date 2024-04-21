@@ -1,3 +1,0 @@
-branch2
-
-abcdefg
