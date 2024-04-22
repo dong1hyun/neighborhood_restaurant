@@ -9,13 +9,14 @@ const Container = styled.div`
     margin: auto;
     margin-bottom: 100px;
     margin-top: 30px;
-    background-color: black;
+    background-color: whitesmoke;
     border-radius: 10px;
     height: 300px;
     width: 90%;
     overflow: hidden;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 700px){
-        height: 350px;
+        height: 440px;
     }
 `
 
@@ -25,18 +26,22 @@ const Slider = styled(motion.div)`
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   width: 100%;
+  text-align: center;
   @media screen and (max-width: 700px){
     grid-template-columns: repeat(2, 1fr);
   }
 `
 
 const PlaceImg = styled(motion.img)`
+    margin-top: 30px;
     background-color: white;
-    width: 100%;
-    height: 300px;
+    width:80%;
+    height: 250px;
     background-size: cover;
     background-position: center center;
+    border-radius: 10px;
     color: black;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0,);
     cursor: pointer;
     @media screen and (max-width: 700px){
         height: 170px;
@@ -45,21 +50,25 @@ const PlaceImg = styled(motion.img)`
 
 const PlaceTitle = styled(motion.div)`
     position: absolute;
-    background-color: black;
-    width: 100%;
+    width: 80%;
     height: 25px;
     bottom: 0;
+    left: 10%;
     color: white;
     font-size: 20px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
 `
 
-const NextBtn = styled.button`
+const NextBtn = styled.img`
+    width: 30px;
     position: absolute;
     right: 0;
     top: 50%;
 `
 
-const PrevBtn = styled.button`
+const PrevBtn = styled.img`
+    width: 30px;
     position: absolute;
     top: 50%;
 `
@@ -127,7 +136,7 @@ export default function WholePlace() {
             }
         }
 
-        fetchRestaurant();
+        // fetchRestaurant();
     }, []);
     return (
         <Container>
@@ -141,23 +150,16 @@ export default function WholePlace() {
                     transition={{ type: "tween", duration: 1 }}
                     key={Index}
                 >
-                    {restaurantData.slice(Index, Index + 4).map(
-                        (item: restaurantForm, idx) => (
-                            <PlaceBox onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)}>
-                                <PlaceImg
-                                    // whileHover={{ scale: 1.1 }}
-                                    src={item.img}
-                                    key={idx}
-                                    alt="Loading..."
-                                    onClick={() => handleImageClick(item.restaurantId)} // 클릭 시 handleImageClick 함수 호출
-                                />
-                                {idx + 1 == showTitle ? <PlaceTitle initial={{scale: 0}} animate={{scale:1}} transition={{delay: 0.1}}>{item.restaurantName}</PlaceTitle> : null}
-                            </PlaceBox>
-                        )
+                    {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67"].slice(Index, Index + 4).map(
+                        (i, idx) => (
+                            <PlaceBox>
+                                <PlaceImg onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} src={i} key={idx} alt="Loding" />
+                                {idx + 1 == showTitle ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당 이름!</PlaceTitle> : null}
+                            </PlaceBox>)
                     )}
                 </Slider>
-                <PrevBtn onClick={prevPlease}>prev</PrevBtn>
-                <NextBtn onClick={nextPlease}>next</NextBtn>
+                <PrevBtn src={process.env.PUBLIC_URL + "/back.png"} onClick={prevPlease} />
+                <NextBtn src={process.env.PUBLIC_URL + "/next.png"} onClick={nextPlease} />
             </AnimatePresence>
         </Container>
     )

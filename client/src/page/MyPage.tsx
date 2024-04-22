@@ -152,9 +152,9 @@ function MyPage() {
     }
 
     useEffect(() => {
-        const loggedInSessionID = sessionStorage.getItem('sessionID') + ''; // 세션 스토리지에서 세션 아이디 가져오기
-        setSessionID(loggedInSessionID);
-        getFavoriteData(loggedInSessionID);
+        // const loggedInSessionID = sessionStorage.getItem('sessionID') + ''; // 세션 스토리지에서 세션 아이디 가져오기
+        // setSessionID(loggedInSessionID);
+        // getFavoriteData(loggedInSessionID);
     }, [])
     //위치, 리뷰, 즐겨찾기
     return (

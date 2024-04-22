@@ -187,7 +187,6 @@ export default function Header() {
                             </svg></SearchBtn>
                         </Search>
                         <LoginContainer>
-                            
                             {sessionID ? 
                             <><LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>마이페이지</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
                             : <><LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox><LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox></>}
