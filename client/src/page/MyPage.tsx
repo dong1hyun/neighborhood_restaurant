@@ -57,6 +57,32 @@ const Comment = styled.div`
     margin: 10px;
 `
 
+
+
+const LocationForm = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+`;
+
+const LocationInput = styled.input`
+    width: 300px;
+    height: 30px;
+    margin-right: 10px;
+`;
+
+const GetLocationButton = styled.button`
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+`;
+
+
+
+
 function MyPage() {
     const [searchResult, setSearchResult] = useState<string>('');
     const [sessionID, setSessionID] = useState<string>('');
@@ -64,6 +90,8 @@ function MyPage() {
     const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState();
+    const [userReviews, setUserReviews] = useState<{ comment: string, rating: number }[]>([]);
+
 
     const handleSearch = async () => {
         try {
@@ -133,6 +161,7 @@ function MyPage() {
 
     const sendLocationToServer = async (sessionID: string, address: string) => {
         try {
+            // console.log('서버로 전송하는 세션 아이디:', sessionID); // 세션 아이디 확인용 콘솔
             const response = await axios.post('/location', { sessionID, address });
             console.log('서버로부터의 응답:', response.data);
         } catch (error) {
@@ -140,49 +169,72 @@ function MyPage() {
         }
     };
 
+    const getReviewData = async (sessionID:string) => {
+        try {
+            const response = await axios.get(`/review/userReviews/${sessionID}`);
+            if (response.data.success) {
+                setUserReviews(response.data.reviews);
+            } else {
+                console.error('사용자 리뷰를 가져오는데 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('사용자 리뷰를 가져오는 중 오류가 발생했습니다:', error);
+        }
+    }
+
+
+    
+    // 수정중) 마이페이지 즐겨찾기
+    // 세션아이디로 해당 사용자의 리뷰나 즐겨찾기 가져 올 예정
     const getFavoriteData = async (sessionID:string) => {
-        await axios.get(`/favorite/read/${sessionID}`) //추후에 ㅁ -> id로 바꿀 예정
+        await axios.get(`/favorite/read/${sessionID}`) 
         .then((res) => {
             console.log(res.data);
         })
     }
 
-    const getReviewData = async (sessionID:string) => {
-        await axios.get(`/myPage/reviews/${sessionID}`)
-    }
+
 
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + ''; // 세션 스토리지에서 세션 아이디 가져오기
         setSessionID(loggedInSessionID);
         getFavoriteData(loggedInSessionID);
+        getReviewData(loggedInSessionID);
     }, [])
+
+
+    
     //위치, 리뷰, 즐겨찾기
+ 
     return (
         <BoxContainer>
+            
+            <LocationForm>
+                <LocationInput 
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="위치 검색"
+                />
+                <GetLocationButton onClick={handleSearch}>인증하기</GetLocationButton>
+            </LocationForm>
+
+            <GetLocationButton onClick={handleGetUserLocation}>내 위치 가져오기</GetLocationButton>
+            
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
-                {
-                    
-                }
+                {/* 즐겨찾는 식당 목록 표시 */}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
-            {["리뷰 1", "리뷰 2", "리뷰 3", "리뷰 4"].map((comment) => {
-                return (
-                    <ReviewContainer>
-                        <Rating>&#9733; 4.3</Rating>
-                        <Comment>{comment}</Comment>
-                    </ReviewContainer>
-                )
-            })}
+            {userReviews.map((review, index) => (
+                <ReviewContainer key={index}>
+                    <Rating>&#9733; {review.rating}</Rating>
+                    <Comment>{review.comment}</Comment>
+                </ReviewContainer>
+            ))}
         </BoxContainer>
     )
 }
 
 export default MyPage;
 
-
-
-
-// {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"].map((i) => {
-//                     return <PlaceBox src={i} />;
-//                 })}
