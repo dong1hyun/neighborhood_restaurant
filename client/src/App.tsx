@@ -77,7 +77,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/registerPage" element={<Register />} />
           <Route path="/loginpage" element={<Login />} />
-          <Route path="/myPage" element={<MyPage />} />
+          <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
           <Route path="/place/:id" element={<Place />} />
         </Routes>

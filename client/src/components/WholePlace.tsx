@@ -10,11 +10,12 @@ const Container = styled.div`
     margin-bottom: 100px;
     margin-top: 30px;
     background-color: black;
+    border-radius: 10px;
     height: 300px;
     width: 90%;
     overflow: hidden;
     @media screen and (max-width: 700px){
-        height: 360px;
+        height: 350px;
     }
 `
 

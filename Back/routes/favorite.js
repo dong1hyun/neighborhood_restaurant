@@ -33,4 +33,11 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.get('/read/:sessionID', async (req, res) => {
+    await Favorites.findAll()
+    .then((result) => {
+        res.json(result);
+    })
+})
+
 module.exports = router;

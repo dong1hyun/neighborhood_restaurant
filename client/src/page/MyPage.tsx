@@ -1,6 +1,6 @@
 import axios from "axios";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const BoxContainer = styled.div`
@@ -63,6 +63,7 @@ function MyPage() {
     const [userAddress, setUserAddress] = useState<string>('');
     const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const [restaurantData, setRestaurantData] = useState();
 
     const handleSearch = async () => {
         try {
@@ -139,19 +140,30 @@ function MyPage() {
         }
     };
 
-    // const getReviewData = async () => {
-    //     await axios.get(`/myPage/reviews/${id}`)
-    // }
+    const getFavoriteData = async (sessionID:string) => {
+        await axios.get(`/favorite/read/${sessionID}`) //추후에 ㅁ -> id로 바꿀 예정
+        .then((res) => {
+            console.log(res.data);
+        })
+    }
 
+    const getReviewData = async (sessionID:string) => {
+        await axios.get(`/myPage/reviews/${sessionID}`)
+    }
 
+    useEffect(() => {
+        const loggedInSessionID = sessionStorage.getItem('sessionID') + ''; // 세션 스토리지에서 세션 아이디 가져오기
+        setSessionID(loggedInSessionID);
+        getFavoriteData(loggedInSessionID);
+    }, [])
     //위치, 리뷰, 즐겨찾기
     return (
         <BoxContainer>
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
-                {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"].map((i) => {
-                    return <PlaceBox src={i} />;
-                })}
+                {
+                    
+                }
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {["리뷰 1", "리뷰 2", "리뷰 3", "리뷰 4"].map((comment) => {
@@ -167,3 +179,10 @@ function MyPage() {
 }
 
 export default MyPage;
+
+
+
+
+// {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"].map((i) => {
+//                     return <PlaceBox src={i} />;
+//                 })}

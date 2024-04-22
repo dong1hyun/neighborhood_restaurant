@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import Review from "../components/Review";
 import { session } from "../atom";
 import { useRecoilState } from "recoil";
+import Button from 'react-bootstrap/Button';
 
 const WholeContainer = styled.div`
     display: flex;
@@ -109,8 +110,19 @@ const TimeBtn = styled.button`
 `
 
 const TimeContainer = styled(motion.div)`
-    
 `
+
+const BookMarker = styled.button`
+    color: white;
+    width: 200px;
+    height: 25px;
+    margin-left: 40px;
+    margin-top: 40px;
+    background-color: #1e00ff;
+    border-radius: 5px;
+    border: none;
+`
+
 function Place() {
     const { id } = useParams()
     const [name, setName] = useState();
@@ -128,7 +140,6 @@ function Place() {
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
-                console.log(res.data)
                 setName(res.data.restaurantName);
                 setAddress(res.data.restaurantAddress);
                 setCategory(res.data.restaurantCategory);
@@ -149,6 +160,23 @@ function Place() {
                 console.log(error);
             })
     }
+
+    const handleBookmark = async () => {
+        if (sessionID) {
+            try {
+                const favoritePlaceInfo = {
+                    sessionID: sessionID,
+                    restaurantId: id
+                };
+    
+                const response = await axios.post('/favorite', favoritePlaceInfo);
+            } catch (error) {
+                console.error('즐겨찾기 추가 중 오류가 발생했습니다:', error);
+            }
+        } else {
+            alert("로그인을 먼저해주세요.");
+        }
+    };
  
     useEffect(() => {
         getPlaceData();
@@ -188,6 +216,7 @@ function Place() {
                         }
                     </DetailContainer>
                 </PlaceContainer>
+                <BookMarker onClick={handleBookmark}>즐겨 찾기 추가</BookMarker>
                 <Review />
             </BoxContainer>
             <SideBar>
