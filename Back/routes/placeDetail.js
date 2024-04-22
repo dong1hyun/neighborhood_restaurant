@@ -11,7 +11,6 @@ router.get('/:id', function(req, res) {
     })
     .then(result => {
         if (result) {
-            // console.log('응답 콘솔입니다:', result);
             res.json(result);
         } else {
             console.error('Restaurant not found');

@@ -9,8 +9,6 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.use(async (req, res, next) => {
-    console.log('요청 본문:', req.body);
-    
     // 세션 아이디를 추출
     const sessionID = req.body.sessionID;
     
@@ -35,20 +33,13 @@ router.post('/', async (req, res) => {
     try {
         // 요청으로부터 필요한 데이터 추출
         const { restaurantId, comment, rating } = req.body;
-        console.log(req.body)
-        
         // 사용자의 ID 및 주소 정보 가져오기
         const userID = req.userID;
         const userAddress = req.userAddress;
         
         // 음식점의 주소 정보 가져오기
-        console.log(restaurantId)
         const restaurant = await Restaurant.findOne({ where: { restaurantId: restaurantId } });
         const restaurantAddress = restaurant.restaurantAddress; // 수정된 부분
-        
-        console.log('사용자 ID:', userID);
-        console.log('사용자 주소:', userAddress);
-        console.log('음식점 주소:', restaurantAddress);
         
         // 사용자와 음식점의 주소를 비교하여 동일한 지역인지 확인
         // const isSameLocation = isAddressMatch(userAddress, restaurantAddress);
@@ -88,7 +79,6 @@ router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/revie
             comment: review.comment,
             rating: review.rating
         }));
-        console.log(commentsWithRating)
         res.status(200).json(commentsWithRating); // 클라이언트에게 comment와 rating 배열을 응답으로 보냄
     } catch (error) {
         console.error('리뷰 조회 중 오류가 발생했습니다:', error);

@@ -12,7 +12,6 @@ router.get('/restaurantData', async (_req, res) => {
     try {
         // 음식점 테이블에서 모든 레코드를 가져옵니다.
         const restaurants = await Restaurant.findAll();
-        console.log("식당정보 출력:", restaurants);
         // 각 음식점의 이미지 정보만 추출하여 배열에 담습니다.
         const restaurantData = restaurants.map(restaurant => ({
             restaurantId: restaurant.dataValues.restaurantId,

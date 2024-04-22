@@ -2,18 +2,9 @@ import axios from 'axios';
 import styled from 'styled-components'
 
 const { kakao } = window;
-// interface placeType {
-//     id: Number
-//     place_name: string,
-//     road_address_name: string,
-//     address_name: string,
-//     phone: string,
-//     place_url: string
-// }
 
 // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-
 // 키워드 검색을 요청하는 함수입니다
 export function searchPlaces(inputKeyword) {
     if (!inputKeyword.replace(/^\s+|\s+$/g, '')) {
