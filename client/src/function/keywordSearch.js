@@ -1,23 +1,12 @@
 import axios from 'axios';
-import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-const { kakao } = window as any;
-
-interface placeType {
-    id: Number
-    place_name: string,
-    road_address_name: string,
-    address_name: string,
-    phone: string,
-    place_url: string
-}
+const { kakao } = window;
 
 // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-
 // 키워드 검색을 요청하는 함수입니다
-export function searchPlaces(inputKeyword: string) {
+export function searchPlaces(inputKeyword) {
     if (!inputKeyword.replace(/^\s+|\s+$/g, '')) {
         alert('키워드를 입력해주세요!');
         return false;
@@ -26,11 +15,11 @@ export function searchPlaces(inputKeyword: string) {
     afterSearch(inputKeyword);
 }
 
-function afterSearch(keyword: string) {
+function afterSearch(keyword) {
     // 마커를 담을 배열입니다
-    let markers: any[] = [];
+    let markers = [];
 
-    let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    let mapContainer = document.getElementById('keywordMap'), // 지도를 표시할 div 
         mapOption = {
             center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨
@@ -43,11 +32,10 @@ function afterSearch(keyword: string) {
     let ps = new kakao.maps.services.Places();
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
 
-//자신의 위치로 음식점 조회
     ps.keywordSearch(keyword, placesSearchCB, { category_group_code: 'FD6',/*location: new kakao.maps.LatLng(37.566826, 126.9786567), radius: 10000*/ });
 
     // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
-    function placesSearchCB(data: any, status: any, pagination: any) {
+    function placesSearchCB(data, status, pagination) {
         if (status === kakao.maps.services.Status.OK) {
 
             // 정상적으로 검색이 완료됐으면
@@ -70,14 +58,9 @@ function afterSearch(keyword: string) {
         }
     }
 
-
-    
     // 검색 결과 목록과 마커를 표출하는 함수입니다
-    function displayPlaces(places: any) {
-
-
-      
-//검색한 음식점 정보 저장
+    function displayPlaces(places) {
+        // console.log(places)
         axios.post("http://localhost:3001/restaurant",places);
         let listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),
@@ -134,8 +117,8 @@ function afterSearch(keyword: string) {
     }
 
     // 검색결과 항목을 Element로 반환하는 함수입니다
-    function getListItem(index: number, places: placeType) {
-        console.log(places)
+    function getListItem(index, places) {
+        // console.log(places)
         let el = document.createElement('li')
         let itemStr = `<a href="/place/${places.id}">` + '<div><span class="markerbg marker_' + (index+1) + '"></span>' +
             '<div class="info">' +
@@ -153,12 +136,12 @@ function afterSearch(keyword: string) {
 
         el.innerHTML = itemStr;
         el.className = 'item';
-        // el.addEventListener('click', () => {onRestaurantClick(places.id, places.place_name)})
+        el.addEventListener('mouseover ', (event) => {event.target.style.scale = 1.2})
         return el;
     }
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-    function addMarker(position: any, idx: any, title: any) {
+    function addMarker(position, idx, title) {
         let imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
             imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
             imgOptions = {
@@ -187,7 +170,7 @@ function afterSearch(keyword: string) {
     }
 
     // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
-    function displayPagination(pagination: any) {
+    function displayPagination(pagination) {
         let paginationEl = document.getElementById('pagination'),
             fragment = document.createDocumentFragment(),
             i;
@@ -219,7 +202,7 @@ function afterSearch(keyword: string) {
 
     // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
     // 인포윈도우에 장소명을 표시합니다
-    function displayInfowindow(marker: any, title: any) {
+    function displayInfowindow(marker, title) {
         let content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
 
         infowindow.setContent(content);
@@ -227,7 +210,7 @@ function afterSearch(keyword: string) {
     }
 
     // 검색결과 목록의 자식 Element를 제거하는 함수입니다
-    function removeAllChildNods(el: any) {
+    function removeAllChildNods(el) {
         while (el.hasChildNodes()) {
             el.removeChild(el.lastChild);
         }

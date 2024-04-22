@@ -1,18 +1,16 @@
+//검색한 식당 또는 위치의 지도와 식당 목록을 리턴하는 컴포넌트
 import styled from "styled-components";
 
-const Map = styled.div`
-    width: 600px;
-    height: 500px;
-    border-radius: 10px;
-    border: 2px solid black;
-`
 const MapContainer = styled.div`
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
+    position: relative;
     padding:0;
     font-family:'Malgun Gothic',dotum,'돋움',sans-serif;
     font-size:12px;
+    @media screen and (max-width: 700px) {
+        position: none;
+        display: flex;
+        flex-direction: column;
+    }
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
 .map_wrap {position:relative;width:100%;height:500px;}
 #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
@@ -23,21 +21,51 @@ const MapContainer = styled.div`
 #menu_wrap .option button {margin-left:5px;}
 `
 
+const Map = styled.div`
+    position: relative;
+    width: 80%;
+    height: 500px;
+    border-radius: 10px;
+    border: 2px solid black;
+    margin: 0 auto;
+    @media screen and (max-width: 700px) {
+        height: 300px;
+        position: none;
+        margin-bottom: 10px;
+    }
+`
+
+
 const List = styled.div`
-background-color: whitesmoke;
-height: 500px;
+position: absolute;
+z-index: 3;
+background-color: rgb(255,255,255, 0.7);
+height: 480px;
 width: 300px;
+right: 11%;
+top: 10px;
 overflow-y: scroll;
     #placesList .item .markerbg {
         float:left;
         position:absolute;
         width:36px;
-         height:37px;
+        height:37px;
         margin:10px 0 0 10px;
         background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
 }
+overflow-x: hidden;
+@media screen and (max-width: 700px) {
+    position: static;
+    width: 80%;
+    height: 300px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
 #placesList li {list-style: none;}
-#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+#placesList .item {position:relative;border-bottom:1px solid #888;cursor: pointer; overflow: hidden; min-height: 65px;}
+#placesList .item:hover {
+    scale: 1.05;
+}
 #placesList .item span {display: block;margin-top:4px;}
 #placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 #placesList .item .info{padding:10px 0 10px 55px;}
@@ -70,12 +98,11 @@ border-radius: 10px;
 export function KakaoMap() {
     return (
         <MapContainer>
-            <Map id="map" />
+            <Map id="keywordMap" />
             <List>
                 <ul id="placesList"></ul>
                 <div id="pagination"></div>
             </List>
         </MapContainer>
-
     )
 }

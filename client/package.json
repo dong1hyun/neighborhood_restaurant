@@ -57,5 +57,9 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6"
-  }
+  },
+  "description": "branch1",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }

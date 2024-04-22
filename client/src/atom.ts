@@ -10,7 +10,22 @@ export const neighborhood_search = atom({
     default: false
 })
 
-export const register_showing = atom({
-    key:"register_showing",
+export const loginState = atom({
+    key:"login",
     default: false
+})
+
+export const signinState = atom({
+    key:"signin",
+    default: false
+})
+
+export const session = atom({
+    key:"session",
+    default: ''
+})
+
+export const name = atom({
+    key:"name",
+    default: ''
 })

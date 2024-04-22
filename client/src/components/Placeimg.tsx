@@ -5,10 +5,14 @@ import styled from "styled-components";
 
 const Place_Img = styled.img`
     border: solid 3px white;
-    margin: 30px;
     width: 400px;
     height: 400px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
+    @media screen and (max-width: 900px) {
+        margin: 0 auto;
+        width: 200px;
+        height: 200px;
+    }
 `
 
 export default function PlaceImg() {
@@ -27,3 +31,5 @@ export default function PlaceImg() {
         <Place_Img src={imgURL} alt="음식 사진" />
     )
 }
+
+//"https://t1.kakaocdn.net/mystore/D9EC1E16FC734163811D77FF1FDDA9FA"
