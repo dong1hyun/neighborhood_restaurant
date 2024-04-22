@@ -1,7 +1,7 @@
 import axios from "axios";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 const BoxContainer = styled.div`
     display: flex;
@@ -57,8 +57,6 @@ const Comment = styled.div`
     margin: 10px;
 `
 
-
-
 const LocationForm = styled.div`
     display: flex;
     align-items: center;
@@ -80,18 +78,47 @@ const GetLocationButton = styled.button`
     cursor: pointer;
 `;
 
-
-
-
 function MyPage() {
     const [searchResult, setSearchResult] = useState<string>('');
     const [sessionID, setSessionID] = useState<string>('');
     const [userAddress, setUserAddress] = useState<string>('');
     const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [restaurantData, setRestaurantData] = useState();
+    const [restaurantData, setRestaurantData] = useState<any[]>([]);
     const [userReviews, setUserReviews] = useState<{ comment: string, rating: number }[]>([]);
 
+    useEffect(() => {
+        const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
+        setSessionID(loggedInSessionID);
+        getFavoriteData(loggedInSessionID);
+        getReviewData(loggedInSessionID);
+    }, [])
+
+    const getFavoriteData = async (sessionID: string) => {
+        try {
+            const response = await axios.get(`/restaurant/${sessionID}`);
+            if (response.data.restaurantData) {
+                setRestaurantData(response.data.restaurantData);
+            } else {
+                console.error('즐겨찾는 식당 데이터를 불러오지 못했습니다.');
+            }
+        } catch (error) {
+            console.error('즐겨찾는 식당 데이터를 가져오는 중 오류가 발생했습니다:', error);
+        }
+    }
+
+    const getReviewData = async (sessionID: string) => {
+        try {
+            const response = await axios.get(`/review/userReviews/${sessionID}`);
+            if (response.data.success) {
+                setUserReviews(response.data.reviews);
+            } else {
+                console.error('사용자 리뷰를 불러오지 못했습니다.');
+            }
+        } catch (error) {
+            console.error('사용자 리뷰를 가져오는 중 오류가 발생했습니다:', error);
+        }
+    }
 
     const handleSearch = async () => {
         try {
@@ -104,11 +131,10 @@ function MyPage() {
                 const { address_name } = response.data.documents[0];
                 setSearchResult(address_name);
                 if (isAddressMatch(address_name, userAddress)) {
-                    console.log('검색된 위치와 사용자 위치가 동일합니다.');
-                    // 여기서 서버로 값을 보내는 작업 수행
+                    console.log('검색된 위치가 사용자의 위치와 일치합니다.');
                     sendLocationToServer(sessionID, address_name);
                 } else {
-                    console.log('검색된 위치와 사용자 위치가 동일하지 않습니다.');
+                    console.log('검색된 위치가 사용자의 위치와 일치하지 않습니다.');
                 }
             } else {
                 console.error('검색 결과를 찾을 수 없습니다.');
@@ -118,7 +144,6 @@ function MyPage() {
         }
     };
 
-
     const handleGetUserLocation = () => {
         navigator.geolocation.getCurrentPosition(async (position) => {
             const { latitude, longitude } = position.coords;
@@ -126,11 +151,10 @@ function MyPage() {
             const address = await getAddressFromCoordinates(latitude, longitude);
             if (address) {
                 setUserAddress(address);
-                console.log('사용자 위치:', address);
+                console.log('사용자의 위치:', address);
             }
         });
     };
-
 
     const getAddressFromCoordinates = async (latitude: number, longitude: number) => {
         try {
@@ -161,54 +185,15 @@ function MyPage() {
 
     const sendLocationToServer = async (sessionID: string, address: string) => {
         try {
-            // console.log('서버로 전송하는 세션 아이디:', sessionID); // 세션 아이디 확인용 콘솔
             const response = await axios.post('/location', { sessionID, address });
-            console.log('서버로부터의 응답:', response.data);
+            console.log('서버 응답:', response.data);
         } catch (error) {
             console.error('서버로 위치 전송 중 오류가 발생했습니다:', error);
         }
     };
 
-    const getReviewData = async (sessionID:string) => {
-        try {
-            const response = await axios.get(`/review/userReviews/${sessionID}`);
-            if (response.data.success) {
-                setUserReviews(response.data.reviews);
-            } else {
-                console.error('사용자 리뷰를 가져오는데 실패했습니다.');
-            }
-        } catch (error) {
-            console.error('사용자 리뷰를 가져오는 중 오류가 발생했습니다:', error);
-        }
-    }
-
-
-    
-    // 수정중) 마이페이지 즐겨찾기
-    // 세션아이디로 해당 사용자의 리뷰나 즐겨찾기 가져 올 예정
-    const getFavoriteData = async (sessionID:string) => {
-        await axios.get(`/favorite/read/${sessionID}`) 
-        .then((res) => {
-            console.log(res.data);
-        })
-    }
-
-
-
-    useEffect(() => {
-        const loggedInSessionID = sessionStorage.getItem('sessionID') + ''; // 세션 스토리지에서 세션 아이디 가져오기
-        setSessionID(loggedInSessionID);
-        getFavoriteData(loggedInSessionID);
-        getReviewData(loggedInSessionID);
-    }, [])
-
-
-    
-    //위치, 리뷰, 즐겨찾기
- 
     return (
         <BoxContainer>
-            
             <LocationForm>
                 <LocationInput 
                     type="text"
@@ -223,7 +208,9 @@ function MyPage() {
             
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
-                {/* 즐겨찾는 식당 목록 표시 */}
+                {restaurantData.map((restaurant, index) => (
+                    <PlaceBox key={index} src={restaurant.img} alt={restaurant.restaurantName} />
+                ))}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
@@ -237,4 +224,3 @@ function MyPage() {
 }
 
 export default MyPage;
-
