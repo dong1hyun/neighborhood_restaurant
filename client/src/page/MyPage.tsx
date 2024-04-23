@@ -124,7 +124,7 @@ function MyPage() {
         try {
             const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
                 headers: {
-                    Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
+                    Authorization: "KakaoAK %REACT_APP_JAVASCRIPT_KEY%"
                 }
             });
             if (response.data.documents && response.data.documents.length > 0) {
