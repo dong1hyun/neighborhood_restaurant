@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import React from 'react';
 import setMarker from "../function/placeMarker";
-import PlaceImg from "../components/Placeimg";
+import PlaceImg from "../components/PlaceImg";
 import { motion } from "framer-motion";
 import Review from "../components/Review";
 import { session } from "../atom";
