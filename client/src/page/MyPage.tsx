@@ -224,3 +224,7 @@ function MyPage() {
 }
 
 export default MyPage;
+
+
+// 마이페이지 즐겨찾기 음식점 클릭시 해당 RestaurantId로 이동
+// 마이페이지 리뷰들에 사용자 이름 표시 및 클릭시 RestaurantId로 이동 or 해당 RestaurantId점명만 표시
