@@ -8,8 +8,6 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.post('/', (req, res, next) => {
-    console.log(JSON.stringify(req.body));
-
     passport.authenticate('local', async (authError, user, info) => {
         if (authError) {
             return next(authError);

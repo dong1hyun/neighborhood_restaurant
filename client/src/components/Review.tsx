@@ -62,7 +62,6 @@ function Review() {
     const [reviews, setReviews] = useState([]);
     const { register, handleSubmit, reset } = useForm<reviewForm>();
     const { id } = useParams();
-    console.log("값:",useForm())
     const onValid = async ({ comment }: reviewForm) => {
         try {
             // 리뷰를 서버로 전송하여 데이터베이스에 저장
@@ -89,13 +88,12 @@ function Review() {
                 throw new Error("No data received from server");
             }
             setReviews(response.data);
-            console.log('리뷰 데이터:', response.data); // 리뷰 데이터를 콘솔에 출력
         } catch (error) {
             console.error('리뷰 데이터를 불러오는 중 오류가 발생했습니다:', error);
         }
     }
     useEffect(() => {
-        getReviews();
+        // getReviews();
     }, [])
     return (
         <Container>
@@ -126,7 +124,7 @@ function Review() {
                     );
                 })}
                 <br /><br />
-                {sessionID ? <ReviewBox {...register("comment", { required: true })} /> : "로그인을 먼저해주세요!"}
+                {sessionID ? <ReviewBox {...register("comment", { required: true })} /> : "리뷰를 작성하려면 로그인을 먼저해주세요!"}
             </form>
             <Title>방문자 평가</Title>
             {reviews.map((review: { comment: string; rating: number }, index: number) => (
