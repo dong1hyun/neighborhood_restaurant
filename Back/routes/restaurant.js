@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { Restaurant, User, Favorite } = require('../models');
+const { Restaurant, User, Favorites } = require('../models');
 const axios = require('axios'); // axios 모듈 가져오기
 
 router.use(express.json());
@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
 
 
 
-// 수정중) 마이페이지 즐겨찾기
+// 마이페이지 로그인 된 사용자의 즐겨찾기
 router.get('/:sessionID', async (req, res) => {
     try {
         // 세션 아이디를 추출합니다.
@@ -73,14 +73,13 @@ router.get('/:sessionID', async (req, res) => {
         const userID = user.id;
 
         // 사용자가 즐겨찾는 식당 정보를 가져옵니다.
-        const favorites = await Favorite.findAll({ where: { userId: userID } });
+        const favorites = await Favorites.findAll({ where: { id: userID } });
 
         // 사용자가 즐겨찾는 식당의 ID 배열을 생성합니다.
         const favoriteRestaurantIds = favorites.map(favorite => favorite.restaurantId);
 
         // 즐겨찾는 식당들의 정보를 가져옵니다.
         const restaurants = await Restaurant.findAll({ where: { restaurantId: favoriteRestaurantIds } });
-
 
         // 각 음식점의 이미지 정보만 추출하여 배열에 담습니다.
         const restaurantData = restaurants.map(restaurant => ({
@@ -95,7 +94,6 @@ router.get('/:sessionID', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching images' }); // 에러 발생 시 500 상태코드와 에러 메시지를 응답합니다.
     }
 });
-
 
 
 module.exports = router;
