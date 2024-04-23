@@ -14,7 +14,7 @@ const Container = styled.div`
     height: 300px;
     width: 90%;
     overflow: hidden;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 700px){
         height: 440px;
     }
@@ -41,7 +41,7 @@ const PlaceImg = styled(motion.img)`
     background-position: center center;
     border-radius: 10px;
     color: black;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0,);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
     cursor: pointer;
     @media screen and (max-width: 700px){
         height: 170px;

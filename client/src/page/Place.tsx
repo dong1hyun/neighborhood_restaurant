@@ -160,7 +160,7 @@ function Place() {
                 console.log(error);
             })
     }
-
+    
     const handleBookmark = async () => {
         if (sessionID) {
             try {

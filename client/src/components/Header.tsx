@@ -13,7 +13,7 @@ import Login from "./Login";
 
 const Logo = styled(motion.div)`
     text-decoration: none;
-    color: white;
+    color: #3498db;
     margin-left: 30px;
     margin-top:33px;
     margin-bottom: 10px;
@@ -46,7 +46,7 @@ const SearchInput = styled.input`
     font-size: 20px;
     border-radius: 10px;
     border-width: 0;
-    background-color: whitesmoke;
+    background-color: rgba(189, 195, 199,1.0);
     border-width: 0px;
     outline: none;
     align-items: center;
@@ -85,7 +85,7 @@ const LoginContainer = styled.div`
 `
 
 const LoginBox = styled(motion.button)`
-    color: white;
+    color: black;
     margin: 10px;
     margin-top: 20px;
     background-color: transparent;
@@ -164,7 +164,7 @@ export default function Header() {
         <>
             {signin ? <Register /> : null}
             {login ? <Login /> : null}
-            <Navbar expand="md" className="bg-black mb-5">
+            <Navbar expand="md" className="bg-light shadow mb-5">
                 <Navbar.Toggle className="bg-white" aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="" id="basic-navbar-nav">
                     <Nav className="me-auto">

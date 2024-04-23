@@ -112,7 +112,7 @@ function Review() {
                             <span
                                 className="star"
                                 style={{
-                                    color: currentRating <= (hover || rating) ? "#ffc107" : "#e4e5e9",
+                                    color: currentRating <= (hover || rating) ? "rgba(30, 144, 255,1.0)" : "#e4e5e9",
                                     fontSize: "20px"
                                 }}
                                 onMouseEnter={() => setHover(currentRating)}

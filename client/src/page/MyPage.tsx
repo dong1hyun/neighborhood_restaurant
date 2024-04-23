@@ -208,7 +208,6 @@ function MyPage() {
  
     return (
         <BoxContainer>
-            
             <LocationForm>
                 <LocationInput 
                     type="text"

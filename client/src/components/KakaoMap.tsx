@@ -26,7 +26,7 @@ const Map = styled.div`
     width: 80%;
     height: 500px;
     border-radius: 10px;
-    border: 2px solid black;
+    border: 2px solid white;
     margin: 0 auto;
     @media screen and (max-width: 700px) {
         height: 300px;
@@ -91,7 +91,7 @@ overflow-x: hidden;
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 border-radius: 10px;
-    border: 2px solid black;
+    border: 2px solid rgba(0, 0, 0, 0.5);
     margin: 2px;
 `
 

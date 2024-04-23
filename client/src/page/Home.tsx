@@ -11,10 +11,17 @@ const HomeContainer = styled.div`
     flex-direction: column;
 `
 
+const Title = styled.div`
+    font-size: 50px;
+    margin-left: 50px;
+`
+
 function Home() {
     return (
         <HomeContainer>
+            <Title>#중식</Title>
             <MyPlace />
+            <Title>#일식</Title>
             <WholePlace />
         </HomeContainer>
     )
