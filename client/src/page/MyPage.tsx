@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
 
 const BoxContainer = styled.div`
     display: flex;
@@ -86,6 +88,8 @@ function MyPage() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState<any[]>([]);
     const [userReviews, setUserReviews] = useState<{ comment: string, rating: number }[]>([]);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
@@ -94,6 +98,7 @@ function MyPage() {
         getReviewData(loggedInSessionID);
     }, [])
 
+    // 마이페이지 사용자 즐겨찾기
     const getFavoriteData = async (sessionID: string) => {
         try {
             const response = await axios.get(`/restaurant/${sessionID}`);
@@ -107,6 +112,7 @@ function MyPage() {
         }
     }
 
+    // 마이페이지 사용자 리뷰
     const getReviewData = async (sessionID: string) => {
         try {
             const response = await axios.get(`/review/userReviews/${sessionID}`);
@@ -120,6 +126,8 @@ function MyPage() {
         }
     }
 
+    
+    // 검색한 x, y 위치 가져오는 코드
     const handleSearch = async () => {
         try {
             const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
@@ -144,6 +152,7 @@ function MyPage() {
         }
     };
 
+    // 사용자 x, y 위치 가져오는 코드
     const handleGetUserLocation = () => {
         navigator.geolocation.getCurrentPosition(async (position) => {
             const { latitude, longitude } = position.coords;
@@ -156,6 +165,7 @@ function MyPage() {
         });
     };
 
+    // 사용자 위치 좌표 기반으로 주소 변경
     const getAddressFromCoordinates = async (latitude: number, longitude: number) => {
         try {
             const response = await axios.get(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`, {
@@ -176,6 +186,7 @@ function MyPage() {
         }
     };
 
+    // 주소지 비교 함수
     const isAddressMatch = (address1: string, address2: string): boolean => {
         const regex = /(.+?(읍|면|동))/;
         const match1 = address1.match(regex);
@@ -183,6 +194,7 @@ function MyPage() {
         return !!match1 && !!match2 && match1[1] === match2[1];
     };
 
+    // 인증된 주소 서버로 요청
     const sendLocationToServer = async (sessionID: string, address: string) => {
         try {
             const response = await axios.post('/location', { sessionID, address });
@@ -209,8 +221,13 @@ function MyPage() {
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
                 {restaurantData.map((restaurant, index) => (
-                    <PlaceBox key={index} src={restaurant.img} alt={restaurant.restaurantName} />
-                ))}
+                    <PlaceBox
+                    key={index}
+                    src={restaurant.img}
+                    alt={restaurant.restaurantName}
+                    onClick={() => navigate(`/place/${restaurant.restaurantId}`)} // 이미지 클릭 시 페이지 이동
+                />
+            ))}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (

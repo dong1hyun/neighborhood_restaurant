@@ -109,7 +109,7 @@ export default function MyPlace() {
 
     const handleImageClick = async (restaurantId: Number) => {
         try {
-            // 클릭된 이미지의 URL을 서버로 전송하여 음식점 ID를 받아옵니다.
+            // 클릭된 음식점 ID를 받아옵니다.
             navigate(`/place/${restaurantId}`); // 해당하는 place의 ID로 이동
         } catch (error) {
             console.error('Error fetching restaurantId:', error);
