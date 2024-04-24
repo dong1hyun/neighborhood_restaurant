@@ -69,16 +69,28 @@ router.post('/', async (req, res) => {
 
 // 리뷰 조회 요청 처리
 router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/reviews/:restaurantId'로 변경
+    
     try {
+        const restaurantId = req.params.restaurantId;
+    
+        // 음식점 아이디로 리뷰를 조회합니다.
         const reviews = await Review.findAll({ 
-            where: { restaurantId: req.params.restaurantId }, // 음식점 아이디로 리뷰 검색
-            attributes: ['comment', 'rating'] // 가져올 속성 지정에 rating 추가
+            where: { restaurantId: restaurantId },
+            attributes: ['comment', 'rating', 'id'] // 사용자 ID를 가져오기 위해 userId 속성 추가
         });
+
+        
         // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
-        const commentsWithRating = reviews.map(review => ({
+        const commentsWithRating = await Promise.all(reviews.map(async (review) => {
+        const user = await User.findOne({ where: { id: review.id } }); // 리뷰 작성자의 사용자 정보를 가져옵니다.
+        const userName = user ? user.name : "Unknown"; // 사용자 이름을 가져옵니다. 없으면 "Unknown"으로 표시합니다.
+        return {
             comment: review.comment,
-            rating: review.rating
-        }));
+            rating: review.rating,
+            userName: userName // 리뷰에 사용자 이름 추가
+        };
+    }));
+    
         res.status(200).json(commentsWithRating); // 클라이언트에게 comment와 rating 배열을 응답으로 보냄
     } catch (error) {
         console.error('리뷰 조회 중 오류가 발생했습니다:', error);
