@@ -87,7 +87,8 @@ function MyPage() {
     const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState<any[]>([]);
-    const [userReviews, setUserReviews] = useState<{ restaurantId: string, comment: string, rating: number }[]>([]);
+    const [userReviews, setUserReviews] = useState<{ restaurantId: string, comment: string, rating: number, userName: string }[]>([]);
+    const [userName, setUserName] = useState<string>(''); // 사용자 이름 상태 추가
     const navigate = useNavigate();
 
 
@@ -118,6 +119,7 @@ function MyPage() {
             const response = await axios.get(`/review/userReviews/${sessionID}`);
             if (response.data.success) {
                 setUserReviews(response.data.reviews);
+                setUserName(response.data.userName); // 사용자 이름 설정
             } else {
                 console.error('사용자 리뷰를 불러오지 못했습니다.');
             }
@@ -234,10 +236,11 @@ function MyPage() {
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
                 <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}> 
+                    <div>작성자: {userName}</div>
                     <Rating>&#9733; {review.rating}</Rating>
                     <Comment>{review.comment}</Comment>
-            </ReviewContainer>
-            ))}
+                </ReviewContainer>
+                ))}
         </BoxContainer>
     )
 }

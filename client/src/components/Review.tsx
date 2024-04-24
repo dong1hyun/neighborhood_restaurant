@@ -62,6 +62,7 @@ function Review() {
     const [reviews, setReviews] = useState([]);
     const { register, handleSubmit, reset } = useForm<reviewForm>();
     const { id } = useParams();
+    
     const onValid = async ({ comment }: reviewForm) => {
         try {
             // 리뷰를 서버로 전송하여 데이터베이스에 저장
@@ -93,7 +94,7 @@ function Review() {
         }
     }
     useEffect(() => {
-        // getReviews();
+        getReviews();
     }, [])
     return (
         <Container>
