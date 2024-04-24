@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
 
 const BoxContainer = styled.div`
     display: flex;
@@ -85,7 +87,10 @@ function MyPage() {
     const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState<any[]>([]);
-    const [userReviews, setUserReviews] = useState<{ comment: string, rating: number }[]>([]);
+    const [userReviews, setUserReviews] = useState<{ restaurantId: string, comment: string, rating: number, userName: string }[]>([]);
+    const [userName, setUserName] = useState<string>(''); // 사용자 이름 상태 추가
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
@@ -94,6 +99,7 @@ function MyPage() {
         getReviewData(loggedInSessionID);
     }, [])
 
+    // 마이페이지 사용자 즐겨찾기
     const getFavoriteData = async (sessionID: string) => {
         try {
             const response = await axios.get(`/restaurant/${sessionID}`);
@@ -107,11 +113,13 @@ function MyPage() {
         }
     }
 
+    // 마이페이지 사용자 리뷰
     const getReviewData = async (sessionID: string) => {
         try {
             const response = await axios.get(`/review/userReviews/${sessionID}`);
             if (response.data.success) {
                 setUserReviews(response.data.reviews);
+                setUserName(response.data.userName); // 사용자 이름 설정
             } else {
                 console.error('사용자 리뷰를 불러오지 못했습니다.');
             }
@@ -119,7 +127,11 @@ function MyPage() {
             console.error('사용자 리뷰를 가져오는 중 오류가 발생했습니다:', error);
         }
     }
-
+    const handleReviewClick = (restaurantId: string) => {
+        navigate(`/place/${restaurantId}`);
+    };
+    
+    // 검색한 x, y 위치 가져오는 코드
     const handleSearch = async () => {
         try {
             const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
@@ -144,6 +156,7 @@ function MyPage() {
         }
     };
 
+    // 사용자 x, y 위치 가져오는 코드
     const handleGetUserLocation = () => {
         navigator.geolocation.getCurrentPosition(async (position) => {
             const { latitude, longitude } = position.coords;
@@ -156,6 +169,7 @@ function MyPage() {
         });
     };
 
+    // 사용자 위치 좌표 기반으로 주소 변경
     const getAddressFromCoordinates = async (latitude: number, longitude: number) => {
         try {
             const response = await axios.get(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`, {
@@ -176,6 +190,7 @@ function MyPage() {
         }
     };
 
+    // 주소지 비교 함수
     const isAddressMatch = (address1: string, address2: string): boolean => {
         const regex = /(.+?(읍|면|동))/;
         const match1 = address1.match(regex);
@@ -183,6 +198,7 @@ function MyPage() {
         return !!match1 && !!match2 && match1[1] === match2[1];
     };
 
+    // 인증된 주소 서버로 요청
     const sendLocationToServer = async (sessionID: string, address: string) => {
         try {
             const response = await axios.post('/location', { sessionID, address });
@@ -209,22 +225,24 @@ function MyPage() {
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
                 {restaurantData.map((restaurant, index) => (
-                    <PlaceBox key={index} src={restaurant.img} alt={restaurant.restaurantName} />
-                ))}
+                    <PlaceBox
+                    key={index}
+                    src={restaurant.img}
+                    alt={restaurant.restaurantName}
+                    onClick={() => navigate(`/place/${restaurant.restaurantId}`)} // 이미지 클릭 시 페이지 이동
+                />
+            ))}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
-                <ReviewContainer key={index}>
+                <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}> 
+                    <div>작성자: {userName}</div>
                     <Rating>&#9733; {review.rating}</Rating>
                     <Comment>{review.comment}</Comment>
                 </ReviewContainer>
-            ))}
+                ))}
         </BoxContainer>
     )
 }
 
 export default MyPage;
-
-
-// 마이페이지 즐겨찾기 음식점 클릭시 해당 RestaurantId로 이동
-// 마이페이지 리뷰들에 사용자 이름 표시 및 클릭시 RestaurantId로 이동 or 해당 RestaurantId점명만 표시

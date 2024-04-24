@@ -1,4 +1,3 @@
-// routes/review.js
 
 const express = require('express');
 const router = express.Router();
@@ -39,17 +38,17 @@ router.post('/', async (req, res) => {
         
         // 음식점의 주소 정보 가져오기
         const restaurant = await Restaurant.findOne({ where: { restaurantId: restaurantId } });
-        const restaurantAddress = restaurant.restaurantAddress; // 수정된 부분
+        const restaurantAddress = restaurant.restaurantAddress; 
         
         // 사용자와 음식점의 주소를 비교하여 동일한 지역인지 확인
-        // const isSameLocation = isAddressMatch(userAddress, restaurantAddress);
+        const isSameLocation = isAddressMatch(userAddress, restaurantAddress);
         
-        if (true) {
+        if (isSameLocation) {
             // 사용자와 음식점이 동일한 지역에 있는 경우에만 리뷰 작성 가능
             // Review 모델을 사용하여 데이터베이스에 새로운 리뷰 생성
             const newReview = await Review.create({
                 id: userID, // 사용자 ID
-                restaurantId: restaurantId, // 수정된 부분
+                restaurantId: restaurantId,
                 comment: comment,
                 rating: rating
             });
@@ -67,18 +66,31 @@ router.post('/', async (req, res) => {
     }
 });
 
+
 // 리뷰 조회 요청 처리
 router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/reviews/:restaurantId'로 변경
+    
     try {
+        const restaurantId = req.params.restaurantId;
+    
+        // 음식점 아이디로 리뷰를 조회합니다.
         const reviews = await Review.findAll({ 
-            where: { restaurantId: req.params.restaurantId }, // 음식점 아이디로 리뷰 검색
-            attributes: ['comment', 'rating'] // 가져올 속성 지정에 rating 추가
+            where: { restaurantId: restaurantId },
+            attributes: ['comment', 'rating', 'id'] // 사용자 ID를 가져오기 위해 userId 속성 추가
         });
+
+        
         // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
-        const commentsWithRating = reviews.map(review => ({
+        const commentsWithRating = await Promise.all(reviews.map(async (review) => {
+        const user = await User.findOne({ where: { id: review.id } }); // 리뷰 작성자의 사용자 정보를 가져옵니다.
+        const userName = user ? user.name : "Unknown"; // 사용자 이름을 가져옵니다. 없으면 "Unknown"으로 표시합니다.
+        return {
             comment: review.comment,
-            rating: review.rating
-        }));
+            rating: review.rating,
+            userName: userName // 리뷰에 사용자 이름 추가
+        };
+    }));
+    
         res.status(200).json(commentsWithRating); // 클라이언트에게 comment와 rating 배열을 응답으로 보냄
     } catch (error) {
         console.error('리뷰 조회 중 오류가 발생했습니다:', error);
@@ -103,29 +115,33 @@ router.get('/userReviews/:sessionID', async (req, res) => {
             return;
         }
 
-        // 사용자의 ID를 가져옴
+        // 사용자의 ID 및 이름 가져옴
         const userID = user.id;
+        const userName = user.name;
 
         // 해당 사용자가 작성한 리뷰들을 조회
         const userReviews = await Review.findAll({
             where: { id: userID }, // 사용자의 ID로 리뷰 검색
-            attributes: ['comment', 'rating'] // 가져올 속성 지정에 rating 추가
+            attributes: ['comment', 'rating', 'restaurantId'] // 가져올 속성 지정에 rating 추가
         });
 
         // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
         const commentsWithRating = userReviews.map(review => ({
             comment: review.comment,
-            rating: review.rating
+            rating: review.rating,
+            restaurantId: review.restaurantId,
+            //userName: userName // 사용자 이름 추가
         }));
 
-        // 클라이언트에게 리뷰 데이터를 응답으로 보냄
-        res.status(200).json({ success: true, reviews: commentsWithRating });
+        // 클라이언트에게 리뷰 데이터 및 사용자 이름을 응답으로 보냄
+        res.status(200).json({ success: true, reviews: commentsWithRating, userName: userName });
     } catch (error) {
         // 오류 발생 시 클라이언트에게 오류 메시지를 응답으로 보냄
         console.error('사용자 리뷰 조회 중 오류가 발생했습니다:', error);
         res.status(500).json({ success: false, message: '사용자 리뷰 조회 중 오류가 발생했습니다.' });
     }
 });
+
 
 
 
