@@ -87,7 +87,7 @@ function MyPage() {
     const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState<any[]>([]);
-    const [userReviews, setUserReviews] = useState<{ comment: string, rating: number }[]>([]);
+    const [userReviews, setUserReviews] = useState<{ restaurantId: string, comment: string, rating: number }[]>([]);
     const navigate = useNavigate();
 
 
@@ -125,7 +125,9 @@ function MyPage() {
             console.error('사용자 리뷰를 가져오는 중 오류가 발생했습니다:', error);
         }
     }
-
+    const handleReviewClick = (restaurantId: string) => {
+        navigate(`/place/${restaurantId}`);
+    };
     
     // 검색한 x, y 위치 가져오는 코드
     const handleSearch = async () => {
@@ -231,17 +233,13 @@ function MyPage() {
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
-                <ReviewContainer key={index}>
+                <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}> 
                     <Rating>&#9733; {review.rating}</Rating>
                     <Comment>{review.comment}</Comment>
-                </ReviewContainer>
+            </ReviewContainer>
             ))}
         </BoxContainer>
     )
 }
 
 export default MyPage;
-
-
-// 마이페이지 즐겨찾기 음식점 클릭시 해당 RestaurantId로 이동
-// 마이페이지 리뷰들에 사용자 이름 표시 및 클릭시 RestaurantId로 이동 or 해당 RestaurantId점명만 표시
