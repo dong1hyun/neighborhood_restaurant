@@ -9,6 +9,9 @@ const LocationContainer = styled.div`
     margin-top: 30px;
     margin-bottom: 50px;
     text-align: center;
+    /* @media screen and (max-width: 700px){
+        scale: 0.8;        
+    } */
 `
 
 
@@ -29,11 +32,11 @@ const SetLocationButton = styled.button`
     border: none;
     padding: 8px 16px;
     border-radius: 5px;
-    margin-top: 40px;
     cursor: pointer;
 `;
 
 const LocationForm = styled.form`
+margin-top: 40px;
 `;
 
 const LocationInput = styled.input`

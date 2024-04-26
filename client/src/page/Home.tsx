@@ -17,7 +17,7 @@ function Home() {
     return (
         <HomeContainer>
             <LocationSet />
-            <Title>즐겨찾는 식당</Title>
+            <Title>#한식</Title>
             <MyPlace />
             <Title>#일식</Title>
             <WholePlace />

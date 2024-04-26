@@ -76,7 +76,7 @@ interface LoginForm {
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
     const [sessionID, setSessionID] = useRecoilState(session);
-    const [userId, setUserId] = useRecoilState(name);
+    const [nickName, setNickName] = useRecoilState(name);
     const [isLocationSaved, setIsLocationSaved] = useState<boolean>(false);
     const setLogin = useSetRecoilState(loginState);
 
@@ -84,12 +84,12 @@ export default function Login() {
         try {
             const response = await axios.post('/login', data);
             // console.log('로그인 응답 데이터:', response.data); // 로그인 응답 데이터 확인
-            const { sessionID, userId } = response.data; // 세션 ID 및 사용자 이름 받아오기
+            const { sessionID, nickName } = response.data; // 세션 ID 및 사용자 이름 받아오기
             if (response.data.message === '로그인 성공' && sessionID) {
                 setSessionID(sessionID); // 세션 ID 설정
-                setUserId(userId); // 사용자 아이디 설정
+                setNickName(nickName); // 사용자 아이디 설정
                 sessionStorage.setItem('sessionID', sessionID); // 세션 스토리지에 세션 ID 저장
-                sessionStorage.setItem('userId', userId); // 세션 스토리지에 사용자 아이디 저장
+                sessionStorage.setItem('nickName', nickName); // 세션 스토리지에 사용자 아이디 저장
                 // 위치 저장 요청 보내기
                 // saveLocation(sessionID); // 세션 ID를 인자로 사용하여 위치 저장 요청 보내기
                 alert("로그인에 성공했습니다.");
