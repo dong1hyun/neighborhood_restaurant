@@ -8,6 +8,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.post('/', (req, res, next) => {
+    console.log("here")
     passport.authenticate('local', async (authError, user, info) => {
         if (authError) {
             return next(authError);
@@ -24,7 +25,8 @@ router.post('/', (req, res, next) => {
                 const sessionID = req.sessionID;
                 // 사용자 테이블에 세션 ID 저장
                 await User.update({ sessionID }, { where: { id: user.id } });
-                return res.status(200).json({ message: '로그인 성공', sessionID, userName: user.name });
+                console.log(user);
+                return res.status(200).json({ message: '로그인 성공', sessionID, userName: user.nickName });
             } catch (error) {
                 console.error('세션 ID 저장 중 오류 발생:', error);
                 return res.status(500).json({ message: '로그인 성공, 하지만 세션 ID 저장 중 오류 발생' });

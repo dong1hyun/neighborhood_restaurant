@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             allowNull: false // id는 null이 될 수 없음
         },
-        name: {
+        nickName: {
             type: DataTypes.STRING(100),
             allowNull: true // 이름은 null이 될 수 있음
         },

@@ -13,7 +13,7 @@ import Login from "./Login";
 
 const Logo = styled(motion.div)`
     text-decoration: none;
-    color: #3498db;
+    color: rgba(75, 207, 250,1.0);
     margin-left: 30px;
     margin-top:33px;
     margin-bottom: 10px;
@@ -40,18 +40,19 @@ const Search = styled.form`
 const SearchInput = styled.input`
     position: absolute;
     left: 35px;
-    top: 10px;
+    top: 5px;
     width: 350px;
-    height: 30px;
+    height: 40px;
     font-size: 20px;
     border-radius: 10px;
     border-width: 0;
-    background-color: rgba(189, 195, 199,1.0);
+    background-color: #eeeeee;
     border-width: 0px;
     outline: none;
     align-items: center;
     @media screen and (max-width: 700px) {
         width: 200px;
+        font-size: 12px;
     }
 `
 
@@ -100,7 +101,6 @@ export default function Header() {
     const { register, handleSubmit, getValues, watch } = useForm<searchForm>();
     const navigate = useNavigate();
     const setSearchWord = useSetRecoilState(keyword);
-    const [isNeighborhood, setIsNeighborhood] = useRecoilState(neighborhood_search);
     const [signin, setSignin] = useRecoilState(signinState)
     const [login, setLogin] = useRecoilState(loginState);
     const [sessionID, setSessionID] = useRecoilState(session)
@@ -110,9 +110,7 @@ export default function Header() {
         setSearchWord(search);
         navigate(`/search?keyword=${search}`);
     }
-    const searchTypeClick = async () => {
-        setIsNeighborhood((cur) => !cur)
-    }
+
     const handleLogout = async () => {
         try {
             await axios.get('/logout'); // 서버로 로그아웃 요청 보냄
@@ -133,16 +131,15 @@ export default function Header() {
         }
     }, [])
     useEffect(() => {
-        // 페이지 로드 시 저장된 로그인 정보 확인
-        // const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
-        // const loggedInUserName = sessionStorage.getItem('userName'); // 세션 스토리지에서 이름 가져오기
+        const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
+        const loggedInUserName = sessionStorage.getItem('userName'); // 세션 스토리지에서 이름 가져오기
         
-        // if (loggedInSessionID) {
-        //     setSessionID(loggedInSessionID);
-        // }
-        // if (loggedInUserName) {
-        //     setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
-        // }
+        if (loggedInSessionID) {
+            setSessionID(loggedInSessionID);
+        }
+        if (loggedInUserName) {
+            setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
+        }
 
         // 세션 ID가 있는 경우에만 실행합니다.
         if (sessionID) {
@@ -159,6 +156,7 @@ export default function Header() {
             // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
             return () => clearTimeout(timer);
         }
+        // setSessionID("test");
     }, [sessionID]);
     return (
         <>
@@ -181,14 +179,14 @@ export default function Header() {
                     <Nav className="ml-auto">
                         <Search onSubmit={handleSubmit(onValid)}>
                             {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
-                            <SearchInput {...register("search", { required: true })} />
+                            <SearchInput placeholder="식당이나 지역을 입력해보세요!" {...register("search", { required: true })} />
                             <SearchBtn type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                             </svg></SearchBtn>
                         </Search>
                         <LoginContainer>
                             {sessionID ? 
-                            <><LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>마이페이지</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
+                            <><LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>{userName}님</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
                             : <><LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox><LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox></>}
                         </LoginContainer>
                     </Nav>

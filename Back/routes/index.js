@@ -25,27 +25,4 @@ router.get('/restaurantData', async (_req, res) => {
     }
 });
 
-
-// 클라이언트로부터 이미지 URL을 받아서 해당하는 음식점의 ID를 찾아 응답합니다.
-// router.post('/restaurantId', async (req, res) => {
-//     try {
-//         const imageUrl = req.body.imageUrl;
-
-//         // 이미지 URL을 기반으로 해당하는 음식점을 찾습니다.
-//         const restaurant = await Restaurant.findOne({ where: { img: imageUrl } });
-
-//         if (!restaurant) {
-//             // 해당하는 음식점이 없을 경우 에러를 응답합니다.
-//             res.status(404).json({ error: 'Restaurant not found' });
-//             return;
-//         }
-
-//         // 응답으로 찾은 음식점의 ID를 전송합니다.
-//         res.json({ restaurantId: restaurant.restaurantId });
-//     } catch (error) {
-//         console.error('Error fetching restaurantId:', error);
-//         res.status(500).json({ error: 'An error occurred while fetching restaurantId' });
-//     }
-// });
-
 module.exports = router;

@@ -4,7 +4,6 @@ import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
-import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState, name, session } from "../atom";
 
@@ -74,31 +73,12 @@ interface LoginForm {
     // }
 }
 
-// interface FormData {
-//     id: string;
-//     password: string;
-// }
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
-    const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
     const [sessionID, setSessionID] = useRecoilState(session);
     const [userId, setUserId] = useRecoilState(name);
     const [isLocationSaved, setIsLocationSaved] = useState<boolean>(false);
     const setLogin = useSetRecoilState(loginState);
-    const navigate = useNavigate();
-    const saveLocation = async (sessionID: string) => {
-        try {
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                const { latitude, longitude } = position.coords;
-                await axios.post('/location', { sessionID, x: longitude, y: latitude }); // 세션 ID로 위치 저장 요청 보내기
-                setIsLocationSaved(true); // 위치 저장됨을 표시
-                // alert('위치가 성공적으로 저장되었습니다.');
-            });
-        } catch (error) {
-            console.error('위치 저장 중 오류가 발생했습니다:', error);
-            // alert('위치를 저장하는 도중 오류가 발생했습니다.');
-        }
-    };
 
     const LoginSuccess = async (data: LoginForm) => {
         try {
@@ -122,17 +102,6 @@ export default function Login() {
         }
     };
 
-    const handleLogout = async () => {
-        try {
-            await axios.get('/logout'); // 서버로 로그아웃 요청 보냄
-            sessionStorage.removeItem('sessionID'); // 세션 스토리지에서 세션 ID 제거
-            setSessionID(''); // 세션 ID 초기화
-            setUserId('');
-            navigate('/'); // 홈 페이지로 이동
-        } catch (error) {
-            console.error('로그아웃 중 오류가 발생했습니다:', error);
-        }
-    };
     return (
         <div>
             <LoginContainer className="card"
