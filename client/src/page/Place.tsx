@@ -122,6 +122,16 @@ const BookMarker = styled.button`
     border-radius: 5px;
     border: none;
 `
+const ShareButton = styled.button`
+    color: white;
+    width: 200px;
+    height: 25px;
+    margin-left: 40px;
+    margin-top: 10px;
+    background-color: #00BFFF;
+    border-radius: 5px;
+    border: none;
+`
 
 function Place() {
     const { id } = useParams()
@@ -177,11 +187,28 @@ function Place() {
             alert("로그인을 먼저해주세요.");
         }
     };
+
+    // 음식점 링크 공유 기능 추가
+    const sharePage = () => {
+        if (navigator.share) {
+            navigator.share({
+                title: document.title,
+                url: window.location.href
+            }).then(() => {
+                console.log('Page shared successfully.');
+            }).catch((error) => {
+                console.error('Error sharing page:', error);
+            });
+        } else {
+            console.log('Web share not supported on this browser.');
+        }
+    };
  
     useEffect(() => {
         getPlaceData();
         setMarker(x, y);
     }, [x, y, breakTime]);
+    
     return (
         <WholeContainer>
             <BoxContainer>
@@ -217,6 +244,7 @@ function Place() {
                     </DetailContainer>
                 </PlaceContainer>
                 <BookMarker onClick={handleBookmark}>즐겨 찾기 추가</BookMarker>
+                <ShareButton onClick={sharePage}>페이지 공유하기</ShareButton>
                 <Review />
             </BoxContainer>
             <SideBar>
