@@ -147,6 +147,8 @@ function Place() {
     const [lastOrder, setLastOrder] = useState(false);
     const [sessionID, setSessionID] = useRecoilState(session)
 
+
+    // /place/21391105 영업 시간 문자열 or 비어있는 값이 들어가서 오류남.
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
@@ -157,6 +159,7 @@ function Place() {
                 setX(res.data.x);
                 setY(res.data.y);
                 setTimeList(JSON.parse(res.data.timeList))
+                
                 timeList.forEach((i) => {
                     if (i["timeName"] == "휴게시간") {
                         setBreakTime(true)

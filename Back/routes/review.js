@@ -7,9 +7,13 @@ const axios = require('axios'); // axios 모듈 가져오기
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.use(async (req, res, next) => {
+
+// 리뷰 작성 요청 처리
+router.post('/', async (req, res) => {
     // 세션 아이디를 추출
     const sessionID = req.body.sessionID;
+
+    console.log("세션아이디:",sessionID);
     
     try {
         // 세션 아이디를 사용하여 사용자 정보 가져오기
@@ -24,11 +28,6 @@ router.use(async (req, res, next) => {
         console.error('사용자 정보를 가져오는 중 오류가 발생했습니다:', error);
     }
     
-    next(); // 다음 미들웨어 함수로 요청 전달
-});
-
-// 리뷰 작성 요청 처리
-router.post('/', async (req, res) => {
     try {
         // 요청으로부터 필요한 데이터 추출
         const { restaurantId, comment, rating } = req.body;
@@ -65,6 +64,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ success: false, message: '리뷰 작성 중 오류가 발생했습니다.' });
     }
 });
+
 
 
 // 리뷰 조회 요청 처리
