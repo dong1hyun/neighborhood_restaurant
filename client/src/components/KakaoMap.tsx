@@ -28,6 +28,7 @@ const Map = styled.div`
     border-radius: 10px;
     border: 2px solid white;
     margin: 0 auto;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 700px) {
         height: 300px;
         position: none;

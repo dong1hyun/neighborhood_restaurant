@@ -10,20 +10,20 @@ router.use(express.urlencoded({ extended: true }));
 
 router.use(async (req, res, next) => {
     // 세션 아이디를 추출
-    const sessionID = req.body.sessionID;
-    
-    try {
-        // 세션 아이디를 사용하여 사용자 정보 가져오기
-        const user = await User.findOne({ where: { sessionID: sessionID } });
+    // console.log("요청 정보:", req)
+    // const sessionID = req.body.sessionID;
+    // try {
+    //     // 세션 아이디를 사용하여 사용자 정보 가져오기
+    //     const user = await User.findOne({ where: { sessionID: sessionID } });
         
-        if (user) {
-            // 사용자가 존재하는 경우 해당 사용자의 주소 정보를 가져옴
-            req.userID = user.id; // 사용자의 ID 저장
-            req.userAddress = user.address; // 사용자의 주소 저장
-        }
-    } catch (error) {
-        console.error('사용자 정보를 가져오는 중 오류가 발생했습니다:', error);
-    }
+    //     if (user) {
+    //         // 사용자가 존재하는 경우 해당 사용자의 주소 정보를 가져옴
+    //         req.userID = user.id; // 사용자의 ID 저장
+    //         req.userAddress = user.address; // 사용자의 주소 저장
+    //     }
+    // } catch (error) {
+    //     console.error('사용자 정보를 가져오는 중 오류가 발생했습니다:', error);
+    // }
     
     next(); // 다음 미들웨어 함수로 요청 전달
 });
@@ -31,12 +31,19 @@ router.use(async (req, res, next) => {
 // 리뷰 작성 요청 처리
 router.post('/', async (req, res) => {
     try {
+        // console.log("요청 정보:", req.body);
         // 요청으로부터 필요한 데이터 추출
-        const { restaurantId, comment, rating } = req.body;
+        const { restaurantId, comment, rating, sessionID } = req.body;
+
+        const user = await User.findOne({ where: { sessionID: sessionID } });
+        if (user) {
+            // 사용자가 존재하는 경우 해당 사용자의 주소 정보를 가져옴
+            req.userID = user.id; // 사용자의 ID 저장
+            req.userAddress = user.address; // 사용자의 주소 저장
+        }
         // 사용자의 ID 및 주소 정보 가져오기
         const userID = req.userID;
         const userAddress = req.userAddress;
-        
         // 음식점의 주소 정보 가져오기
         const restaurant = await Restaurant.findOne({ where: { restaurantId: restaurantId } });
         const restaurantAddress = restaurant.restaurantAddress; // 수정된 부분

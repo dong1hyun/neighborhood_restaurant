@@ -24,7 +24,6 @@ router.post('/', (req, res, next) => {
                 const sessionID = req.sessionID;
                 // 사용자 테이블에 세션 ID 저장
                 await User.update({ sessionID }, { where: { id: user.id } });
-                console.log(user);
                 return res.status(200).json({ message: '로그인 성공', sessionID, nickName: user.nickName });
             } catch (error) {
                 console.error('세션 ID 저장 중 오류 발생:', error);

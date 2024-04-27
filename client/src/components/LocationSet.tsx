@@ -5,7 +5,8 @@ import styled from "styled-components";
 
 const LocationContainer = styled.div`
     height: 200px;
-    background: linear-gradient(45deg, rgba(27, 156, 252,1.0), rgba(37, 204, 247,1.0));
+    /* background: linear-gradient(45deg, rgba(27, 156, 252,1.0), rgba(37, 204, 247,1.0)); */
+    background-color: #2275eb97;
     margin-top: 30px;
     margin-bottom: 50px;
     text-align: center;

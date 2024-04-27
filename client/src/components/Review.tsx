@@ -7,7 +7,7 @@ import axios from "axios"
 import { useParams } from "react-router-dom"
 
 const Container = styled.div`
-    color: white;
+    color: black;
     margin: 40px;
 `
 
@@ -17,7 +17,7 @@ const Title = styled.div`
 `
 
 const ReviewContainer = styled.div`
-    border: solid 1px white;
+    border: solid 1px black;
     border-radius: 5px;
     margin-bottom: 40px;
     font-size: 30px;
@@ -64,6 +64,7 @@ function Review() {
     const { id } = useParams();
     const onValid = async ({ comment }: reviewForm) => {
         try {
+            console.log(sessionID);
             // 리뷰를 서버로 전송하여 데이터베이스에 저장
             await axios.post("/review", {
                 restaurantId: id,
@@ -93,7 +94,7 @@ function Review() {
         }
     }
     useEffect(() => {
-        // getReviews();
+        getReviews();
     }, [])
     return (
         <Container>
@@ -127,7 +128,7 @@ function Review() {
                 {sessionID ? <ReviewBox {...register("comment", { required: true })} /> : "리뷰를 작성하려면 로그인을 먼저해주세요!"}
             </form>
             <Title>방문자 평가</Title>
-            {reviews.map((review: { comment: string; rating: number }, index: number) => (
+            {[{comment: "좋아요", rating: 3}].map((review: { comment: string; rating: number }, index: number) => (
                 <ReviewContainer key={index}>
                     <Rating>&#9733; {review.rating}</Rating>
                     <Comment>{review.comment}</Comment>
@@ -136,5 +137,14 @@ function Review() {
         </Container>
     )
 }
+
+
+
+// {reviews.map((review: { comment: string; rating: number }, index: number) => (
+//     <ReviewContainer key={index}>
+//         <Rating>&#9733; {review.rating}</Rating>
+//         <Comment>{review.comment}</Comment>
+//     </ReviewContainer>
+// ))}
 
 export default Review;

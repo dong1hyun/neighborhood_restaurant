@@ -22,12 +22,14 @@ const WholeContainer = styled.div`
 const BoxContainer = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: black;
+    background-color: whitesmoke;
     border-radius: 15px;
     height: 100%;
     width: 55%;
     margin-top: 50px;
     margin-bottom: 100px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+
     @media screen and (max-width: 900px) {
         width: 90%;
         margin: 0 auto;
@@ -48,20 +50,20 @@ const SideBar = styled.div`
 const PlaceContainer = styled.div`
     display: flex;
     margin: 40px;
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 1100px) {
         flex-direction: column;
         text-align: center;
     }
 `
 const PlaceName = styled.div`
     font-size: 50px;
-    color: white;
+    color: black;
     margin-bottom: 40px;
 `
 
 const DetailContainer = styled.div`
     margin: 40px;
-    color: white;
+    color: black;
 `
 
 const Rating = styled.div`
@@ -118,7 +120,7 @@ const BookMarker = styled.button`
     height: 25px;
     margin-left: 40px;
     margin-top: 40px;
-    background-color: #1e00ff;
+    background-color: rgba(37, 204, 247,1.0);
     border-radius: 5px;
     border: none;
 `
@@ -188,11 +190,11 @@ function Place() {
                 <PlaceContainer>
                     <PlaceImg />
                     <DetailContainer>
-                        <PlaceName>{name}</PlaceName>
-                        <Category>{category}</Category>
+                        <PlaceName>끝돈</PlaceName>
+                        <Category>한식 육류</Category>
                         <Rating>평점: <>4.6</></Rating>
-                        <Detail>{phone}</Detail>
-                        <Detail>{address}</Detail>
+                        <Detail>01055599654</Detail>
+                        <Detail>어디어디</Detail>
                         영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?
