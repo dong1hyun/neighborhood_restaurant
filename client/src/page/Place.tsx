@@ -42,10 +42,11 @@ const SideBar = styled.div`
     align-items: center;
     height: 100%;
     width: 220px;
-    background-color: black;
+    background-color: whitesmoke;
     margin-left: 20px;
     margin-top: 50px;
     border-radius: 15px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
 `
 const PlaceContainer = styled.div`
     display: flex;

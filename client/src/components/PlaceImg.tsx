@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 const Place_Img = styled.img`
     border: solid 3px white;
+    border-radius: 10px;
     width: 400px;
     height: 400px;
     margin-top: 30px;

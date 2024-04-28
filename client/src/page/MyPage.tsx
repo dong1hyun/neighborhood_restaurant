@@ -6,13 +6,14 @@ import { motion } from "framer-motion";
 const BoxContainer = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: black;
-    color: white;
+    background-color: whitesmoke;
+    color: black;
     border-radius: 15px;
     height: 100%;
     width: 55%;
     margin: 0 auto;
     margin-bottom: 100px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 900px) {
         width: 90%;
     }
@@ -24,16 +25,34 @@ const PlaceContainer = styled.div`
     margin: 0 auto;
 `
 
-const PlaceBox = styled(motion.img)`
-    margin: 30px;
-    background-color: white;
-    width: 300px;
-    height: 300px;
-    background-size: cover;
-    background-position: center center;
+const PlaceBox = styled.div`
+    position: relative;
+    text-align: center;
+    height: 80%;
+`
+
+const PlaceImg = styled(motion.img)`
+    background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    width: 80%;
+    height: 100%;
     color: black;
     @media screen and (max-width: 700px){
+        
     }
+`
+
+const PlaceTitle = styled(motion.div)`
+    position: absolute;
+    width: 80%;
+    height: 25px;
+    bottom: 0;
+    left: 10%;
+    color: white;
+    font-size: 20px ;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
 `
 
 const ReviewContainer = styled.div`
@@ -61,6 +80,7 @@ function MyPage() {
     const [sessionID, setSessionID] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState<any[]>([]);
     const [userReviews, setUserReviews] = useState<{ comment: string, rating: number }[]>([]);
+    const [showTitle, setShowTitle] = useState(0);
 
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
@@ -96,12 +116,17 @@ function MyPage() {
     }
 
     return (
-        <BoxContainer>            
+        <BoxContainer>
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
-                {restaurantData.map((restaurant, index) => (
-                    <PlaceBox key={index} src={restaurant.img} alt={restaurant.restaurantName} />
-                ))}
+                {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
+                    return (
+                        <PlaceBox>
+                            <PlaceImg key={idx} src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
+                            {showTitle == idx + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
+                        </PlaceBox>
+                    )
+                })}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
@@ -119,3 +144,8 @@ export default MyPage;
 
 // 마이페이지 즐겨찾기 음식점 클릭시 해당 RestaurantId로 이동
 // 마이페이지 리뷰들에 사용자 이름 표시 및 클릭시 RestaurantId로 이동 or 해당 RestaurantId점명만 표시
+
+
+// {restaurantData.map((restaurant, index) => (
+//     <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} />
+// ))}
