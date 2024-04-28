@@ -110,7 +110,6 @@ export default function Header() {
         setSearchWord(search);
         navigate(`/search?keyword=${search}`);
     }
-
     const handleLogout = async () => {
         try {
             await axios.get('/logout'); // 서버로 로그아웃 요청 보냄

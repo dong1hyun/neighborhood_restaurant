@@ -62,26 +62,28 @@ function Review() {
     const [reviews, setReviews] = useState([]);
     const { register, handleSubmit, reset } = useForm<reviewForm>();
     const { id } = useParams();
+    
     const onValid = async ({ comment }: reviewForm) => {
         try {
-            console.log(sessionID);
             // 리뷰를 서버로 전송하여 데이터베이스에 저장
-            await axios.post("/review", {
+            const reviewData = {
                 restaurantId: id,
                 rating,
                 comment,
                 sessionID
-            });
+            };
+            await axios.post("/review", reviewData);
             // 리뷰 제출 후 입력 폼 초기화
-           setRating(0); 
-           reset();
-            
+            setRating(0);
+            reset();
+    
             // 부모 컴포넌트로부터 전달받은 onSubmit 콜백 호출
         } catch (error) {
             console.error("리뷰 제출 에러:", error);
         }
         getReviews();
     }
+    
     const getReviews = async () => {
         try {
             const response = await axios.get(`/review/${id}`); // 엔드포인트를 '/review/:restaurantId'에 맞게 수정
@@ -93,9 +95,13 @@ function Review() {
             console.error('리뷰 데이터를 불러오는 중 오류가 발생했습니다:', error);
         }
     }
+    
+
     useEffect(() => {
         getReviews();
     }, [])
+
+
     return (
         <Container>
             <form onSubmit={handleSubmit(onValid)}>
