@@ -13,9 +13,6 @@ router.use(express.urlencoded({ extended: true }));
 router.post('/', async (req, res) => {
     // 세션 아이디를 추출
     const sessionID = req.body.sessionID;
-
-    console.log("세션아이디:",sessionID);
-    
     try {
         // 세션 아이디를 사용하여 사용자 정보 가져오기
         const user = await User.findOne({ where: { sessionID: sessionID } });
@@ -84,11 +81,11 @@ router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/revie
         // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
         const commentsWithRating = await Promise.all(reviews.map(async (review) => {
         const user = await User.findOne({ where: { id: review.id } }); // 리뷰 작성자의 사용자 정보를 가져옵니다.
-        const userName = user ? user.name : "Unknown"; // 사용자 이름을 가져옵니다. 없으면 "Unknown"으로 표시합니다.
+        const nickName = user ? user.nickName : "Unknown"; // 사용자 이름을 가져옵니다. 없으면 "Unknown"으로 표시합니다.
         return {
             comment: review.comment,
             rating: review.rating,
-            userName: userName // 리뷰에 사용자 이름 추가
+            nickName // 리뷰에 사용자 닉네임 추가
         };
     }));
     

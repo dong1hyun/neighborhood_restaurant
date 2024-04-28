@@ -90,13 +90,13 @@ function Review() {
             if (!response.data) {
                 throw new Error("No data received from server");
             }
+            console.log("리뷰데이터:",response.data);
             setReviews(response.data);
         } catch (error) {
             console.error('리뷰 데이터를 불러오는 중 오류가 발생했습니다:', error);
         }
     }
     
-
     useEffect(() => {
         getReviews();
     }, [])
@@ -134,9 +134,9 @@ function Review() {
                 {sessionID ? <ReviewBox {...register("comment", { required: true })} /> : "리뷰를 작성하려면 로그인을 먼저해주세요!"}
             </form>
             <Title>방문자 평가</Title>
-            {[{comment: "좋아요", rating: 3}].map((review: { comment: string; rating: number }, index: number) => (
+            {reviews.map((review: { comment: string; rating: number, nickName: string }, index: number) => (
                 <ReviewContainer key={index}>
-                    <Rating>&#9733; {review.rating}</Rating>
+                    <Rating>&#9733; {review.rating} {review.nickName}</Rating>
                     <Comment>{review.comment}</Comment>
                 </ReviewContainer>
             ))}
@@ -153,4 +153,11 @@ function Review() {
 //     </ReviewContainer>
 // ))}
 
+
+// {[{comment: "좋아요", rating: 3}].map((review: { comment: string; rating: number }, index: number) => (
+//     <ReviewContainer key={index}>
+//         <Rating>&#9733; {review.rating}</Rating>
+//         <Comment>{review.comment}</Comment>
+//     </ReviewContainer>
+// ))}
 export default Review;
