@@ -22,12 +22,14 @@ const WholeContainer = styled.div`
 const BoxContainer = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: black;
+    background-color: whitesmoke;
     border-radius: 15px;
     height: 100%;
     width: 55%;
     margin-top: 50px;
     margin-bottom: 100px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+
     @media screen and (max-width: 900px) {
         width: 90%;
         margin: 0 auto;
@@ -40,28 +42,29 @@ const SideBar = styled.div`
     align-items: center;
     height: 100%;
     width: 220px;
-    background-color: black;
+    background-color: whitesmoke;
     margin-left: 20px;
     margin-top: 50px;
     border-radius: 15px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
 `
 const PlaceContainer = styled.div`
     display: flex;
     margin: 40px;
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 1100px) {
         flex-direction: column;
         text-align: center;
     }
 `
 const PlaceName = styled.div`
     font-size: 50px;
-    color: white;
+    color: black;
     margin-bottom: 40px;
 `
 
 const DetailContainer = styled.div`
     margin: 40px;
-    color: white;
+    color: black;
 `
 
 const Rating = styled.div`
@@ -118,10 +121,23 @@ const BookMarker = styled.button`
     height: 25px;
     margin-left: 40px;
     margin-top: 40px;
-    background-color: #1e00ff;
+    background-color: rgba(37, 204, 247,1.0);
     border-radius: 5px;
     border: none;
 `
+
+const ShareButton = styled.button`
+    color: white;
+    width: 200px;
+    height: 25px;
+    margin-left: 40px;
+    margin-top: 10px;
+    background-color: #00BFFF;
+    border-radius: 5px;
+    border: none;
+`
+
+
 
 function Place() {
     const { id } = useParams()
@@ -160,7 +176,7 @@ function Place() {
                 console.log(error);
             })
     }
-
+    
     const handleBookmark = async () => {
         if (sessionID) {
             try {
@@ -177,11 +193,28 @@ function Place() {
             alert("로그인을 먼저해주세요.");
         }
     };
+
+        // 음식점 링크 공유 기능 추가
+        const sharePage = () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    url: window.location.href
+                }).then(() => {
+                    console.log('Page shared successfully.');
+                }).catch((error) => {
+                    console.error('Error sharing page:', error);
+                });
+            } else {
+                console.log('Web share not supported on this browser.');
+            }
+        };
  
     useEffect(() => {
         getPlaceData();
-        setMarker(x, y);
+        setMarker(x, y); 
     }, [x, y, breakTime]);
+    
     return (
         <WholeContainer>
             <BoxContainer>
@@ -217,6 +250,7 @@ function Place() {
                     </DetailContainer>
                 </PlaceContainer>
                 <BookMarker onClick={handleBookmark}>즐겨 찾기 추가</BookMarker>
+                <ShareButton onClick={sharePage}>페이지 공유하기</ShareButton>
                 <Review />
             </BoxContainer>
             <SideBar>
@@ -225,5 +259,6 @@ function Place() {
         </ WholeContainer>
     )
 }
+
 
 export default Place;

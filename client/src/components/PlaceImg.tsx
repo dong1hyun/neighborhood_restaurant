@@ -5,10 +5,17 @@ import styled from "styled-components";
 
 const Place_Img = styled.img`
     border: solid 3px white;
+    border-radius: 10px;
     width: 400px;
     height: 400px;
+    margin-top: 30px;
     /* border-radius: 10px; */
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 1100px) {
+        margin: 0 auto;
+        width: 300px;
+        height: 300px;
+    }
+    @media screen and (max-width: 700px) {
         margin: 0 auto;
         width: 200px;
         height: 200px;
@@ -25,10 +32,10 @@ export default function PlaceImg() {
             })
     }
     useEffect(() => {
-        getPlaceImg();
+        // getPlaceImg();
     }, [])
     return (
-        <Place_Img src={imgURL} alt="음식 사진" />
+        <Place_Img src="http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" alt="음식 사진" />
     )
 }
 

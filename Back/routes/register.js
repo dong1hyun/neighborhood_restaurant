@@ -9,7 +9,7 @@ router.use(express.urlencoded({ extended: true }));
 //. get으로 먼저 DB조회해서 동일 값 있는 지 확인하는 로직 추가!
 
 router.post('/', async (req, res, next) => {
-    const { name, id, password } = req.body; // 아이디와 비밀번호만 받음
+    const { nickName, id, password } = req.body; // 아이디와 비밀번호만 받음
     
     try {
         // 이미 존재하는 아이디인지 확인
@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
         
         // 새로운 사용자 생성 및 저장
         const user = await User.create({
-            name,
+            nickName,
             id,
             password: hashedPassword,
         });

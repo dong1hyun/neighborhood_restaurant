@@ -7,10 +7,11 @@ const axios = require('axios'); // axios 모듈 가져오기
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.use(async (req, res, next) => {
+
+// 리뷰 작성 요청 처리
+router.post('/', async (req, res) => {
     // 세션 아이디를 추출
     const sessionID = req.body.sessionID;
-    
     try {
         // 세션 아이디를 사용하여 사용자 정보 가져오기
         const user = await User.findOne({ where: { sessionID: sessionID } });
@@ -24,11 +25,6 @@ router.use(async (req, res, next) => {
         console.error('사용자 정보를 가져오는 중 오류가 발생했습니다:', error);
     }
     
-    next(); // 다음 미들웨어 함수로 요청 전달
-});
-
-// 리뷰 작성 요청 처리
-router.post('/', async (req, res) => {
     try {
         // 요청으로부터 필요한 데이터 추출
         const { restaurantId, comment, rating } = req.body;
@@ -83,11 +79,11 @@ router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/revie
         // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
         const commentsWithRating = await Promise.all(reviews.map(async (review) => {
         const user = await User.findOne({ where: { id: review.id } }); // 리뷰 작성자의 사용자 정보를 가져옵니다.
-        const userName = user ? user.name : "Unknown"; // 사용자 이름을 가져옵니다. 없으면 "Unknown"으로 표시합니다.
+        const nickName = user ? user.nickName : "Unknown"; // 사용자 이름을 가져옵니다. 없으면 "Unknown"으로 표시합니다.
         return {
             comment: review.comment,
             rating: review.rating,
-            userName: userName // 리뷰에 사용자 이름 추가
+            nickName // 리뷰에 사용자 닉네임 추가
         };
     }));
     
@@ -117,7 +113,7 @@ router.get('/userReviews/:sessionID', async (req, res) => {
 
         // 사용자의 ID 및 이름 가져옴
         const userID = user.id;
-        const userName = user.name;
+        const nickName = user.nickName;
 
         // 해당 사용자가 작성한 리뷰들을 조회
         const userReviews = await Review.findAll({
@@ -134,14 +130,13 @@ router.get('/userReviews/:sessionID', async (req, res) => {
         }));
 
         // 클라이언트에게 리뷰 데이터 및 사용자 이름을 응답으로 보냄
-        res.status(200).json({ success: true, reviews: commentsWithRating, userName: userName });
+        res.status(200).json({ success: true, reviews: commentsWithRating, nickName: nickName });
     } catch (error) {
         // 오류 발생 시 클라이언트에게 오류 메시지를 응답으로 보냄
         console.error('사용자 리뷰 조회 중 오류가 발생했습니다:', error);
         res.status(500).json({ success: false, message: '사용자 리뷰 조회 중 오류가 발생했습니다.' });
     }
 });
-
 
 
 

@@ -8,13 +8,14 @@ import { useNavigate } from "react-router-dom";
 const BoxContainer = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: black;
-    color: white;
+    background-color: whitesmoke;
+    color: black;
     border-radius: 15px;
     height: 100%;
     width: 55%;
     margin: 0 auto;
     margin-bottom: 100px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 900px) {
         width: 90%;
     }
@@ -26,16 +27,34 @@ const PlaceContainer = styled.div`
     margin: 0 auto;
 `
 
-const PlaceBox = styled(motion.img)`
-    margin: 30px;
-    background-color: white;
-    width: 300px;
-    height: 300px;
-    background-size: cover;
-    background-position: center center;
+const PlaceBox = styled.div`
+    position: relative;
+    text-align: center;
+    height: 80%;
+`
+
+const PlaceImg = styled(motion.img)`
+    background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    width: 80%;
+    height: 100%;
     color: black;
     @media screen and (max-width: 700px){
+        
     }
+`
+
+const PlaceTitle = styled(motion.div)`
+    position: absolute;
+    width: 80%;
+    height: 25px;
+    bottom: 0;
+    left: 10%;
+    color: white;
+    font-size: 20px ;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
 `
 
 const ReviewContainer = styled.div`
@@ -59,36 +78,12 @@ const Comment = styled.div`
     margin: 10px;
 `
 
-const LocationForm = styled.div`
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-`;
-
-const LocationInput = styled.input`
-    width: 300px;
-    height: 30px;
-    margin-right: 10px;
-`;
-
-const GetLocationButton = styled.button`
-    background-color: white;
-    color: black;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-`;
-
 function MyPage() {
-    const [searchResult, setSearchResult] = useState<string>('');
     const [sessionID, setSessionID] = useState<string>('');
-    const [userAddress, setUserAddress] = useState<string>('');
-    const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
-    const [searchTerm, setSearchTerm] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState<any[]>([]);
-    const [userReviews, setUserReviews] = useState<{ restaurantId: string, comment: string, rating: number, userName: string }[]>([]);
-    const [userName, setUserName] = useState<string>(''); // 사용자 이름 상태 추가
+    const [showTitle, setShowTitle] = useState(0);
+    const [userReviews, setUserReviews] = useState<{ restaurantId: string, comment: string, rating: number }[]>([]);
+    const [nickName, setNickName] = useState<string>(''); // 사용자 이름 상태 추가
     const navigate = useNavigate();
 
 
@@ -119,7 +114,7 @@ function MyPage() {
             const response = await axios.get(`/review/userReviews/${sessionID}`);
             if (response.data.success) {
                 setUserReviews(response.data.reviews);
-                setUserName(response.data.userName); // 사용자 이름 설정
+                setNickName(response.data.nickName); // 사용자 이름 설정
             } else {
                 console.error('사용자 리뷰를 불러오지 못했습니다.');
             }
@@ -130,119 +125,43 @@ function MyPage() {
     const handleReviewClick = (restaurantId: string) => {
         navigate(`/place/${restaurantId}`);
     };
-    
-    // 검색한 x, y 위치 가져오는 코드
-    const handleSearch = async () => {
-        try {
-            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
-                headers: {
-                    Authorization: "KakaoAK %REACT_APP_JAVASCRIPT_KEY%"
-                }
-            });
-            if (response.data.documents && response.data.documents.length > 0) {
-                const { address_name } = response.data.documents[0];
-                setSearchResult(address_name);
-                if (isAddressMatch(address_name, userAddress)) {
-                    console.log('검색된 위치가 사용자의 위치와 일치합니다.');
-                    sendLocationToServer(sessionID, address_name);
-                } else {
-                    console.log('검색된 위치가 사용자의 위치와 일치하지 않습니다.');
-                }
-            } else {
-                console.error('검색 결과를 찾을 수 없습니다.');
-            }
-        } catch (error) {
-            console.error('검색 중 오류가 발생했습니다:', error);
-        }
-    };
-
-    // 사용자 x, y 위치 가져오는 코드
-    const handleGetUserLocation = () => {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const { latitude, longitude } = position.coords;
-            setUserLocation({ x: longitude, y: latitude });
-            const address = await getAddressFromCoordinates(latitude, longitude);
-            if (address) {
-                setUserAddress(address);
-                console.log('사용자의 위치:', address);
-            }
-        });
-    };
-
-    // 사용자 위치 좌표 기반으로 주소 변경
-    const getAddressFromCoordinates = async (latitude: number, longitude: number) => {
-        try {
-            const response = await axios.get(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`, {
-                headers: {
-                    Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
-                }
-            });
-            if (response.data.documents && response.data.documents.length > 0) {
-                const address = response.data.documents[0].address.address_name;
-                return address;
-            } else {
-                console.error('주소를 찾을 수 없습니다.');
-                return null;
-            }
-        } catch (error) {
-            console.error('주소를 가져오는 중 오류가 발생했습니다:', error);
-            return null;
-        }
-    };
-
-    // 주소지 비교 함수
-    const isAddressMatch = (address1: string, address2: string): boolean => {
-        const regex = /(.+?(읍|면|동))/;
-        const match1 = address1.match(regex);
-        const match2 = address2.match(regex);
-        return !!match1 && !!match2 && match1[1] === match2[1];
-    };
-
-    // 인증된 주소 서버로 요청
-    const sendLocationToServer = async (sessionID: string, address: string) => {
-        try {
-            const response = await axios.post('/location', { sessionID, address });
-            console.log('서버 응답:', response.data);
-        } catch (error) {
-            console.error('서버로 위치 전송 중 오류가 발생했습니다:', error);
-        }
-    };
 
     return (
         <BoxContainer>
-            <LocationForm>
-                <LocationInput 
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="위치 검색"
-                />
-                <GetLocationButton onClick={handleSearch}>인증하기</GetLocationButton>
-            </LocationForm>
-
-            <GetLocationButton onClick={handleGetUserLocation}>내 위치 가져오기</GetLocationButton>
-            
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
                 {restaurantData.map((restaurant, index) => (
-                    <PlaceBox
-                    key={index}
-                    src={restaurant.img}
-                    alt={restaurant.restaurantName}
-                    onClick={() => navigate(`/place/${restaurant.restaurantId}`)} // 이미지 클릭 시 페이지 이동
-                />
-            ))}
+                    <PlaceBox>
+                        <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} onClick={() => navigate(`/place/${restaurant.restaurantId}`)} // 이미지 클릭 시 페이지 이동
+                        />
+                        {showTitle == index + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
+                    </PlaceBox>
+                ))}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
-                <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}> 
-                    <div>작성자: {userName}</div>
+                <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}>
+                    <div>작성자: {nickName}</div>
                     <Rating>&#9733; {review.rating}</Rating>
                     <Comment>{review.comment}</Comment>
                 </ReviewContainer>
-                ))}
+            ))}
         </BoxContainer>
     )
 }
 
 export default MyPage;
+
+// {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
+//     return (
+//         <PlaceBox>
+//             <PlaceImg key={idx} src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
+//             {showTitle == idx + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
+//         </PlaceBox>
+//     )
+// })}
+
+
+// {restaurantData.map((restaurant, index) => (
+//     <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} />
+// ))}
