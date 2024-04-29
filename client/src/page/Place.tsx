@@ -93,7 +93,7 @@ const Map = styled.div`
     width: 170px;
     height: 300px;
     border-radius: 10px;
-    border: 2px solid black;
+    /* border: 2px solid black; */
     margin: 20px
 `
 
@@ -182,8 +182,8 @@ function Place() {
     };
  
     useEffect(() => {
-        /* getPlaceData();
-        setMarker(x, y); */
+        getPlaceData();
+        setMarker(x, y);
     }, [x, y, breakTime]);
     return (
         <WholeContainer>
@@ -194,8 +194,8 @@ function Place() {
                         <PlaceName>끝돈</PlaceName>
                         <Category>한식 육류</Category>
                         <Rating>평점: <>4.6</></Rating>
-                        <Detail>01055599654</Detail>
-                        <Detail>어디어디</Detail>
+                        <Detail>02-498-0929</Detail>
+                        <Detail>서울 광진구 아차산로 238-1</Detail>
                         영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?

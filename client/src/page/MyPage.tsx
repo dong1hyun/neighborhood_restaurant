@@ -119,14 +119,9 @@ function MyPage() {
         <BoxContainer>
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
-                {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
-                    return (
-                        <PlaceBox>
-                            <PlaceImg key={idx} src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
-                            {showTitle == idx + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
-                        </PlaceBox>
-                    )
-                })}
+                {restaurantData.map((restaurant, index) => (
+                    <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} />
+                ))}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
@@ -148,4 +143,11 @@ export default MyPage;
 
 // {restaurantData.map((restaurant, index) => (
 //     <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} />
+// ))}
+
+// {userReviews.map((review, index) => (
+//     <ReviewContainer key={index}>
+//         <Rating>&#9733; {review.rating}</Rating>
+//         <Comment>{review.comment}</Comment>
+//     </ReviewContainer>
 // ))}

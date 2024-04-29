@@ -134,9 +134,9 @@ function Review() {
                 {sessionID ? <ReviewBox {...register("comment", { required: true })} /> : "리뷰를 작성하려면 로그인을 먼저해주세요!"}
             </form>
             <Title>방문자 평가</Title>
-            {reviews.map((review: { comment: string; rating: number, nickName: string }, index: number) => (
+            {reviews.map((review: { comment: string; rating: number }, index: number) => (
                 <ReviewContainer key={index}>
-                    <Rating>&#9733; {review.rating} {review.nickName}</Rating>
+                    <Rating>&#9733; {review.rating}</Rating>
                     <Comment>{review.comment}</Comment>
                 </ReviewContainer>
             ))}
