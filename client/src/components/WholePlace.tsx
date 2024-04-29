@@ -136,7 +136,7 @@ export default function WholePlace() {
             }
         }
 
-        // fetchRestaurant();
+        fetchRestaurant();
     }, []);
     return (
         <Container>

@@ -136,7 +136,7 @@ export default function MyPlace() {
             }
         }
 
-        // fetchRestaurant();
+        fetchRestaurant();
     }, []);
     return (
         <Container>

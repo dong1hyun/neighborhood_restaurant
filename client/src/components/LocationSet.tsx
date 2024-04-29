@@ -49,7 +49,9 @@ const LocationInput = styled.input`
     padding-left: 10px;
 `;
 
-
+interface searchForm {
+    location: string
+}
 
 export default function LocaionSet() {
     const [searchResult, setSearchResult] = useState<string>('');
@@ -57,7 +59,7 @@ export default function LocaionSet() {
     const [userAddress, setUserAddress] = useState<string>('');
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [sessionID, setSessionID] = useState<string>('');
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit } = useForm<searchForm>();
     const isAddressMatch = (address1: string, address2: string): boolean => {
         const regex = /(.+?(읍|면|동))/;
         const match1 = address1.match(regex);
@@ -74,8 +76,9 @@ export default function LocaionSet() {
         }
     };
 
-    const handleSearch = async () => {
+    const handleSearch = async ({location}: searchForm) => {
         try {
+            await setSearchTerm(location);
             const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
                 headers: {
                     Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
