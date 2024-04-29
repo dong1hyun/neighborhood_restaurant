@@ -58,21 +58,9 @@ export default function LocaionSet() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [sessionID, setSessionID] = useState<string>('');
     const { register, handleSubmit } = useForm();
-    const isAddressMatch = (address1: string, address2: string): boolean => {
-        const regex = /(.+?(읍|면|동))/;
-        const match1 = address1.match(regex);
-        const match2 = address2.match(regex);
-        return !!match1 && !!match2 && match1[1] === match2[1];
-    };
+    
 
-    const sendLocationToServer = async (sessionID: string, address: string) => {
-        try {
-            const response = await axios.post('/location', { sessionID, address });
-            console.log('서버 응답:', response.data);
-        } catch (error) {
-            console.error('서버로 위치 전송 중 오류가 발생했습니다:', error);
-        }
-    };
+    
 
     const handleSearch = async () => {
         try {
@@ -85,10 +73,11 @@ export default function LocaionSet() {
                 const { address_name } = response.data.documents[0];
                 setSearchResult(address_name);
                 if (isAddressMatch(address_name, userAddress)) {
-                    console.log('검색된 위치가 사용자의 위치와 일치합니다.');
+                    console.log('검색된 위치와 사용자 위치가 동일합니다.');
+                    // 여기서 서버로 값을 보내는 작업 수행
                     sendLocationToServer(sessionID, address_name);
                 } else {
-                    console.log('검색된 위치가 사용자의 위치와 일치하지 않습니다.');
+                    console.log('검색된 위치와 사용자 위치가 동일하지 않습니다.');
                 }
             } else {
                 console.error('검색 결과를 찾을 수 없습니다.');
@@ -130,19 +119,43 @@ export default function LocaionSet() {
         });
     };
 
+    const isAddressMatch = (address1: string, address2: string): boolean => {
+        const regex = /(.+?(읍|면|동))/;
+        const match1 = address1.match(regex);
+        const match2 = address2.match(regex);
+        return !!match1 && !!match2 && match1[1] === match2[1];
+    };
+
+    const sendLocationToServer = async (sessionID: string, address: string) => {
+        try {
+            // 주소에서 숫자를 제거합니다.
+            const cleanedAddress = address.replace(/\d+/g, '').trim().replace(/-$/, '');
+            
+            const response = await axios.post('/location', { sessionID, address: cleanedAddress });
+            console.log('서버 응답:', response.data);
+        } catch (error) {
+            console.error('서버로 위치 전송 중 오류가 발생했습니다:', error);
+        }
+    };
+    
+
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
         setSessionID(loggedInSessionID);
     }, [])
+
     return (
         <LocationContainer>
             <GetLocationButton onClick={handleGetUserLocation}>내 위치 가져오기</GetLocationButton>
             <LocationForm onSubmit={handleSubmit(handleSearch)}>
                 <LocationInput
                     placeholder="자신이 속한 읍/면/동을 입력해주세요!"
-                    {...register("location", {required: true})}
+                    value={searchTerm} // searchTerm 값으로 입력란의 값 설정
+                    onChange={(e) => setSearchTerm(e.target.value)} // 입력값 변경 시 searchTerm 업데이트
                 />
                 <SetLocationButton type="submit">인증하기</SetLocationButton>
             </LocationForm>
-        </LocationContainer>)
+        </LocationContainer>
+    );
+    
 }
