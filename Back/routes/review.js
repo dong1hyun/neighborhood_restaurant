@@ -115,7 +115,7 @@ router.get('/userReviews/:sessionID', async (req, res) => {
 
         // 사용자의 ID 및 이름 가져옴
         const userID = user.id;
-        const userName = user.name;
+        const nickName = user.nickName;
 
         // 해당 사용자가 작성한 리뷰들을 조회
         const userReviews = await Review.findAll({
@@ -132,7 +132,7 @@ router.get('/userReviews/:sessionID', async (req, res) => {
         }));
 
         // 클라이언트에게 리뷰 데이터 및 사용자 이름을 응답으로 보냄
-        res.status(200).json({ success: true, reviews: commentsWithRating, userName: userName });
+        res.status(200).json({ success: true, reviews: commentsWithRating, nickName: nickName });
     } catch (error) {
         // 오류 발생 시 클라이언트에게 오류 메시지를 응답으로 보냄
         console.error('사용자 리뷰 조회 중 오류가 발생했습니다:', error);

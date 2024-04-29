@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
 
 const BoxContainer = styled.div`
     display: flex;
@@ -79,8 +81,11 @@ const Comment = styled.div`
 function MyPage() {
     const [sessionID, setSessionID] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState<any[]>([]);
-    const [userReviews, setUserReviews] = useState<{ comment: string, rating: number }[]>([]);
+    const [userReviews, setUserReviews] = useState<{ comment: string, rating: number, restaurantId: string }[]>([]);
     const [showTitle, setShowTitle] = useState(0);
+    const [nickName, setNickName] = useState<string>(''); // 사용자 이름 상태 추가
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
@@ -88,6 +93,7 @@ function MyPage() {
         getFavoriteData(loggedInSessionID);
         getReviewData(loggedInSessionID);
     }, [])
+
 
     const getFavoriteData = async (sessionID: string) => {
         try {
@@ -107,6 +113,7 @@ function MyPage() {
             const response = await axios.get(`/review/userReviews/${sessionID}`);
             if (response.data.success) {
                 setUserReviews(response.data.reviews);
+                setNickName(response.data.nickName); // 사용자 이름 설정
             } else {
                 console.error('사용자 리뷰를 불러오지 못했습니다.');
             }
@@ -114,18 +121,26 @@ function MyPage() {
             console.error('사용자 리뷰를 가져오는 중 오류가 발생했습니다:', error);
         }
     }
+    const handleReviewClick = (restaurantId: string) => {
+        navigate(`/place/${restaurantId}`);
+    };
 
     return (
         <BoxContainer>
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
                 {restaurantData.map((restaurant, index) => (
-                    <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} />
+                    <PlaceBox>
+                        <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} onClick={() => navigate(`/place/${restaurant.restaurantId}`)} // 이미지 클릭 시 페이지 이동
+                        />
+                        {showTitle == index + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
+                    </PlaceBox>
                 ))}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
-                <ReviewContainer key={index}>
+                <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}>
+                    <div>작성자: {nickName}</div>
                     <Rating>&#9733; {review.rating}</Rating>
                     <Comment>{review.comment}</Comment>
                 </ReviewContainer>
@@ -139,6 +154,16 @@ export default MyPage;
 
 // 마이페이지 즐겨찾기 음식점 클릭시 해당 RestaurantId로 이동
 // 마이페이지 리뷰들에 사용자 이름 표시 및 클릭시 RestaurantId로 이동 or 해당 RestaurantId점명만 표시
+
+
+// {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
+//     return (
+//         <PlaceBox>
+//             <PlaceImg key={idx} src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
+//             {showTitle == idx + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
+//         </PlaceBox>
+//     )
+// })}
 
 
 // {restaurantData.map((restaurant, index) => (
