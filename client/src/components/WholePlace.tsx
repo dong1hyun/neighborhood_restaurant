@@ -73,7 +73,7 @@ const PrevBtn = styled.img`
     top: 50%;
 `
 
-const PlaceBox = styled.div`
+const PlaceBox = styled(motion.div)`
     position: relative;
 `
 
@@ -150,21 +150,14 @@ export default function WholePlace() {
                     transition={{ type: "tween", duration: 1 }}
                     key={Index}
                 >
-                    {restaurantData.slice(Index, Index + 4).map(
-                        (item: restaurantForm, idx) => (
-                            <PlaceBox onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)}>
-                                <PlaceImg
-                                    // whileHover={{ scale: 1.1 }}
-                                    src={item.img}
-                                    key={idx}
-                                    alt="Loading..."
-                                    onClick={() => handleImageClick(item.restaurantId)} // 클릭 시 handleImageClick 함수 호출
-                                />
-                                {idx + 1 == showTitle ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>{item.restaurantName}</PlaceTitle> : null}
-                            </PlaceBox>
-                        )
+                    {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67"].slice(Index, Index + 4).map(
+                        (i, idx) => (
+                            <PlaceBox whileHover={{scale:1.1}}>
+                                    <PlaceImg src={i} key={idx} alt="Loding" />
+                                    <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>test</PlaceTitle>
+                            </PlaceBox>)
                     )}
-                </Slider>
+                </Slider>   
                 <PrevBtn src={process.env.PUBLIC_URL + "/back.png"} onClick={prevPlease} />
                 <NextBtn src={process.env.PUBLIC_URL + "/next.png"} onClick={nextPlease} />
             </AnimatePresence>
