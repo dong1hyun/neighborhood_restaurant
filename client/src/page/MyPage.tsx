@@ -27,10 +27,23 @@ const PlaceContainer = styled.div`
     margin: 0 auto;
 `
 
-const PlaceBox = styled.div`
+const PlaceBox = styled(motion.div)`
     position: relative;
     text-align: center;
     height: 80%;
+`
+const Rating = styled.div`
+    position: absolute;
+    font-size: 18px;
+    top: 10px;
+    right: 12%;
+    background-color: rgba(0,0,0,1);
+    border-radius: 10px;
+    padding: 3px;
+    color: white;
+    @media screen and (max-width:700px){
+        scale: 0.7;
+    }
 `
 
 const PlaceImg = styled(motion.img)`
@@ -47,14 +60,15 @@ const PlaceImg = styled(motion.img)`
 
 const PlaceTitle = styled(motion.div)`
     position: absolute;
-    width: 80%;
-    height: 25px;
-    bottom: 0;
-    left: 10%;
+    width: 60%;
+    height: 40px;
+    bottom: -10px;
     color: white;
-    font-size: 20px ;
+    font-size: 20px;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(178, 178, 178, 0.7);
+    left: 20%;
+    word-wrap: break-word;
 `
 
 const ReviewContainer = styled.div`
@@ -70,7 +84,7 @@ const Title = styled.div`
     margin: 20px;
 `
 
-const Rating = styled.div`
+const ReviewRating = styled.div`
     margin: 10px;
 `
 
@@ -129,19 +143,21 @@ function MyPage() {
         <BoxContainer>
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
-                {restaurantData.map((restaurant, index) => (
-                    <PlaceBox>
-                        <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} onClick={() => navigate(`/place/${restaurant.restaurantId}`)} // 이미지 클릭 시 페이지 이동
-                        />
-                        {showTitle == index + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
-                    </PlaceBox>
-                ))}
+                {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
+                    return (
+                        <PlaceBox whileHover={{scale:1.1}}>
+                            <Rating><span style={{color:"rgba(30, 144, 255,1.0)" }}>&#9733;</span> 3.6</Rating>
+                            <PlaceImg key={idx} src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
+                            <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle>
+                        </PlaceBox>
+                    )
+                })}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
             {userReviews.map((review, index) => (
                 <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}>
                     <div>작성자: {nickName}</div>
-                    <Rating>&#9733; {review.rating}</Rating>
+                    <ReviewRating>&#9733; {review.rating}</ReviewRating>
                     <Comment>{review.comment}</Comment>
                 </ReviewContainer>
             ))}

@@ -31,6 +31,20 @@ const Slider = styled(motion.div)`
     grid-template-columns: repeat(2, 1fr);
   }
 `
+const PlaceBox = styled(motion.div)`
+    position: relative;
+`
+
+const Rating = styled.div`
+    position: absolute;
+    font-size: 18px;
+    top: 35px;
+    right: 36px;
+    background-color: rgba(0,0,0,1);
+    border-radius: 10px;
+    padding: 3px;
+    color: white;
+`
 
 const PlaceImg = styled(motion.img)`
     margin-top: 30px;
@@ -50,14 +64,15 @@ const PlaceImg = styled(motion.img)`
 
 const PlaceTitle = styled(motion.div)`
     position: absolute;
-    width: 80%;
-    height: 25px;
-    bottom: 0;
-    left: 10%;
+    width: 60%;
+    height: 40px;
+    bottom: -10px;
     color: white;
     font-size: 20px;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(178, 178, 178, 0.7);
+    left: 20%;
+    word-wrap: break-word;
 `
 
 const NextBtn = styled.img`
@@ -73,9 +88,7 @@ const PrevBtn = styled.img`
     top: 50%;
 `
 
-const PlaceBox = styled(motion.div)`
-    position: relative;
-`
+
 
 const SliderVar = {
     hidden: (isBack: boolean) => ({
@@ -153,8 +166,9 @@ export default function MyPlace() {
                     {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67"].slice(Index, Index + 4).map(
                         (i, idx) => (
                             <PlaceBox whileHover={{scale:1.1}}>
+                                    <Rating><span style={{color:"rgba(30, 144, 255,1.0)" }}>&#9733;</span> 3.6</Rating>
                                     <PlaceImg src={i} key={idx} alt="Loding" />
-                                    <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>test</PlaceTitle>
+                                    <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당 이름</PlaceTitle>
                             </PlaceBox>)
                     )}
                 </Slider>

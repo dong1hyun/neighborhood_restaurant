@@ -31,9 +31,19 @@ const Slider = styled(motion.div)`
     grid-template-columns: repeat(2, 1fr);
   }
 `
-
-const PlaceImg = styled(motion.img)`
+const PlaceBox = styled(motion.div)`
+    position: relative;
+    height: 250px;
     margin-top: 30px;
+`
+
+const Rating = styled.span`
+    position: absolute;
+    right: 13%;
+    top: 1%;
+    font-size: 15px;
+`
+const PlaceImg = styled(motion.img)`
     background-color: white;
     width:80%;
     height: 250px;
@@ -50,14 +60,15 @@ const PlaceImg = styled(motion.img)`
 
 const PlaceTitle = styled(motion.div)`
     position: absolute;
-    width: 80%;
-    height: 25px;
-    bottom: 0;
-    left: 10%;
+    width: 60%;
+    height: 40px;
+    bottom: -10px;
     color: white;
     font-size: 20px;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(178, 178, 178, 0.7);
+    left: 20%;
+    word-wrap: break-word;
 `
 
 const NextBtn = styled.img`
@@ -73,9 +84,7 @@ const PrevBtn = styled.img`
     top: 50%;
 `
 
-const PlaceBox = styled(motion.div)`
-    position: relative;
-`
+
 
 const SliderVar = {
     hidden: (isBack: boolean) => ({
@@ -154,7 +163,8 @@ export default function WholePlace() {
                         (i, idx) => (
                             <PlaceBox whileHover={{scale:1.1}}>
                                     <PlaceImg src={i} key={idx} alt="Loding" />
-                                    <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>test</PlaceTitle>
+                                    <Rating>&#9733; 3.5</Rating>
+                                    <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당 이름</PlaceTitle>
                             </PlaceBox>)
                     )}
                 </Slider>   
