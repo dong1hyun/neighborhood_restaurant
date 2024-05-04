@@ -1,5 +1,3 @@
-// routes/review.js
-
 const express = require('express');
 const router = express.Router();
 const { Review, User, Restaurant } = require('../models'); // 모델 가져오기
