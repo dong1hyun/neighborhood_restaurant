@@ -129,34 +129,51 @@ export default function Header() {
             setSessionID(loggedInSessionID);
         }
     }, [])
+
+
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
         const loggedInUserName = sessionStorage.getItem('userName'); // 세션 스토리지에서 이름 가져오기
-        
+    
         if (loggedInSessionID) {
             setSessionID(loggedInSessionID);
         }
         if (loggedInUserName) {
             setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
         }
-
+    
         // 세션 ID가 있는 경우에만 실행합니다.
-        if (sessionID) {
+        if (loggedInSessionID) {
             // 만료 시간을 현재 시간에서 1분 후로 설정합니다.
             const expiration = new Date();
             expiration.setMilliseconds(expiration.getMilliseconds() + 60000);
             setSessionExpiration(expiration);
-
+    
             // 1분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
             const timer = setTimeout(() => {
                 handleLogout();
             }, 600000);
-
+    
             // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
             return () => clearTimeout(timer);
         }
         // setSessionID("test");
     }, [sessionID]);
+    
+    // 추가) 세션 만료 시간 헤더 표시 기능, 위치 조정 필요
+    useEffect(() => {
+        // 세션 만료 시간이 변경될 때마다 업데이트합니다.
+        if (sessionExpiration) {
+            const timer = setTimeout(() => {
+                handleLogout();
+            }, sessionExpiration.getTime() - Date.now());
+    
+            // 타이머 정리
+            return () => clearTimeout(timer);
+        }
+    }, [sessionExpiration]);
+    
+
     return (
         <>
             {signin ? <Register /> : null}
@@ -176,6 +193,11 @@ export default function Header() {
                         </Logo>
                     </Nav>
                     <Nav className="ml-auto">
+                        {sessionExpiration && (
+                            <div>
+                                세션 만료 시간: {sessionExpiration.toLocaleString()}
+                            </div>
+                        )}
                         <Search onSubmit={handleSubmit(onValid)}>
                             {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
                             <SearchInput placeholder="식당이나 지역을 입력해보세요!" {...register("search", { required: true })} />
@@ -184,9 +206,9 @@ export default function Header() {
                             </svg></SearchBtn>
                         </Search>
                         <LoginContainer>
-                            {sessionID ? 
-                            <><LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>{userName}님</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
-                            : <><LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox><LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox></>}
+                            {sessionID ?
+                                <><LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>{userName}님</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
+                                : <><LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox><LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox></>}
                         </LoginContainer>
                     </Nav>
                 </Navbar.Collapse>
