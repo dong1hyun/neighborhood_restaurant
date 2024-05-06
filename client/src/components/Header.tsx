@@ -195,7 +195,7 @@ export default function Header() {
                     <Nav className="ml-auto">
                         {sessionExpiration && (
                             <div>
-                                세션 만료 시간: {sessionExpiration.toLocaleString()}
+                                세션 만료 시간: {sessionExpiration.toLocaleTimeString()}
                             </div>
                         )}
                         <Search onSubmit={handleSubmit(onValid)}>
