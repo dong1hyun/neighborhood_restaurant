@@ -33,17 +33,21 @@ const Slider = styled(motion.div)`
 `
 const PlaceBox = styled(motion.div)`
     position: relative;
-    height: 250px;
-    margin-top: 30px;
 `
 
-const Rating = styled.span`
+const Rating = styled.div`
     position: absolute;
-    right: 13%;
-    top: 1%;
-    font-size: 15px;
+    font-size: 18px;
+    top: 35px;
+    right: 36px;
+    background-color: rgba(0,0,0,1);
+    border-radius: 10px;
+    padding: 3px;
+    color: white;
 `
+
 const PlaceImg = styled(motion.img)`
+    margin-top: 30px;
     background-color: white;
     width:80%;
     height: 250px;
@@ -111,6 +115,7 @@ export default function WholePlace() {
     const [restaurantData, setRestaurantData] = useState([]);
     const [showTitle, setShowTitle] = useState(0);
     const navigate = useNavigate();
+    
     const nextPlease = async () => {
         if (leaving) return;
         toggleLeaving();
@@ -163,7 +168,7 @@ export default function WholePlace() {
                         (i, idx) => (
                             <PlaceBox whileHover={{scale:1.1}}>
                                     <PlaceImg src={i} key={idx} alt="Loding" />
-                                    <Rating>&#9733; 3.5</Rating>
+                                    <Rating><span style={{color:"rgba(30, 144, 255,1.0)" }}>&#9733;</span> 3.5</Rating>
                                     <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당 이름</PlaceTitle>
                             </PlaceBox>)
                     )}

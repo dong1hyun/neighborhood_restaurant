@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import InfoUpdate from "../components/myPage/InfoUpdate";
 
 
 const BoxContainer = styled.div`
@@ -140,51 +141,6 @@ function MyPage() {
     const handleReviewClick = (restaurantId: string) => {
         navigate(`/place/${restaurantId}`);
     };
-
-    // 로그인 된 사용자의 닉네임 변경
-    const handlenickNameChange = (event:any) => {
-        setnewnickName(event.target.value);
-    };
-    const handleSubmitnickName = async (event:any) => {
-        event.preventDefault();
-        try {
-            // Make a request to update the nickname
-            const response = await axios.put(`/updateNickname/${sessionID}`, { nickname: newnickName });
-            if (response.data.success) {
-                // Update the nickname in the state
-                setNickName(newnickName);
-                // Clear the input field
-                setnewnickName('');
-                console.log('Nickname updated successfully!');
-            } else {
-                console.error('Failed to update nickname.');
-            }
-        } catch (error) {
-            console.error('Error updating nickname:', error);
-        }
-    };
-
-    // 로그인 된 사용자의 비밀번호 변경
-    const handlePasswordChange = (event:any) => {
-        setNewPassword(event.target.value);
-    };
-    const handleSubmitPassword = async (event:any) => {
-        event.preventDefault();
-        try {
-            // Make a request to update the password
-            const response = await axios.put(`/updatePassword/${sessionID}`, { password: newPassword });
-            if (response.data.success) {
-                // Clear the input field
-                setNewPassword('');
-                console.log('Password updated successfully!');
-            } else {
-                console.error('Failed to update password.');
-            }
-        } catch (error) {
-            console.error('Error updating password:', error);
-        }
-    };
-
     return (
         <BoxContainer>
             <Title>즐겨 찾는 식당</Title>
@@ -207,34 +163,7 @@ function MyPage() {
                     <Comment>{review.comment}</Comment>
                 </ReviewContainer>
             ))}
-    
-            {/* 닉네임 변경 폼 */}
-            <form onSubmit={handleSubmitnickName}>
-                <label htmlFor="nickName">닉네임 변경:</label>
-                <input
-                    type="text"
-                    id="nickName"
-                    name="nickName"
-                    value={newnickName}
-                    onChange={handlenickNameChange}
-                    placeholder="새로운 별명 입력"
-                />
-                <button type="submit">별명 변경</button>
-            </form>
-
-            {/* 비밀번호 변경 폼 */}
-            <form onSubmit={handleSubmitPassword}>
-                <label htmlFor="password">비밀번호 변경:</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={newPassword}
-                    onChange={handlePasswordChange}
-                    placeholder="새로운 비밀번호 입력"
-                />
-                <button type="submit">비밀번호 변경</button>
-            </form>
+            <InfoUpdate />
         </BoxContainer>
     );
     

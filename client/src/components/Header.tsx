@@ -8,8 +8,8 @@ import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion"
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import Register from "./Register";
-import Login from "./Login";
+import Register from "./login/Register";
+import Login from "./login/Login";
 
 const Logo = styled(motion.div)`
     text-decoration: none;

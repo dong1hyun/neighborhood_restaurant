@@ -25,6 +25,15 @@ router.get('/restaurantData', async (_req, res) => {
     }
 });
 
+router.put('/infoUpdate/:sessionID', async (req, res) => {
+    console.log("ssss")
+    const { sessionID } = req.params;
+    const { nickName, id, password } = req.body;
+    if(nickName) await User.update({ nickName }, { where: { sessionID } });
+    if(id) await User.update({ id }, { where: { sessionID } });
+    if(password) await User.update({ password }, { where: { sessionID } });
+})
+
 // 마이페이지 닉네임 변경
 router.put('/updateNickname/:sessionID', async (req, res) => {
     const { sessionID } = req.params;

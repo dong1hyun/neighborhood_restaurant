@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useRecoilValue } from "recoil"
-import { session } from "../atom"
+import { session } from "../../atom"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 
