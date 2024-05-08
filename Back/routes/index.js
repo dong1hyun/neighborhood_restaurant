@@ -26,55 +26,11 @@ router.get('/restaurantData', async (_req, res) => {
 });
 
 router.put('/infoUpdate/:sessionID', async (req, res) => {
-    console.log("ssss")
     const { sessionID } = req.params;
     const { nickName, id, password } = req.body;
     if(nickName) await User.update({ nickName }, { where: { sessionID } });
     if(id) await User.update({ id }, { where: { sessionID } });
     if(password) await User.update({ password }, { where: { sessionID } });
 })
-
-// 마이페이지 닉네임 변경
-router.put('/updateNickname/:sessionID', async (req, res) => {
-    const { sessionID } = req.params;
-    const { nickname } = req.body;
-
-    try {
-        // sessionID로 사용자를 식별하여 닉네임을 업데이트합니다.
-        const updatedUser = await User.update({ nickName: nickname }, { where: { sessionID } });
-        if (updatedUser[0] > 0) {
-            // 최소한 한 행이 업데이트되었다면
-            res.json({ success: true });
-        } else {
-            res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
-        }
-    } catch (error) {
-        console.error('닉네임 업데이트 중 오류 발생:', error);
-        res.status(500).json({ error: '닉네임을 업데이트하는 동안 오류가 발생했습니다.' });
-    }
-});
-
-// 마이페이지 비밀번호 변경
-router.put('/updatePassword/:sessionID', async (req, res) => {
-    const { sessionID } = req.params;
-    const { password } = req.body;
-
-    try {
-        // bcrypt를 사용하여 비밀번호 해싱
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // sessionID로 사용자를 식별하여 비밀번호를 업데이트합니다.
-        const updatedUser = await User.update({ password: hashedPassword }, { where: { sessionID } });
-        if (updatedUser[0] > 0) {
-            // 최소한 한 행이 업데이트되었다면
-            res.json({ success: true });
-        } else {
-            res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
-        }
-    } catch (error) {
-        console.error('비밀번호 업데이트 중 오류 발생:', error);
-        res.status(500).json({ error: '비밀번호를 업데이트하는 동안 오류가 발생했습니다.' });
-    }
-});
 
 module.exports = router;

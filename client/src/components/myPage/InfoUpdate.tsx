@@ -10,6 +10,47 @@ const Title = styled.div`
     margin: 20px;
 `
 
+const Form = styled.form`
+    width: 70%;
+    border-radius: 10px;
+`
+
+const Container = styled.div`
+    text-align: right;
+    margin-right: 20%;
+`
+
+const InputBox = styled.div`
+    margin: 20px;
+    @media screen and (max-width: 1400px){
+        display: flex;
+        flex-direction: column;
+    }
+`
+
+const Label = styled.label`
+    margin-left: 10px;
+    text-align: left;
+`
+
+const Input = styled.input`
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #c7c7c7;
+    outline: none;
+    border: none;
+    padding: 5px;
+    width: 300px;
+    @media screen and (max-width:1200px) {
+        width: 100%;
+    }
+`
+
+const Button = styled.button`
+    margin: 10px;
+    margin-left: 30px;
+`
+
 interface updateForm {
     nickName: string;
     id: string
@@ -19,61 +60,40 @@ interface updateForm {
 export default function InfoUpdate() {
     const { register, handleSubmit } = useForm<updateForm>();
     const sessionID = useRecoilValue(session);
-    const onValid = async ({nickName, id, password}: updateForm) => {
-        console.log(nickName,id, password);
+    const onValid = async ({ nickName, id, password }: updateForm) => {
+        console.log(nickName, id, password);
         await axios.put(`/infoUpdate/${sessionID}`, {
             nickName,
             id,
             password
         })
     }
- 
-
-    // const handleSubmitnickName = async (event: any) => {
-    //     event.preventDefault();
-    //     try {
-    //         // Make a request to update the nickname
-    //         const response = await axios.put(`/updateNickname/${sessionID}`, { nickname: newnickName });
-    //         if (response.data.success) {
-    //             // Update the nickname in the state
-    //             setNickName(newnickName);
-    //             // Clear the input field
-    //             setnewnickName('');
-    //             console.log('Nickname updated successfully!');
-    //         } else {
-    //             console.error('Failed to update nickname.');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error updating nickname:', error);
-    //     }
-    // };
     return (
         <>
-            <Title>나의 정보 변경</Title>
-            <form onSubmit={handleSubmit(onValid)} >
-                <div>
-                    <label htmlFor="nickName">닉네임 변경:</label>
-                    <input
-                        {...register("nickName")}
-                        placeholder="새로운 닉네임 입력"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="id">아이디 변경:</label>
-                    <input
-                        {...register("id")}
-                        placeholder="새로운 아이디 입력"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">비밀번호 변경:</label>
-                    <input
-                        {...register("password")}
-                        placeholder="새로운 비밀번호 입력"
-                    />
-                </div>
-                <button type="submit">수정 완료</button>
-            </form >
+            <Title>정보 수정</Title>
+            <Form onSubmit={handleSubmit(onValid)} >
+                <Container>
+                    <InputBox>
+                        <Label htmlFor="nickName">닉네임</Label>
+                        <Input
+                            {...register("nickName")}
+                        />
+                    </InputBox>
+                    <InputBox>
+                        <Label htmlFor="id">아이디</Label>
+                        <Input
+                            {...register("id")}
+                        />
+                    </InputBox>
+                    <InputBox>
+                        <Label htmlFor="password">비밀번호</Label>
+                        <Input
+                            {...register("password")}
+                        />
+                    </InputBox>
+                </Container>
+                <Button type="submit">수정</Button>
+            </Form>
         </>
     )
 }

@@ -17,7 +17,7 @@ const BoxContainer = styled.div`
     margin: 0 auto;
     margin-bottom: 100px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 700px) {
         width: 90%;
     }
 `
