@@ -144,16 +144,16 @@ export default function Header() {
     
         // 세션 ID가 있는 경우에만 실행합니다.
         if (loggedInSessionID) {
-            // 만료 시간을 현재 시간에서 1분 후로 설정합니다.
+            // 만료 시간을 현재 시간에서 10분 후로 설정합니다.
             const expiration = new Date();
-            expiration.setMilliseconds(expiration.getMilliseconds() + 60000);
+            expiration.setMinutes(expiration.getMinutes() + 10);
             setSessionExpiration(expiration);
-    
-            // 1분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
+        
+            // 10분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
             const timer = setTimeout(() => {
                 handleLogout();
-            }, 600000);
-    
+            }, 600000); // 10분은 600000 밀리초입니다.
+        
             // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
             return () => clearTimeout(timer);
         }

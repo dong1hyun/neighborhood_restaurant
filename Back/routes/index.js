@@ -68,4 +68,24 @@ router.put('/updatePassword/:sessionID', async (req, res) => {
     }
 });
 
+// 마이페이지 사용자 주소 조회
+router.get('/userAddress/:sessionID', async (req, res) => {
+    const { sessionID } = req.params;
+
+    try {
+        // Find the user based on sessionID
+        const user = await User.findOne({ where: { sessionID } });
+
+        if (user) {
+            // If user is found, send back the address
+            res.json({ success: true, address: user.address });
+        } else {
+            res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
+        }
+    } catch (error) {
+        console.error('주소 조회 중 오류 발생:', error);
+        res.status(500).json({ error: '주소를 조회하는 동안 오류가 발생했습니다.' });
+    }
+});
+
 module.exports = router;

@@ -48,6 +48,7 @@ const SideBar = styled.div`
     border-radius: 15px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
 `
+
 const PlaceContainer = styled.div`
     display: flex;
     margin: 40px;
@@ -136,6 +137,44 @@ const ShareButton = styled.button`
     border-radius: 5px;
     border: none;
 `
+
+// 주변 음식점 추천 폼 / 위치 수정중
+const LocationContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 220px;
+    background-color: whitesmoke;
+    margin-top: 500px;
+    border-radius: 15px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+`;
+
+const LocationMap = styled.div`
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    border: 2px solid black;
+    margin-bottom: 100px;
+`;
+
+
+// const SideBar = styled.div`
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // height: 100%;
+    // width: 220px;
+    // background-color: whitesmoke;
+    // margin-left: 20px;
+    // margin-top: 50px;
+    // border-radius: 15px;
+    // box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+// `
+
+
+
 
 function Place() {
     const { id } = useParams()
@@ -253,6 +292,13 @@ function Place() {
             <SideBar>
                 <Map id="placeMap" />
             </SideBar>
+            {/* 위치 보여주는 폼 */}
+            <LocationContainer>
+                <LocationMap>
+                    {/* 여기에 위치를 보여주는 맵 컴포넌트 추가 */}
+                    {/* 예를 들어, 구글 맵 또는 다른 맵 API를 사용하여 위치를 보여줄 수 있습니다. */}
+                </LocationMap>
+            </LocationContainer>
         </ WholeContainer>
     )
 }

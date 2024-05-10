@@ -86,6 +86,7 @@ function MyPage() {
     const [nickName, setNickName] = useState<string>(''); // 사용자 이름 상태 추가
     const [newnickName, setnewnickName] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [currentAddress, setCurrentAddress] = useState('');
     const navigate = useNavigate();
 
 
@@ -128,10 +129,10 @@ function MyPage() {
     };
 
     // 로그인 된 사용자의 닉네임 변경
-    const handlenickNameChange = (event:any) => {
+    const handlenickNameChange = (event: any) => {
         setnewnickName(event.target.value);
     };
-    const handleSubmitnickName = async (event:any) => {
+    const handleSubmitnickName = async (event: any) => {
         event.preventDefault();
         try {
             // Make a request to update the nickname
@@ -151,10 +152,10 @@ function MyPage() {
     };
 
     // 로그인 된 사용자의 비밀번호 변경
-    const handlePasswordChange = (event:any) => {
+    const handlePasswordChange = (event: any) => {
         setNewPassword(event.target.value);
     };
-    const handleSubmitPassword = async (event:any) => {
+    const handleSubmitPassword = async (event: any) => {
         event.preventDefault();
         try {
             // Make a request to update the password
@@ -168,6 +169,24 @@ function MyPage() {
             }
         } catch (error) {
             console.error('Error updating password:', error);
+        }
+    };
+
+    // 사용자 인증 주소 표시
+    const handleSubmitGetAddress = async (event: any) => {
+        event.preventDefault();
+        try {
+            // Make a request to retrieve the address
+            const response = await axios.get(`/userAddress/${sessionID}`);
+            if (response.data.success) {
+                // Update the state with the retrieved address
+                setCurrentAddress(response.data.address);
+                console.log('Address retrieved successfully!');
+            } else {
+                console.error('Failed to retrieve address.');
+            }
+        } catch (error) {
+            console.error('Error retrieving address:', error);
         }
     };
 
@@ -199,7 +218,7 @@ function MyPage() {
                     <Comment>{review.comment}</Comment>
                 </ReviewContainer>
             ))}
-    
+
             {/* 닉네임 변경 폼 */}
             <form onSubmit={handleSubmitnickName}>
                 <label htmlFor="nickName">닉네임 변경:</label>
@@ -227,8 +246,24 @@ function MyPage() {
                 />
                 <button type="submit">비밀번호 변경</button>
             </form>
+
+            {/* 주소 조회 폼 */}
+            <form onSubmit={handleSubmitGetAddress}>
+                <label htmlFor="address">현재 주소:</label>
+                <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    value={currentAddress}
+                    readOnly // Make the input readOnly to prevent user input
+                    placeholder="현재 주소"
+                />
+                <button type="submit">주소 조회</button>
+            </form>
+
+
         </BoxContainer>
     );
-    
+
 }
 export default MyPage;
