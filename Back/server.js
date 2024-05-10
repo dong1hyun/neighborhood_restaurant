@@ -21,7 +21,7 @@ const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
 const favoriteRouter = require('./routes/favorite');
 const reviewRouter = require('./routes/review');
-const aisRouter = require('./routes/ais');
+//const aisRouter = require('./routes/ais');
 
 dotenv.config();
 passportConfig();
@@ -66,7 +66,7 @@ app.use('/logout', logoutRouter);
 app.use('/placeDetail', placeDetailRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
-app.use('/ais', aisRouter);
+//app.use('/ais', aisRouter);
 
 
 
