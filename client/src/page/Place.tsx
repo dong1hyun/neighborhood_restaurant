@@ -138,40 +138,6 @@ const ShareButton = styled.button`
     border: none;
 `
 
-// 주변 음식점 추천 폼 / 위치 수정중
-const LocationContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    width: 220px;
-    background-color: whitesmoke;
-    margin-top: 500px;
-    border-radius: 15px;
-    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
-`;
-
-const LocationMap = styled.div`
-    width: 200px;
-    height: 300px;
-    border-radius: 10px;
-    border: 2px solid black;
-    margin-bottom: 100px;
-`;
-
-
-// const SideBar = styled.div`
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // height: 100%;
-    // width: 220px;
-    // background-color: whitesmoke;
-    // margin-left: 20px;
-    // margin-top: 50px;
-    // border-radius: 15px;
-    // box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
-// `
 
 
 
@@ -260,8 +226,8 @@ function Place() {
                         <PlaceName>끝돈</PlaceName>
                         <Category>한식 육류</Category>
                         <Rating>평점: <>4.6</></Rating>
-                        <Detail>01055599654</Detail>
-                        <Detail>어디어디</Detail>
+                        <Detail>02-498-0929</Detail>
+                        <Detail>서울 광진구 아차산로 238-1</Detail>
                         영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?
@@ -292,13 +258,6 @@ function Place() {
             <SideBar>
                 <Map id="placeMap" />
             </SideBar>
-            {/* 위치 보여주는 폼 */}
-            <LocationContainer>
-                <LocationMap>
-                    {/* 여기에 위치를 보여주는 맵 컴포넌트 추가 */}
-                    {/* 예를 들어, 구글 맵 또는 다른 맵 API를 사용하여 위치를 보여줄 수 있습니다. */}
-                </LocationMap>
-            </LocationContainer>
         </ WholeContainer>
     )
 }
