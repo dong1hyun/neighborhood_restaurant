@@ -5,6 +5,7 @@ from konlpy.tag import Okt
 from collections import Counter
 from typing import Union  
 
+# 긍정적, 부정적, 중립적으로 거주자 음식점 평가란 만들어서 표시 해주는 역할로 사용 할 예정입니다. 파이썬 리뷰 감성분석 + 시각화
 
 app = FastAPI()
 
@@ -62,4 +63,3 @@ async def summarize_reviews(request: DataRequest):
 
 # uvicorn main:app --reload --host 0.0.0.0 --port 4000
 
-# 긍정적, 부정적, 중립적으로 거주자 음식점 평가란 만들어서 표시 해주는 역할로 사용 할 예정입니다. 파이썬 리뷰 감성분석 + 시각화
