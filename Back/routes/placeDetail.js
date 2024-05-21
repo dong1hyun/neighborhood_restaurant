@@ -1,31 +1,60 @@
 const express = require('express');
 const router = express.Router();
-const { Restaurant } = require('../models');
+const axios = require('axios'); // HTTP 요청을 보내기 위한 axios 모듈
+const { Restaurant, Review } = require('../models');
 const { Op } = require('sequelize');
 
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+// FastAPI 서버의 URL
+const FASTAPI_URL = 'http://127.0.0.1:4000';
 
-router.get('/:id', function(req, res) {
-    Restaurant.findOne({
-        where: { restaurantId: req.params.id } // Sequelize 모델에서 primaryKey를 `restaurantId`로 정의했기 때문에 변경합니다.
-    })
-    .then(result => {
-        if (result) {
-            res.json(result);
-        } else {
-            console.error('Restaurant not found');
-            res.status(404).json({ error: 'Restaurant not found' });
+
+router.get('/:id', async (req, res) => {
+    try {
+        // 음식점 정보 가져오기
+        const restaurant = await Restaurant.findOne({
+            where: { restaurantId: req.params.id }
+        });
+
+        if (!restaurant) {
+            return res.status(404).json({ error: 'Restaurant not found' });
         }
-    })
-    .catch(error => {
-        console.error("Error fetching restaurant:", error);
+        
+         // 리뷰 데이터 가져오기
+         const reviews = await Review.findAll({
+            where: { restaurantId: req.params.id },
+            attributes: ['comment']
+        });
+
+        const reviewComments = reviews.map(review => review.comment);
+
+        // FastAPI 서버에 리뷰 데이터를 요약 요청 (음식점 ID 포함)
+        const response = await axios.post(`${FASTAPI_URL}/ais`, {
+            restaurantId: req.params.id,
+            reviews: reviewComments
+        });
+
+        // 음식점 정보와 요약된 리뷰 데이터를 함께 응답
+        res.status(200).json({
+            restaurant: restaurant,
+            reviewSummary: response.data
+        });
+    } catch (error) {
+        console.error("Error fetching data:", error);
         res.status(500).json({ error: "Internal Server Error" });
-    });
+    }
 });
- 
+
+
+
+
+
+module.exports = router;
+
+
 
 // 주소 말고, 거리순으로 고려해보자.
 // // 유사한 음식점 가져오는 라우트
@@ -68,7 +97,3 @@ router.get('/:id', function(req, res) {
 //         res.status(500).json({ error: "내부 서버 오류" });
 //     }
 // });
-
-
-
-module.exports = router;
