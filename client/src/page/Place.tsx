@@ -214,8 +214,8 @@ function Place() {
         };
  
     useEffect(() => {
-        /* getPlaceData();
-        setMarker(x, y); */
+         getPlaceData();
+        setMarker(x, y); 
     }, [x, y, breakTime]);
     return (
         <WholeContainer>
