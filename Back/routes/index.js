@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const { Restaurant, User } = require('../models'); // Restaurant 모델을 import합니다.
+const { Op } = require('sequelize'); // Sequelize 연산자를 사용하기 위해 추가
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -24,6 +25,62 @@ router.get('/restaurantData', async (_req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching images' }); // 에러 발생 시 500 상태코드와 에러 메시지를 응답합니다.
     }
 });
+
+
+// '한식'이 포함된 레스토랑 데이터를 전송하는 라우터
+router.get('/restaurantData/korean', async (_req, res) => {
+    try {
+        const koreanRestaurants = await Restaurant.findAll({
+            where: { restaurantCategory: { [Op.like]: '%한식%' } }
+        });
+        const restaurantData = koreanRestaurants.map(restaurant => ({
+            restaurantId: restaurant.dataValues.restaurantId,
+            restaurantName: restaurant.dataValues.restaurantName,
+            img: restaurant.dataValues.img
+        }));
+        res.json({ restaurantData });
+    } catch (error) {
+        console.error('Error fetching Korean restaurants:', error);
+        res.status(500).json({ error: 'An error occurred while fetching Korean restaurants' });
+    }
+});
+
+// '중식'이 포함된 레스토랑 데이터를 전송하는 라우터
+router.get('/restaurantData/chinese', async (_req, res) => {
+    try {
+        const chineseRestaurants = await Restaurant.findAll({
+            where: { restaurantCategory: { [Op.like]: '%중식%' } }
+        });
+        const restaurantData = chineseRestaurants.map(restaurant => ({
+            restaurantId: restaurant.dataValues.restaurantId,
+            restaurantName: restaurant.dataValues.restaurantName,
+            img: restaurant.dataValues.img
+        }));
+        res.json({ restaurantData });
+    } catch (error) {
+        console.error('Error fetching Chinese restaurants:', error);
+        res.status(500).json({ error: 'An error occurred while fetching Chinese restaurants' });
+    }
+});
+
+// '일식'이 포함된 레스토랑 데이터를 전송하는 라우터
+router.get('/restaurantData/japanese', async (_req, res) => {
+    try {
+        const japaneseRestaurants = await Restaurant.findAll({
+            where: { restaurantCategory: { [Op.like]: '%일식%' } }
+        });
+        const restaurantData = japaneseRestaurants.map(restaurant => ({
+            restaurantId: restaurant.dataValues.restaurantId,
+            restaurantName: restaurant.dataValues.restaurantName,
+            img: restaurant.dataValues.img
+        }));
+        res.json({ restaurantData });
+    } catch (error) {
+        console.error('Error fetching Japanese restaurants:', error);
+        res.status(500).json({ error: 'An error occurred while fetching Japanese restaurants' });
+    }
+});
+
 
 // 마이페이지 닉네임 변경
 router.put('/updateNickname/:sessionID', async (req, res) => {
