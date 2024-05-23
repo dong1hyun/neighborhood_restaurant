@@ -4,18 +4,16 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 const LocationContainer = styled.div`
+    margin: auto;
+    border-radius: 10px;
+    width: 95%;
     height: 200px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     background-color: #2275eb97;
     margin-top: 30px;
     margin-bottom: 50px;
     text-align: center;
-    /* @media screen and (max-width: 700px){
-        scale: 0.8;        
-    } */
 `
-
-
 
 const GetLocationButton = styled.button`
     background-color: white;
@@ -46,6 +44,7 @@ const LocationInput = styled.input`
     border-radius: 5px;
     border: none;
     margin-right: 10px;
+    margin-bottom: 10px;
     padding-left: 10px;
 `;
 
@@ -141,10 +140,6 @@ export default function LocaionSet() {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
         setSessionID(loggedInSessionID);
     }, [])
-
-    useEffect(() => {
-        
-    })
     return (
         <LocationContainer>
             <GetLocationButton onClick={handleGetUserLocation}>내 위치 가져오기</GetLocationButton>

@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Home from "./page/Home";
 import { KeywordSearchResult } from "./page/KeywordSearchResult";
 import Header from "./components/Header";
-import { KakaoMap } from "./components/location/KakaoMap";
+import { KakaoMap } from "./components/search_result/KakaoMap";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle } from "styled-components";
 import Place from "./page/Place";

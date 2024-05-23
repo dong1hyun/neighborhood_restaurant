@@ -1,4 +1,4 @@
-import LocationSet from "../components/location/LocationSet";
+import LocationSet from "../components/home/LocationSet";
 import MyPlace from "../components/home/MyPlace";
 import WholePlace from "../components/home/WholePlace";
 import styled from "styled-components";
