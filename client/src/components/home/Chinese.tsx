@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, NextBtn, PlaceBox, PlaceImg, PlaceTitle, PrevBtn, Rating, Slider } from "../styled-components/homeStyle";
+import { Container, NextBtn, PlaceBox, PlaceImg, PlaceTitle, PrevBtn, Rating, Slider } from "../../styled-components/homeStyle";
 import { SliderVar, restaurantForm } from "../../lib/homeLib"
 import { AnimatePresence } from "framer-motion";
 
