@@ -101,6 +101,7 @@ function MyPage() {
     const [nickName, setNickName] = useState<string>(''); // 사용자 이름 상태 추가
     const [newnickName, setnewnickName] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [currentAddress, setCurrentAddress] = useState('');
     const navigate = useNavigate();
 
 
@@ -166,7 +167,7 @@ function MyPage() {
             <InfoUpdate />
         </BoxContainer>
     );
-    
+
 }
 export default MyPage;
 

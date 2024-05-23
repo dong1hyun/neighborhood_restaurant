@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Register from "./login/Register";
 import Login from "./login/Login";
 
+
 const Logo = styled(motion.div)`
     text-decoration: none;
     color: rgba(75, 207, 250,1.0);
@@ -106,6 +107,10 @@ export default function Header() {
     const [sessionID, setSessionID] = useRecoilState(session)
     const [nickName, setNickName] = useRecoilState(name);
     const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+
+    // 세션 만료 로그아웃
     const onValid = ({ search }: searchForm) => {
         setSearchWord(search);
         navigate(`/search?keyword=${search}`);
@@ -122,13 +127,15 @@ export default function Header() {
         }
     };
 
-    useEffect(() => {
-        const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
+    // useEffect(() => {
+    //     const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
 
-        if (loggedInSessionID) {
-            setSessionID(loggedInSessionID);
-        }
-    }, [])
+    //     if (loggedInSessionID) {
+    //         setSessionID(loggedInSessionID);
+    //     }
+    // }, [])
+
+
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
         const loggedInNickName = sessionStorage.getItem('nickName'); // 세션 스토리지에서 이름 가져오기
@@ -139,24 +146,45 @@ export default function Header() {
         if (loggedInNickName) {
             setNickName(loggedInNickName); // 세션 스토리지에서 가져온 사용자 이름 설정
         }
+    
 
-        // 세션 ID가 있는 경우에만 실행합니다.
-        if (sessionID) {
-            // 만료 시간을 현재 시간에서 1분 후로 설정합니다.
+       // 세션 ID가 있는 경우에만 실행합니다.
+        if (loggedInSessionID) {
+            // 만료 시간을 현재 시간에서 10분 후로 설정합니다.
             const expiration = new Date();
-            expiration.setMilliseconds(expiration.getMilliseconds() + 60000);
+            expiration.setMinutes(expiration.getMinutes() + 10);
             setSessionExpiration(expiration);
 
-            // 1분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
+            // 10분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
             const timer = setTimeout(() => {
                 handleLogout();
-            }, 600000);
+            }, 600000); // 10분은 600000 밀리초입니다.
 
             // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
             return () => clearTimeout(timer);
         }
-        // setSessionID("test");
     }, [sessionID]);
+
+    useEffect(() => {
+        // 세션 만료 시간이 변경될 때마다 업데이트합니다.
+        if (sessionExpiration) {
+            const timer = setTimeout(() => {
+                handleLogout();
+            }, sessionExpiration.getTime() - Date.now());
+
+            // 타이머 정리
+            return () => clearTimeout(timer);
+        }
+    }, [sessionExpiration]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000); // 1초마다 현재 시간을 갱신
+
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <>
             {signin ? <Register /> : null}
@@ -176,6 +204,11 @@ export default function Header() {
                         </Logo>
                     </Nav>
                     <Nav className="ml-auto">
+                        {sessionExpiration && (
+                            <div>
+                                세션 만료 시간: 남은 시간: {Math.max(0, Math.floor((sessionExpiration.getTime() - currentTime.getTime()) / 1000))}초
+                            </div>
+                        )}
                         <Search onSubmit={handleSubmit(onValid)}>
                             {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
                             <SearchInput placeholder="식당이나 지역을 입력해보세요!" {...register("search", { required: true })} />

@@ -5,14 +5,14 @@ import { Container, NextBtn, PlaceBox, PlaceImg, PlaceTitle, PrevBtn, Rating, Sl
 import { SliderVar, restaurantForm } from "../../lib/homeLib"
 import { AnimatePresence } from "framer-motion";
 
-export default function WholePlace() {
+export default function Korean() {
     const [Index, setIndex] = useState(0);
     const [back, setBack] = useState(false);
     const [leaving, setLeaving] = useState(false);
     const [restaurantData, setRestaurantData] = useState([]);
     const [showTitle, setShowTitle] = useState(0);
     const navigate = useNavigate();
-    
+
     const nextPlease = async () => {
         if (leaving) return;
         toggleLeaving();
@@ -39,7 +39,7 @@ export default function WholePlace() {
     useEffect(() => {
         async function fetchRestaurant() {
             try {
-                const response = await axios.get('/restaurantData');
+                const response = await axios.get('/restaurantData/korean');
                 const restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
                 setRestaurantData(restData);
             } catch (error) {
@@ -75,14 +75,13 @@ export default function WholePlace() {
                             </PlaceBox>
                         )
                     )}
-                </Slider>   
+                </Slider>
                 <PrevBtn src={process.env.PUBLIC_URL + "/back.png"} onClick={prevPlease} />
                 <NextBtn src={process.env.PUBLIC_URL + "/next.png"} onClick={nextPlease} />
             </AnimatePresence>
         </Container>
     )
 }
-
 
 
 // {restaurantData.slice(Index, Index + 4).map(

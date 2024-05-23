@@ -49,6 +49,7 @@ const SideBar = styled.div`
     border-radius: 15px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
 `
+
 const PlaceContainer = styled.div`
     display: flex;
     margin: 40px;

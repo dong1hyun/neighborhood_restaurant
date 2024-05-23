@@ -5,7 +5,7 @@ import { Container, NextBtn, PlaceBox, PlaceImg, PlaceTitle, PrevBtn, Rating, Sl
 import { SliderVar, restaurantForm } from "../../lib/homeLib"
 import { AnimatePresence } from "framer-motion";
 
-export default function WholePlace() {
+export default function Chinaese() {
     const [Index, setIndex] = useState(0);
     const [back, setBack] = useState(false);
     const [leaving, setLeaving] = useState(false);
@@ -39,7 +39,7 @@ export default function WholePlace() {
     useEffect(() => {
         async function fetchRestaurant() {
             try {
-                const response = await axios.get('/restaurantData');
+                const response = await axios.get('/restaurantData/chinese');
                 const restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
                 setRestaurantData(restData);
             } catch (error) {
@@ -82,7 +82,6 @@ export default function WholePlace() {
         </Container>
     )
 }
-
 
 
 // {restaurantData.slice(Index, Index + 4).map(
