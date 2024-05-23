@@ -9,7 +9,6 @@ router.use(express.urlencoded({ extended: true }));
 
 // 리뷰 작성 요청 처리
 router.post('/', async (req, res) => {
-    console.log("zzzz")
     // 세션 아이디를 추출
     const sessionID = req.body.sessionID;
     try {
@@ -63,7 +62,7 @@ router.post('/', async (req, res) => {
 });
 
 
-
+// 추가)개씩 랜덤으로 가져오기
 // 리뷰 조회 요청 처리
 router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/reviews/:restaurantId'로 변경
     
