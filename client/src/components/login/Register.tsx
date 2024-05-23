@@ -1,10 +1,10 @@
-import Overlay from "./Overlay";
+import Overlay from "../Overlay";
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { useForm } from "react-hook-form"
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { signinState } from "../atom";
+import { signinState } from "../../atom";
 
 const RegisterContainer = styled(motion.div)`
     position: absolute;

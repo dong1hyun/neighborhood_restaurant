@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import React from 'react';
 import setMarker from "../function/placeMarker";
-import PlaceImg from "../components/PlaceImg";
+import PlaceImg from "../components/place/PlaceImg";
 import { motion } from "framer-motion";
-import Review from "../components/Review";
+import Review from "../components/place/Review";
 import { session } from "../atom";
 import { useRecoilState } from "recoil";
 import Button from 'react-bootstrap/Button';
+import PlaceRecommend from "../components/place/PlaceRecommend";
 
 const WholeContainer = styled.div`
     display: flex;
@@ -40,7 +41,7 @@ const SideBar = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
+    height: auto;
     width: 220px;
     background-color: whitesmoke;
     margin-left: 20px;
@@ -94,7 +95,7 @@ const Map = styled.div`
     width: 170px;
     height: 300px;
     border-radius: 10px;
-    border: 2px solid black;
+    /* border: 2px solid black; */
     margin: 20px
 `
 
@@ -138,9 +139,10 @@ const ShareButton = styled.button`
     border: none;
 `
 
-
-
-
+const SideContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 
 function Place() {
     const { id } = useParams()
@@ -179,7 +181,6 @@ function Place() {
                 console.log(error);
             })
     }
-    
     const handleBookmark = async () => {
         if (sessionID) {
             try {
@@ -187,7 +188,7 @@ function Place() {
                     sessionID: sessionID,
                     restaurantId: id
                 };
-    
+
                 const response = await axios.post('/favorite', favoritePlaceInfo);
             } catch (error) {
                 console.error('즐겨찾기 추가 중 오류가 발생했습니다:', error);
@@ -197,25 +198,25 @@ function Place() {
         }
     };
 
-        // 음식점 링크 공유 기능 추가
-        const sharePage = () => {
-            if (navigator.share) {
-                navigator.share({
-                    title: document.title,
-                    url: window.location.href
-                }).then(() => {
-                    console.log('Page shared successfully.');
-                }).catch((error) => {
-                    console.error('Error sharing page:', error);
-                });
-            } else {
-                console.log('Web share not supported on this browser.');
-            }
-        };
- 
+    // 음식점 링크 공유 기능 추가
+    const sharePage = () => {
+        if (navigator.share) {
+            navigator.share({
+                title: document.title,
+                url: window.location.href
+            }).then(() => {
+                console.log('Page shared successfully.');
+            }).catch((error) => {
+                console.error('Error sharing page:', error);
+            });
+        } else {
+            console.log('Web share not supported on this browser.');
+        }
+    };
+
     useEffect(() => {
-         getPlaceData();
-        setMarker(x, y); 
+        getPlaceData();
+        setMarker(x, y);
     }, [x, y, breakTime]);
     return (
         <WholeContainer>
@@ -255,9 +256,14 @@ function Place() {
                 <ShareButton onClick={sharePage}>페이지 공유하기</ShareButton>
                 <Review />
             </BoxContainer>
-            <SideBar>
-                <Map id="placeMap" />
-            </SideBar>
+            <SideContainer>
+                <SideBar>
+                    <Map id="placeMap" />
+                </SideBar>
+                <SideBar>
+                    <PlaceRecommend address="dd" />
+                </SideBar>
+            </SideContainer>
         </ WholeContainer>
     )
 }

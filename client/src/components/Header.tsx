@@ -8,8 +8,8 @@ import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion"
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import Register from "./Register";
-import Login from "./Login";
+import Register from "./login/Register";
+import Login from "./login/Login";
 
 
 const Logo = styled(motion.div)`
@@ -99,13 +99,13 @@ interface searchForm {
 }
 
 export default function Header() {
-    const { register, handleSubmit, getValues, watch } = useForm<searchForm>();
+    const { register, handleSubmit, watch } = useForm<searchForm>();
     const navigate = useNavigate();
     const setSearchWord = useSetRecoilState(keyword);
     const [signin, setSignin] = useRecoilState(signinState)
     const [login, setLogin] = useRecoilState(loginState);
     const [sessionID, setSessionID] = useRecoilState(session)
-    const [userName, setUserName] = useRecoilState(name);
+    const [nickName, setNickName] = useRecoilState(name);
     const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
     const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -120,7 +120,7 @@ export default function Header() {
             await axios.get('/logout'); // 서버로 로그아웃 요청 보냄
             sessionStorage.removeItem('sessionID'); // 세션 스토리지에서 세션 ID 제거
             setSessionID(''); // 세션 ID 초기화
-            setUserName('');
+            setNickName('');
             navigate('/'); // 홈 페이지로 이동
         } catch (error) {
             console.error('로그아웃 중 오류가 발생했습니다:', error);
@@ -138,13 +138,13 @@ export default function Header() {
 
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
-        const loggedInUserName = sessionStorage.getItem('userName'); // 세션 스토리지에서 이름 가져오기
-    
+        const loggedInNickName = sessionStorage.getItem('nickName'); // 세션 스토리지에서 이름 가져오기
+        
         if (loggedInSessionID) {
             setSessionID(loggedInSessionID);
         }
-        if (loggedInUserName) {
-            setUserName(loggedInUserName); // 세션 스토리지에서 가져온 사용자 이름 설정
+        if (loggedInNickName) {
+            setNickName(loggedInNickName); // 세션 스토리지에서 가져온 사용자 이름 설정
         }
     
 
@@ -217,9 +217,9 @@ export default function Header() {
                             </svg></SearchBtn>
                         </Search>
                         <LoginContainer>
-                            {sessionID ?
-                                <><LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>{userName}님</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
-                                : <><LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox><LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox></>}
+                            {sessionID ? 
+                            <><LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>{nickName}님</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
+                            : <><LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox><LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox></>}
                         </LoginContainer>
                     </Nav>
                 </Navbar.Collapse>

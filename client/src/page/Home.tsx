@@ -1,6 +1,6 @@
-import LocationSet from "../components/LocationSet";
-import MyPlace from "../components/MyPlace";
-import WholePlace from "../components/WholePlace";
+import LocationSet from "../components/home/LocationSet";
+import MyPlace from "../components/home/MyPlace";
+import WholePlace from "../components/home/WholePlace";
 import styled from "styled-components";
 
 const HomeContainer = styled.div`

@@ -2,12 +2,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Home from "./page/Home";
 import { KeywordSearchResult } from "./page/KeywordSearchResult";
 import Header from "./components/Header";
-import { KakaoMap } from "./components/KakaoMap";
+import { KakaoMap } from "./components/search_result/KakaoMap";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle } from "styled-components";
 import Place from "./page/Place";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Register from "./components/login/Register";
+import Login from "./components/login/Login";
 import React from 'react';
 import Footer from "./components/Footer";
 import MyPage from "./page/MyPage";

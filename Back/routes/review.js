@@ -9,6 +9,7 @@ router.use(express.urlencoded({ extended: true }));
 
 // 리뷰 작성 요청 처리
 router.post('/', async (req, res) => {
+    console.log("zzzz")
     // 세션 아이디를 추출
     const sessionID = req.body.sessionID;
     try {

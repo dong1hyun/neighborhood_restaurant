@@ -1,11 +1,11 @@
-import Overlay from "./Overlay";
+import Overlay from "../Overlay";
 import React, { FormEvent, useEffect, useState } from 'react';
 import axios from "axios"
 import { AnimatePresence, motion } from "framer-motion"
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { loginState, name, session } from "../atom";
+import { loginState, name, session } from "../../atom";
 
 const LoginContainer = styled(motion.div)`
     position: absolute;

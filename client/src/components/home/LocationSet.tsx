@@ -4,18 +4,16 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 const LocationContainer = styled.div`
+    margin: auto;
+    border-radius: 10px;
+    width: 95%;
     height: 200px;
-    /* background: linear-gradient(45deg, rgba(27, 156, 252,1.0), rgba(37, 204, 247,1.0)); */
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     background-color: #2275eb97;
     margin-top: 30px;
     margin-bottom: 50px;
     text-align: center;
-    /* @media screen and (max-width: 700px){
-        scale: 0.8;        
-    } */
 `
-
-
 
 const GetLocationButton = styled.button`
     background-color: white;
@@ -46,10 +44,13 @@ const LocationInput = styled.input`
     border-radius: 5px;
     border: none;
     margin-right: 10px;
+    margin-bottom: 10px;
     padding-left: 10px;
 `;
 
-
+interface searchForm {
+    location: string
+}
 
 export default function LocaionSet() {
     const [searchResult, setSearchResult] = useState<string>('');
@@ -57,14 +58,10 @@ export default function LocaionSet() {
     const [userAddress, setUserAddress] = useState<string>('');
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [sessionID, setSessionID] = useState<string>('');
-    const { register, handleSubmit } = useForm();
-    
-
-    
-
-    const handleSearch = async () => {
+    const { register, handleSubmit } = useForm<searchForm>();
+    const handleSearch = async ({location}: searchForm) => {
         try {
-            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
+            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${location}`, {
                 headers: {
                     Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
                 }
@@ -143,7 +140,6 @@ export default function LocaionSet() {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
         setSessionID(loggedInSessionID);
     }, [])
-
     return (
         <LocationContainer>
             <GetLocationButton onClick={handleGetUserLocation}>내 위치 가져오기</GetLocationButton>

@@ -25,8 +25,6 @@ router.get('/restaurantData', async (_req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching images' }); // 에러 발생 시 500 상태코드와 에러 메시지를 응답합니다.
     }
 });
-
-
 // '한식'이 포함된 레스토랑 데이터를 전송하는 라우터
 router.get('/restaurantData/korean', async (_req, res) => {
     try {
@@ -82,67 +80,12 @@ router.get('/restaurantData/japanese', async (_req, res) => {
 });
 
 
-// 마이페이지 닉네임 변경
-router.put('/updateNickname/:sessionID', async (req, res) => {
+router.put('/infoUpdate/:sessionID', async (req, res) => {
     const { sessionID } = req.params;
-    const { nickname } = req.body;
-
-    try {
-        // sessionID로 사용자를 식별하여 닉네임을 업데이트합니다.
-        const updatedUser = await User.update({ nickName: nickname }, { where: { sessionID } });
-        if (updatedUser[0] > 0) {
-            // 최소한 한 행이 업데이트되었다면
-            res.json({ success: true });
-        } else {
-            res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
-        }
-    } catch (error) {
-        console.error('닉네임 업데이트 중 오류 발생:', error);
-        res.status(500).json({ error: '닉네임을 업데이트하는 동안 오류가 발생했습니다.' });
-    }
-});
-
-// 마이페이지 비밀번호 변경
-router.put('/updatePassword/:sessionID', async (req, res) => {
-    const { sessionID } = req.params;
-    const { password } = req.body;
-
-    try {
-        // bcrypt를 사용하여 비밀번호 해싱
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // sessionID로 사용자를 식별하여 비밀번호를 업데이트합니다.
-        const updatedUser = await User.update({ password: hashedPassword }, { where: { sessionID } });
-        if (updatedUser[0] > 0) {
-            // 최소한 한 행이 업데이트되었다면
-            res.json({ success: true });
-        } else {
-            res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
-        }
-    } catch (error) {
-        console.error('비밀번호 업데이트 중 오류 발생:', error);
-        res.status(500).json({ error: '비밀번호를 업데이트하는 동안 오류가 발생했습니다.' });
-    }
-});
-
-// 마이페이지 사용자 주소 조회
-router.get('/userAddress/:sessionID', async (req, res) => {
-    const { sessionID } = req.params;
-
-    try {
-        // Find the user based on sessionID
-        const user = await User.findOne({ where: { sessionID } });
-
-        if (user) {
-            // If user is found, send back the address
-            res.json({ success: true, address: user.address });
-        } else {
-            res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
-        }
-    } catch (error) {
-        console.error('주소 조회 중 오류 발생:', error);
-        res.status(500).json({ error: '주소를 조회하는 동안 오류가 발생했습니다.' });
-    }
-});
+    const { nickName, id, password } = req.body;
+    if(nickName) await User.update({ nickName }, { where: { sessionID } });
+    if(id) await User.update({ id }, { where: { sessionID } });
+    if(password) await User.update({ password }, { where: { sessionID } });
+})
 
 module.exports = router;

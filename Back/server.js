@@ -45,7 +45,6 @@ sequelize.sync({ force: false })
             cookie: {
                 httpOnly: true,
                 secure: false
-                //maxAge: 60000  
             },
             name: 'session-cookie'
         })

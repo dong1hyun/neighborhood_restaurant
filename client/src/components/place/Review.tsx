@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useRecoilValue } from "recoil"
-import { session } from "../atom"
+import { session } from "../../atom"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 
@@ -90,7 +90,6 @@ function Review() {
             if (!response.data) {
                 throw new Error("No data received from server");
             }
-            console.log("리뷰데이터:",response.data);
             setReviews(response.data);
         } catch (error) {
             console.error('리뷰 데이터를 불러오는 중 오류가 발생했습니다:', error);
