@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Review, User, Restaurant } = require('../models'); // 모델 가져오기
-const axios = require('axios'); // axios 모듈 가져오기
+const { Sequelize } = require('sequelize'); // Sequelize 객체를 불러오기
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -9,7 +9,6 @@ router.use(express.urlencoded({ extended: true }));
 
 // 리뷰 작성 요청 처리
 router.post('/', async (req, res) => {
-    console.log("zzzz")
     // 세션 아이디를 추출
     const sessionID = req.body.sessionID;
     try {
@@ -64,15 +63,17 @@ router.post('/', async (req, res) => {
 
 
 
-// 리뷰 조회 요청 처리
+// 리뷰 조회 요청 처리 + 5개씩 랜덤으로 조회 함.
 router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/reviews/:restaurantId'로 변경
     
     try {
         const restaurantId = req.params.restaurantId;
     
-        // 음식점 아이디로 리뷰를 조회합니다.
-        const reviews = await Review.findAll({ 
+        // 음식점 아이디로 리뷰를 랜덤으로 5개 조회합니다.
+        const reviews = await Review.findAll({
             where: { restaurantId: restaurantId },
+            order: Sequelize.literal('RAND()'), // 랜덤으로 정렬
+            limit: 5, // 5개의 레코드만 가져오기
             attributes: ['comment', 'rating', 'id'] // 사용자 ID를 가져오기 위해 userId 속성 추가
         });
 
