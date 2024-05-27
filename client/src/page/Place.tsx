@@ -43,11 +43,17 @@ const SideBar = styled.div`
     align-items: center;
     height: auto;
     width: 220px;
+    padding: 10px;
     background-color: whitesmoke;
     margin-left: 20px;
     margin-top: 50px;
     border-radius: 15px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+    @media screen and (max-width: 900px) {
+        width: 90%;
+        margin: auto;
+        margin-top: 50px;
+    }
 `
 
 const PlaceContainer = styled.div`
@@ -92,10 +98,9 @@ const Category = styled.div`
 `
 
 const Map = styled.div`
-    width: 170px;
+    width: 80%;
     height: 300px;
     border-radius: 10px;
-    /* border: 2px solid black; */
     margin: 20px
 `
 
@@ -261,7 +266,7 @@ function Place() {
                     <Map id="placeMap" />
                 </SideBar>
                 <SideBar>
-                    <PlaceRecommend address="dd" />
+                    <PlaceRecommend />
                 </SideBar>
             </SideContainer>
         </ WholeContainer>

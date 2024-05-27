@@ -3,13 +3,20 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
+const Container = styled.div`
+    background-image: url("map.png");
+    background-size: cover;
+    margin-top: 50px;
+    margin-bottom: 80px;
+`
+
 const LocationContainer = styled.div`
     margin: auto;
     border-radius: 10px;
     width: 95%;
     height: 200px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
-    background-color: #2275eb97;
+    background-color: #3589ff96;
     margin-top: 30px;
     margin-bottom: 50px;
     text-align: center;
@@ -59,7 +66,7 @@ export default function LocaionSet() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [sessionID, setSessionID] = useState<string>('');
     const { register, handleSubmit } = useForm<searchForm>();
-    const handleSearch = async ({location}: searchForm) => {
+    const handleSearch = async ({ location }: searchForm) => {
         try {
             const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${location}`, {
                 headers: {
@@ -127,31 +134,33 @@ export default function LocaionSet() {
         try {
             // 주소에서 숫자를 제거합니다.
             const cleanedAddress = address.replace(/\d+/g, '').trim().replace(/-$/, '');
-            
+
             const response = await axios.post('/location', { sessionID, address: cleanedAddress });
             console.log('서버 응답:', response.data);
         } catch (error) {
             console.error('서버로 위치 전송 중 오류가 발생했습니다:', error);
         }
     };
-    
+
 
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
         setSessionID(loggedInSessionID);
     }, [])
     return (
-        <LocationContainer>
-            <GetLocationButton onClick={handleGetUserLocation}>내 위치 가져오기</GetLocationButton>
-            <LocationForm onSubmit={handleSubmit(handleSearch)}>
-                <LocationInput
-                    placeholder="자신이 속한 읍/면/동을 입력해주세요!"
-                    value={searchTerm} // searchTerm 값으로 입력란의 값 설정
-                    onChange={(e) => setSearchTerm(e.target.value)} // 입력값 변경 시 searchTerm 업데이트
-                />
-                <SetLocationButton type="submit">인증하기</SetLocationButton>
-            </LocationForm>
-        </LocationContainer>
+        <Container>
+            <LocationContainer>
+                <GetLocationButton onClick={handleGetUserLocation}>내 위치 가져오기</GetLocationButton>
+                <LocationForm onSubmit={handleSubmit(handleSearch)}>
+                    <LocationInput
+                        placeholder="자신이 속한 읍/면/동을 입력해주세요!"
+                        value={searchTerm} // searchTerm 값으로 입력란의 값 설정
+                        onChange={(e) => setSearchTerm(e.target.value)} // 입력값 변경 시 searchTerm 업데이트
+                    />
+                    <SetLocationButton type="submit">인증하기</SetLocationButton>
+                </LocationForm>
+            </LocationContainer>
+        </Container>
     );
-    
+
 }

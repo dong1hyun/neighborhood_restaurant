@@ -189,7 +189,7 @@ export default function Header() {
         <>
             {signin ? <Register /> : null}
             {login ? <Login /> : null}
-            <Navbar expand="md" className="bg-light shadow mb-5">
+            <Navbar expand="md" className="bg-light shadow mb-5 fixed-top mb-50 d-flex justify-content-between">
                 <Navbar.Toggle className="bg-white" aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="" id="basic-navbar-nav">
                     <Nav className="me-auto">

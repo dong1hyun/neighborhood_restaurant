@@ -5,7 +5,7 @@ import { Container, NextBtn, PlaceBox, PlaceImg, PlaceTitle, PrevBtn, Rating, Sl
 import { SliderVar, restaurantForm } from "../../lib/homeLib"
 import { AnimatePresence } from "framer-motion";
 
-export default function Chinaese() {
+export default function Chinese() {
     const [Index, setIndex] = useState(0);
     const [back, setBack] = useState(false);
     const [leaving, setLeaving] = useState(false);

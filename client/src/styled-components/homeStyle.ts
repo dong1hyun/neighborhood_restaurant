@@ -1,6 +1,14 @@
 import { motion } from "framer-motion"
 import styled from "styled-components"
 
+
+export const Containerr = styled.div`
+    /* background-image: url("food.png");
+    height: auto;
+    width: auto;
+    opacity: 0.5; */
+`
+
 export const Container = styled.div`
     position: relative;
     margin: auto;

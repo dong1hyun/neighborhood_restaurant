@@ -22,7 +22,6 @@ const LoginContainer = styled(motion.div)`
     left: 0px;
     right: 0px;
     margin: 0 auto;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
     @media screen and (max-width: 700px) {
         width: 250px;
     }
@@ -104,19 +103,19 @@ export default function Login() {
 
     return (
         <div>
-            <LoginContainer className="card"
+            <LoginContainer
                 variants={boxVariants}
                 initial="initial"
                 animate="visible"
                 exit="leaving"
             >
                 <form onSubmit={handleSubmit(LoginSuccess)}>
-                    <div className="card-header">
+                    <div>
                         로그인
                     </div>
-                    <ul className="list-group list-group-flush">
-                        <LoginList className="list-group-item"><LoginInput {...register("id")} placeholder="아이디를 입력하세요" /></LoginList>
-                        <LoginList className="list-group-item"><LoginInput {...register("password")} placeholder="비밀번호를 입력하세요" /></LoginList>
+                    <ul>
+                        <LoginList><LoginInput {...register("id")} placeholder="아이디를 입력하세요" /></LoginList>
+                        <LoginList><LoginInput {...register("password")} placeholder="비밀번호를 입력하세요" /></LoginList>
                         <LoginBtn type="submit">로그인</LoginBtn>
                     </ul>
                 </form>

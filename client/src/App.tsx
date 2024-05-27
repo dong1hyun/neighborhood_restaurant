@@ -43,6 +43,7 @@ footer, header, hgroup, main, menu, nav, section {
     display: none;
 }
 body {
+  padding-top: 150px;
   line-height: 1;
   background-color: #d3d7d9
 }
