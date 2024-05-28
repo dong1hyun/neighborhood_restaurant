@@ -10,15 +10,15 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 
-// 추가)16개 씩 랜덤으로 가져오기
+// 추가)24개 씩 랜덤으로 가져오기
 
-// 메인 페이지에서 데이터베이스로 조회 (16개씩 랜덤으로 가져오기)
+// 메인 페이지에서 데이터베이스로 조회 (24개씩 랜덤으로 가져오기)
 router.get('/restaurantData', async (_req, res) => {
     try {
-        // 음식점 테이블에서 16개의 랜덤 레코드를 가져옵니다.
+        // 음식점 테이블에서 24개의 랜덤 레코드를 가져옵니다.
         const restaurants = await Restaurant.findAll({
             order: Sequelize.literal('RAND()'), // 랜덤으로 정렬
-            limit: 16 // 16개의 레코드만 가져오기
+            limit: 24 // 24개의 레코드만 가져오기
         });
 
         // 각 음식점의 정보만 추출하여 배열에 담습니다.
@@ -35,13 +35,13 @@ router.get('/restaurantData', async (_req, res) => {
     }
 });
 
-// '한식'이 포함된 레스토랑 데이터를 랜덤으로 16개 전송하는 라우터
+// '한식'이 포함된 레스토랑 데이터를 랜덤으로 24개 전송하는 라우터
 router.get('/restaurantData/korean', async (_req, res) => {
     try {
         const koreanRestaurants = await Restaurant.findAll({
             where: { restaurantCategory: { [Op.like]: '%한식%' } },
             order: Sequelize.literal('RAND()'),
-            limit: 16
+            limit: 24
         });
         const restaurantData = koreanRestaurants.map(restaurant => ({
             restaurantId: restaurant.restaurantId,
@@ -55,13 +55,13 @@ router.get('/restaurantData/korean', async (_req, res) => {
     }
 });
 
-// '중식'이 포함된 레스토랑 데이터를 랜덤으로 16개 전송하는 라우터
+// '중식'이 포함된 레스토랑 데이터를 랜덤으로 24개 전송하는 라우터
 router.get('/restaurantData/chinese', async (_req, res) => {
     try {
         const chineseRestaurants = await Restaurant.findAll({
             where: { restaurantCategory: { [Op.like]: '%중식%' } },
             order: Sequelize.literal('RAND()'),
-            limit: 16
+            limit: 24
         });
         const restaurantData = chineseRestaurants.map(restaurant => ({
             restaurantId: restaurant.restaurantId,
@@ -75,13 +75,13 @@ router.get('/restaurantData/chinese', async (_req, res) => {
     }
 });
 
-// '일식'이 포함된 레스토랑 데이터를 랜덤으로 16개 전송하는 라우터
+// '일식'이 포함된 레스토랑 데이터를 랜덤으로 24개 전송하는 라우터
 router.get('/restaurantData/japanese', async (_req, res) => {
     try {
         const japaneseRestaurants = await Restaurant.findAll({
             where: { restaurantCategory: { [Op.like]: '%일식%' } },
             order: Sequelize.literal('RAND()'),
-            limit: 16
+            limit: 24
         });
         const restaurantData = japaneseRestaurants.map(restaurant => ({
             restaurantId: restaurant.restaurantId,

@@ -2,23 +2,31 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import setMarker from "../../function/locationMarker";
+import { IoLocationSharp } from "react-icons/io5";
+import { SiAuth0 } from "react-icons/si";
 
-const Container = styled.div`
-    background-image: url("map.png");
-    background-size: cover;
-    margin-top: 50px;
+const Map = styled.div`
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-top: 80px;
     margin-bottom: 80px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
 `
 
 const LocationContainer = styled.div`
-    margin: auto;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
     border-radius: 10px;
-    width: 95%;
+    width: 60%;
     height: 200px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     background-color: #3589ff96;
     margin-top: 30px;
-    margin-bottom: 50px;
     text-align: center;
 `
 
@@ -33,8 +41,8 @@ const GetLocationButton = styled.button`
 `;
 
 const SetLocationButton = styled.button`
-    background-color: white;
-    color: black;
+    background-color: #4e4ed7;
+    color: white;
     border: none;
     padding: 8px 16px;
     border-radius: 5px;
@@ -42,7 +50,7 @@ const SetLocationButton = styled.button`
 `;
 
 const LocationForm = styled.form`
-margin-top: 40px;
+    margin-top: 40px;
 `;
 
 const LocationInput = styled.input`
@@ -53,7 +61,14 @@ const LocationInput = styled.input`
     margin-right: 10px;
     margin-bottom: 10px;
     padding-left: 10px;
+    @media screen and (max-width: 700px){
+        width: 80%;
+    }
 `;
+
+const Test = styled.span`
+    margin-bottom: 10px;
+`
 
 interface searchForm {
     location: string
@@ -114,6 +129,8 @@ export default function LocaionSet() {
     const handleGetUserLocation = () => {
         navigator.geolocation.getCurrentPosition(async (position) => {
             const { latitude, longitude } = position.coords;
+            setMarker(latitude, longitude);
+            console.log(latitude, longitude)
             setUserLocation({ x: longitude, y: latitude });
             const address = await getAddressFromCoordinates(latitude, longitude);
             if (address) {
@@ -146,21 +163,22 @@ export default function LocaionSet() {
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
         setSessionID(loggedInSessionID);
+        setMarker(37.56683320853823, 126.97862961813682);
     }, [])
     return (
-        <Container>
+            <Map id="locationMap">
             <LocationContainer>
-                <GetLocationButton onClick={handleGetUserLocation}>내 위치 가져오기</GetLocationButton>
+                <GetLocationButton onClick={handleGetUserLocation}><IoLocationSharp size={20} color="rgba(15, 188, 249,1.0)"  /> 내 위치 가져오기</GetLocationButton>
                 <LocationForm onSubmit={handleSubmit(handleSearch)}>
                     <LocationInput
-                        placeholder="자신이 속한 읍/면/동을 입력해주세요!"
+                        placeholder="자신의 동네 입력"
                         value={searchTerm} // searchTerm 값으로 입력란의 값 설정
                         onChange={(e) => setSearchTerm(e.target.value)} // 입력값 변경 시 searchTerm 업데이트
                     />
-                    <SetLocationButton type="submit">인증하기</SetLocationButton>
+                    <SetLocationButton type="submit"><SiAuth0 /> 인증하기</SetLocationButton>
                 </LocationForm>
             </LocationContainer>
-        </Container>
+            </Map>
     );
 
 }

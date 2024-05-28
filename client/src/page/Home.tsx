@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import Chinaese from "../components/home/Chinese";
-import Japanese from "../components/home/Japanese";
-import Korean from "../components/home/Korean";
 import LocationSet from "../components/home/LocationSet";
-import WholePlace from "../components/home/WholePlace";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import PlaceSlider from "../components/home/PlaceSlider";
 
 const HomeContainer = styled.div`
     display: flex;
@@ -81,15 +78,14 @@ function Home() {
     return (
         <HomeContainer>
             <LocationSet />
-            {/* {isInViewport ? "true" : "false"} */}
             <Title ref={ref}>#한식<Img src={process.env.PUBLIC_URL + "/korea.jpg"} /></Title>
-            <Korean />
+            <PlaceSlider placeData={[{restaurantId: 123, restaurantName: "korea", img:"http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"}]} />
             <Title>#일식<Img src={process.env.PUBLIC_URL + "/japan.jpg"} /></Title>
-            <Japanese />
+            <PlaceSlider placeData={[{restaurantId: 123, restaurantName: "japan", img:"http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"}]} />
             <Title>#중식<Img src={process.env.PUBLIC_URL + "/china.jpg"} /></Title>
-            <Chinaese />
+            <PlaceSlider placeData={[{restaurantId: 123, restaurantName: "china", img:"http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"}]} />
             <Title>#추천 식당</Title>
-            <WholePlace />
+            <PlaceSlider placeData={[{restaurantId: 123, restaurantName: "recommend", img:"http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"}]} />
         </HomeContainer>
     )
 }

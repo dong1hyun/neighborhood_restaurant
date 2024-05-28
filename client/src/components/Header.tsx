@@ -10,11 +10,12 @@ import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Register from "./login/Register";
 import Login from "./login/Login";
+import { MdOutlineFoodBank } from "react-icons/md";
 
 
 const Logo = styled(motion.div)`
     text-decoration: none;
-    color: rgba(75, 207, 250,1.0);
+    color: rgba(245, 59, 87,1.0);
     margin-left: 30px;
     margin-top:33px;
     margin-bottom: 10px;
@@ -194,13 +195,12 @@ export default function Header() {
                 <Navbar.Collapse className="" id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Logo
-                            className=""
                             transition={{ type: "spring", damping: 10 }}
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             whileHover={{ scale: 1.2 }}
                             onClick={() => navigate("/")}>
-                            동네맛집
+                            <MdOutlineFoodBank />동네맛집
                         </Logo>
                     </Nav>
                     <Nav className="ml-auto">
@@ -211,7 +211,7 @@ export default function Header() {
                         )}
                         <Search onSubmit={handleSubmit(onValid)}>
                             {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
-                            <SearchInput placeholder="식당이나 지역을 입력해보세요!" {...register("search", { required: true })} />
+                            <SearchInput placeholder="식당, 지역 입력" {...register("search", { required: true })} />
                             <SearchBtn type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                             </svg></SearchBtn>
