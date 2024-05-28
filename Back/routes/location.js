@@ -7,7 +7,7 @@ router.use(express.urlencoded({ extended: true }));
 
 router.post('/', async (req, res) => {
     try {
-        console.log("1")
+        
         const { sessionID, address } = req.body; // 요청에서 세션 ID와 주소 정보 추출
         // 사용자를 찾아서 위치 정보 업데이트
         const user = await User.findOne({ where: { sessionID } });
