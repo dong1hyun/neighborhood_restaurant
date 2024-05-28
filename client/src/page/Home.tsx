@@ -3,20 +3,11 @@ import LocationSet from "../components/home/LocationSet";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import PlaceSlider from "../components/home/PlaceSlider";
+import axios from "axios";
 
 const HomeContainer = styled.div`
     display: flex;
     flex-direction: column;
-    /* scroll-behavior: smooth;
-    height: 100vh;
-    scroll-snap-type: y mandatory;
-    scroll-padding-top: 10px;
-    overflow-y: scroll;
-    -webkit-scrollbar: none */
-`
-
-const Scroll = styled.div`
-    /* scroll-snap-align: center; */
 `
 
 const Title = styled.div`
@@ -32,62 +23,61 @@ const Img = styled(motion.img)`
     border-radius: 5px;
     margin-left: 10px;
 `
-const boxVariants = {
-    initial: {
-        opacity: 0,
-        scale: 0
-    },
-    visible: {
-        opacity: 1,
-        scale: 1
-    },
-    leaving: {
-        opacity: 0,
-        scale: 0
-    },
-}
 
 
 function Home() {
-    const [isInViewport, setIsInViewport] = useState(false);
-    const ref = useRef<HTMLDivElement | null>(null);
+    const [koreanFood, setKoeanFood] = useState([]);
+    const [japaneseFood, setJapaneseFood] = useState([]);
+    const [chineseFood, setChineseFood] = useState([]);
+    const [recommendFood, setRecommendFood] = useState([]);
     useEffect(() => {
-        if (!ref.current) return; // 요소가 아직 준비되지 않은 경우 중단
+        async function fetchRestaurant() {
+            try {
+                let response = await axios.get('/restaurantData/korean');
+                let restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
+                setKoeanFood(restData);
+                response = await axios.get('/restaurantData/japanese');
+                restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
+                setJapaneseFood(restData);
+                response = await axios.get('/restaurantData/chinese');
+                restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
+                setChineseFood(restData);
+                response = await axios.get('/restaurantData');
+                restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
+                setRecommendFood(restData);
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        }
 
-        const callback = (entries: IntersectionObserverEntry[]) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    // 요소가 뷰포트에 나타났을 경우
-                    setIsInViewport(true);
-                } else {
-                    // 요소가 뷰포트를 벗어난 경우
-                    setIsInViewport(false);
-                }
-            });
-        };
-
-        const options = { root: null, rootMargin: "-150px 0px -150px 0px", threshold: 1.0 };
-
-        const observer = new IntersectionObserver(callback, options);
-        observer.observe(ref.current); // 요소 관찰 시작
-
-        return () => {
-            observer.disconnect(); // 컴포넌트 언마운트 시 관찰 중단
-        };
+        fetchRestaurant();
     }, []);
     return (
         <HomeContainer>
             <LocationSet />
-            <Title ref={ref}>#한식<Img src={process.env.PUBLIC_URL + "/korea.jpg"} /></Title>
-            <PlaceSlider placeData={[{restaurantId: 123, restaurantName: "korea", img:"http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"}]} />
+            <Title>#한식<Img src={process.env.PUBLIC_URL + "/korea.jpg"} /></Title>
+            <PlaceSlider placeData={koreanFood} />
             <Title>#일식<Img src={process.env.PUBLIC_URL + "/japan.jpg"} /></Title>
-            <PlaceSlider placeData={[{restaurantId: 123, restaurantName: "japan", img:"http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"}]} />
+            <PlaceSlider placeData={japaneseFood} />
             <Title>#중식<Img src={process.env.PUBLIC_URL + "/china.jpg"} /></Title>
-            <PlaceSlider placeData={[{restaurantId: 123, restaurantName: "china", img:"http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"}]} />
+            <PlaceSlider placeData={chineseFood} />
             <Title>#추천 식당</Title>
-            <PlaceSlider placeData={[{restaurantId: 123, restaurantName: "recommend", img:"http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"}]} />
+            <PlaceSlider placeData={recommendFood} />
         </HomeContainer>
     )
 }
 
 export default Home;
+
+
+{/* <HomeContainer>
+    <LocationSet />
+    <Title>#한식<Img src={process.env.PUBLIC_URL + "/korea.jpg"} /></Title>
+    <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
+    <Title>#일식<Img src={process.env.PUBLIC_URL + "/japan.jpg"} /></Title>
+    <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "japan", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
+    <Title>#중식<Img src={process.env.PUBLIC_URL + "/china.jpg"} /></Title>
+    <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "china", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
+    <Title>#추천 식당</Title>
+    <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "recommend", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
+</HomeContainer> */}
