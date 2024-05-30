@@ -58,7 +58,7 @@ export default function PlaceSlider({placeData}: PlaceSliderProps) {
                     transition={{ type: "tween", duration: 1 }}
                     key={Index}
                 >
-                    {placeData.slice(Index, Index + 4).map(
+                    {placeData.slice(Index, Index + 8).map(
                         (i, idx) => (
                             <PlaceBox key={idx} whileHover={{ scale: 1.1 }}>
                                 <PlaceImg src={i.img} key={idx} alt="Loding" />

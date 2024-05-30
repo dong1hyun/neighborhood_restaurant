@@ -1,35 +1,51 @@
-//각 페이지의 헤더를 리턴하는 컴포넌트
-import { useForm } from "react-hook-form"
-import styled from "styled-components"
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { keyword, neighborhood_search, loginState, signinState, session, name } from "../atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { keyword, loginState, signinState, session, name } from "../atom";
 import axios from "axios";
-import { AnimatePresence, motion } from "framer-motion"
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { AnimatePresence, motion } from "framer-motion";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Register from "./login/Register";
 import Login from "./login/Login";
 import { MdOutlineFoodBank } from "react-icons/md";
-
+import { SlMagnifier } from "react-icons/sl";
+import { PiLineVertical } from "react-icons/pi";
 
 const Logo = styled(motion.div)`
     text-decoration: none;
-    color: rgba(245, 59, 87,1.0);
+    color: rgba(245, 59, 87, 1.0);
     margin-left: 30px;
-    margin-top:33px;
-    margin-bottom: 10px;
+    padding-top: 28px;
+    padding-bottom: 10px;
     cursor: pointer;
     font-size: 40px;
     font-family: "Black Han Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
-`
+`;
+
+const StyledFoodBankIcon = styled(MdOutlineFoodBank)`
+    margin-bottom: 5px;
+`;
+
+const InfoContainer = styled.div`
+    display: flex;
+    gap: 30px;
+`;
+
+const Info = styled.div`
+    color: white;
+    padding: 20px 20px 10px 20px;
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+`;
 
 const Search = styled.form`
     position: relative;
     background-color: transparent;
-    width: 400px;
     height: 50px;
     margin-top: 25px;
     border-radius: 10px;
@@ -37,143 +53,128 @@ const Search = styled.form`
         width: 300px;
         margin-left: 0;
     }
-`
+`;
 
 const SearchInput = styled.input`
-    position: absolute;
-    left: 35px;
-    top: 5px;
-    width: 350px;
+    width: 100%;
     height: 40px;
     font-size: 20px;
     border-radius: 10px;
     border-width: 0;
     background-color: #eeeeee;
-    border-width: 0px;
     outline: none;
-    align-items: center;
+    padding-left: 40px; /* 아이콘과 겹치지 않도록 패딩 추가 */
     @media screen and (max-width: 700px) {
-        width: 200px;
         font-size: 12px;
+        padding-left: 30px; /* 작은 화면에서 패딩 조정 */
     }
-`
+`;
 
 const SearchBtn = styled.button`
     position: absolute;
+    left: 10px;
+    top: 10px;
     background-color: transparent;
-    border-width: 0px;
-    top: 15px;
-    right: 10px;
-    width: 50px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     @media screen and (max-width: 700px) {
-        right: 60px;
+        left: 5px;
     }
-`
+`;
 
 const DeleteBtn = styled(motion.button)`
     position: absolute;
-    top: 13px;
-    left: 5px;
-    margin-right: 100px;
+    right: 10px;
+    top: 10px;
     background-color: transparent;
-    border-radius: 5px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #d8d8d8;
-    border-width: 0px;
-    hover: {scale: 1.2}
-`
+    border-radius: 5px;
+    &:hover {
+        scale: 1.2;
+    }
+`;
 
 const LoginContainer = styled.div`
     margin: 20px;
     align-items: center;
-`
+`;
 
 const LoginBox = styled(motion.button)`
-    color: black;
+    color: white;
     margin: 10px;
     margin-top: 20px;
     background-color: transparent;
     border: none;
-`
+`;
 
 interface searchForm {
-    search: string
+    search: string;
 }
 
 export default function Header() {
     const { register, handleSubmit, watch } = useForm<searchForm>();
     const navigate = useNavigate();
     const setSearchWord = useSetRecoilState(keyword);
-    const [signin, setSignin] = useRecoilState(signinState)
+    const [signin, setSignin] = useRecoilState(signinState);
     const [login, setLogin] = useRecoilState(loginState);
-    const [sessionID, setSessionID] = useRecoilState(session)
+    const [sessionID, setSessionID] = useRecoilState(session);
     const [nickName, setNickName] = useRecoilState(name);
     const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
     const [currentTime, setCurrentTime] = useState(new Date());
 
-
-    // 세션 만료 로그아웃
     const onValid = ({ search }: searchForm) => {
         setSearchWord(search);
         navigate(`/search?keyword=${search}`);
-    }
+    };
+
     const handleLogout = async () => {
         try {
-            await axios.get('/logout'); // 서버로 로그아웃 요청 보냄
-            sessionStorage.removeItem('sessionID'); // 세션 스토리지에서 세션 ID 제거
-            setSessionID(''); // 세션 ID 초기화
+            await axios.get('/logout');
+            sessionStorage.removeItem('sessionID');
+            setSessionID('');
             setNickName('');
-            navigate('/'); // 홈 페이지로 이동
+            navigate('/');
         } catch (error) {
             console.error('로그아웃 중 오류가 발생했습니다:', error);
         }
     };
 
-    // useEffect(() => {
-    //     const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
-
-    //     if (loggedInSessionID) {
-    //         setSessionID(loggedInSessionID);
-    //     }
-    // }, [])
-
-
     useEffect(() => {
-        const loggedInSessionID = sessionStorage.getItem('sessionID'); // 세션 스토리지에서 세션 아이디 가져오기
-        const loggedInNickName = sessionStorage.getItem('nickName'); // 세션 스토리지에서 이름 가져오기
-        
+        const loggedInSessionID = sessionStorage.getItem('sessionID');
+        const loggedInNickName = sessionStorage.getItem('nickName');
+
         if (loggedInSessionID) {
             setSessionID(loggedInSessionID);
         }
         if (loggedInNickName) {
-            setNickName(loggedInNickName); // 세션 스토리지에서 가져온 사용자 이름 설정
+            setNickName(loggedInNickName);
         }
-    
 
-       // 세션 ID가 있는 경우에만 실행합니다.
         if (loggedInSessionID) {
-            // 만료 시간을 현재 시간에서 10분 후로 설정합니다.
             const expiration = new Date();
             expiration.setMinutes(expiration.getMinutes() + 10);
             setSessionExpiration(expiration);
 
-            // 10분 후에 자동으로 로그아웃되도록 타이머를 설정합니다.
             const timer = setTimeout(() => {
                 handleLogout();
-            }, 600000); // 10분은 600000 밀리초입니다.
+            }, 600000);
 
-            // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머를 정리합니다.
             return () => clearTimeout(timer);
         }
     }, [sessionID]);
 
     useEffect(() => {
-        // 세션 만료 시간이 변경될 때마다 업데이트합니다.
         if (sessionExpiration) {
             const timer = setTimeout(() => {
                 handleLogout();
             }, sessionExpiration.getTime() - Date.now());
 
-            // 타이머 정리
             return () => clearTimeout(timer);
         }
     }, [sessionExpiration]);
@@ -181,7 +182,7 @@ export default function Header() {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentTime(new Date());
-        }, 1000); // 1초마다 현재 시간을 갱신
+        }, 1000);
 
         return () => clearInterval(interval);
     }, []);
@@ -190,40 +191,56 @@ export default function Header() {
         <>
             {signin ? <Register /> : null}
             {login ? <Login /> : null}
-            <Navbar expand="md" className="bg-light shadow mb-5 fixed-top mb-50 d-flex justify-content-between">
-                <Navbar.Toggle className="bg-white" aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse className="" id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Logo
-                            transition={{ type: "spring", damping: 10 }}
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            whileHover={{ scale: 1.2 }}
-                            onClick={() => navigate("/")}>
-                            <MdOutlineFoodBank />동네맛집
-                        </Logo>
-                    </Nav>
-                    <Nav className="ml-auto">
-                        {sessionExpiration && (
-                            <div>
-                                세션 만료 시간: 남은 시간: {Math.max(0, Math.floor((sessionExpiration.getTime() - currentTime.getTime()) / 1000))}초
-                            </div>
-                        )}
-                        <Search onSubmit={handleSubmit(onValid)}>
-                            {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
-                            <SearchInput placeholder="식당, 지역 입력" {...register("search", { required: true })} />
-                            <SearchBtn type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                            </svg></SearchBtn>
-                        </Search>
-                        <LoginContainer>
-                            {sessionID ? 
-                            <><LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>{nickName}님</LoginBox><LoginBox onClick={handleLogout}>로그아웃</LoginBox></>
-                            : <><LoginBox onClick={() => { setLogin(cur => !cur) }}>로그인</LoginBox><LoginBox onClick={() => { setSignin(cur => !cur) }}>회원가입</LoginBox></>}
-                        </LoginContainer>
-                    </Nav>
-                </Navbar.Collapse>
+            <Navbar expand="lg" className="bg-dark shadow-lg fixed-top mb-50">
+                <Container fluid>
+                    <Navbar.Toggle className="bg-white" aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto d-flex w-100 justify-content-between align-items-center">
+                            <Logo
+                                transition={{ type: "spring", damping: 10 }}
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                whileHover={{ scale: 1.2 }}
+                                onClick={() => navigate("/")}
+                            >
+                                <StyledFoodBankIcon />동네맛집
+                            </Logo>
+                            <Search onSubmit={handleSubmit(onValid)}>
+                                {watch('search') ? <DeleteBtn className="btn-close" aria-label="Close" type="reset" /> : null}
+                                <SearchInput placeholder="식당, 지역 입력" {...register("search", { required: true })} />
+                                <SearchBtn type="submit">
+                                    <SlMagnifier />
+                                </SearchBtn>
+                            </Search>
+                            <InfoContainer>
+                                <Info>공지사항</Info>
+                                <Info>동네맛집 소개</Info>
+                                <Info>식당 홍보</Info>
+                                <Info>Q&A</Info>
+                            </InfoContainer>
+                            <PiLineVertical />
+                            <LoginContainer>
+                                {sessionID ? (
+                                    <>
+                                        <LoginBox onClick={() => navigate(`/myPage/${sessionID}`)}>{nickName}님</LoginBox>
+                                        <LoginBox onClick={handleLogout}>로그아웃</LoginBox>
+                                    </>
+                                ) : (
+                                    <>
+                                        <LoginBox onClick={() => setLogin((cur) => !cur)}>로그인</LoginBox>
+                                        <LoginBox onClick={() => setSignin((cur) => !cur)}>회원가입</LoginBox>
+                                    </>
+                                )}
+                            </LoginContainer>
+                            {sessionExpiration && (
+                                <div className="text-white">
+                                    남은 시간: {Math.max(0, Math.floor((sessionExpiration.getTime() - currentTime.getTime()) / 1000))}초
+                                </div>
+                            )}
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
             </Navbar>
         </>
-    )
+    );
 }

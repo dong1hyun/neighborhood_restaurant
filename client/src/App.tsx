@@ -41,7 +41,7 @@ footer, header, hgroup, main, menu, nav, section {
 body {
   padding-top: 150px;
   line-height: 1;
-  background-color: #d3d7d9
+  background-color: #ffffff;
 }
 menu, ol, ul {
   list-style: none;
@@ -64,7 +64,6 @@ a {
     color: black;
 }
 `
-
 function App() {
   return (
     <RecoilRoot>

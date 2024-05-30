@@ -8,12 +8,12 @@ export const Container = styled.div`
     margin-top: 30px;
     background-color: whitesmoke;
     border-radius: 10px;
-    height: 300px;
+    height: 600px;
     width: 90%;
     overflow: hidden;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 700px){
-        height: 440px;
+        height: 900px;
     }
 `
 

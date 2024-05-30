@@ -5,14 +5,19 @@ import styled from "styled-components";
 import setMarker from "../../function/locationMarker";
 import { IoLocationSharp } from "react-icons/io5";
 import { SiAuth0 } from "react-icons/si";
+import { motion } from "framer-motion";
 
-const Map = styled.div`
-    position: relative;
-    width: 100%;
+const Map = styled(motion.div)`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
     height: 300px;
-    margin-top: 80px;
-    margin-bottom: 80px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    z-index: 9;
+    transition: 3s;
 `
 
 const LocationContainer = styled.div`
