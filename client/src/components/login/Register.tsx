@@ -65,6 +65,7 @@ interface loginForm {
     id: string,
     password: string,
     nickName: string,
+    phone: string,
     // location: {
     //     x: Number,
     //     y: Number
@@ -99,6 +100,7 @@ export default function Register() {
                         <RegisterList className="list-group-item"><RegisterInput {...register("id")} placeholder="아이디를 입력해주세요" /></RegisterList>
                         <RegisterList className="list-group-item"><RegisterInput {...register("password")} placeholder="비밀번호를 입력해주세요" /></RegisterList>
                         <RegisterList className="list-group-item"><RegisterInput {...register("nickName")} placeholder="닉네임을 입력해주세요" /></RegisterList>
+                        <RegisterList className="list-group-item"><RegisterInput {...register("phone")} placeholder="전화번호를 입력해주세요" /></RegisterList>
                         <RegisterBtn type="submit">확인</RegisterBtn>
                     </ul>
                 </form>
