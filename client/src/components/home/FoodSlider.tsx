@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import First from "./First";
+import Second from "./Second";
+import Third from "./Third";
 
 const Container = styled.div`
     position: relative;
@@ -9,19 +12,6 @@ const Container = styled.div`
     overflow: hidden;
     margin-bottom: 100px;
 `;
-
-const Img = styled(motion.img)`
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-`;
-
-const InfoContainer = styled.div`
-    background-color: orange;
-    width: 300px;
-    height: 300px;
-    z-index: 100;
-`
 
 const ButtonContainer = styled.div`
     position: absolute;
@@ -41,11 +31,10 @@ const Button = styled.button<{ isSelected: boolean }>`
 `;
 
 export default function FoodSlider() {
-    const images = [
-        `${process.env.PUBLIC_URL}home/vegan.jpg`,
-        `${process.env.PUBLIC_URL}home/meat.jpg`,
-        `${process.env.PUBLIC_URL}home/fruits.jpg`,
-        
+    const Infos = [
+        <First />,
+        <Second />,
+        <Third />
     ];
     const [currentIndex, setCurrentIndex] = useState(0);
     const [prevInterval, setPrevInterval] = useState<NodeJS.Timer>();
@@ -54,8 +43,8 @@ export default function FoodSlider() {
     
     const onClick = (idx: number) => {
         setCurrentIndex(idx);
-        clearInterval(prevInterval);
-        setPrevInterval(setSliderTime());
+        // clearInterval(prevInterval);
+        // setPrevInterval(setSliderTime());
     };
 
     useEffect(() => {
@@ -65,17 +54,7 @@ export default function FoodSlider() {
 
     return (
         <Container>
-            <Img
-                key={currentIndex}
-                src={images[currentIndex]}
-                initial={{ opacity: 0.7 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.7 }}
-            />
-            <InfoContainer>
-                test
-            </InfoContainer>
+            {Infos[currentIndex]}
             <ButtonContainer>
                 {[0, 1, 2].map(i => (
                     <Button

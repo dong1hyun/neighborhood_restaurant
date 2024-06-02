@@ -2,6 +2,7 @@
 import styled from "styled-components";
 
 const MapContainer = styled.div`
+margin-top: 150px;
     position: relative;
     padding:0;
     font-family:'Malgun Gothic',dotum,'돋움',sans-serif;

@@ -15,6 +15,7 @@ import PlaceRecommend from "../components/place/PlaceRecommend";
 const WholeContainer = styled.div`
     display: flex;
     justify-content: center;
+    margin-top: 150px;
     @media screen and (max-width: 900px) {
         flex-direction: column;
     }
@@ -27,7 +28,6 @@ const BoxContainer = styled.div`
     border-radius: 15px;
     height: 100%;
     width: 55%;
-    margin-top: 50px;
     margin-bottom: 100px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
 
@@ -46,7 +46,7 @@ const SideBar = styled.div`
     padding: 10px;
     background-color: whitesmoke;
     margin-left: 20px;
-    margin-top: 50px;
+    margin-bottom: 50px;
     border-radius: 15px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 900px) {

@@ -84,3 +84,10 @@ export const PrevBtn = styled.img`
     position: absolute;
     top: 50%;
 `
+
+export const Img = styled(motion.img)`
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+    object-fit: cover; 
+`;
