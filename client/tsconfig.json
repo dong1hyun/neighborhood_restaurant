@@ -21,6 +21,8 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-, "build", "server.js"  ]
+    "src",
+    "build",
+    "server.js"
+  ]
 }

@@ -67,8 +67,8 @@ export default function PlaceSlider({placeData}: PlaceSliderProps) {
                             </PlaceBox>)
                     )}
                 </Slider>
-                <PrevBtn src={process.env.PUBLIC_URL + "/back.png"} onClick={prevPlease} />
-                <NextBtn src={process.env.PUBLIC_URL + "/next.png"} onClick={nextPlease} />
+                <PrevBtn src={process.env.PUBLIC_URL + "/home/back.png"} onClick={prevPlease} />
+                <NextBtn src={process.env.PUBLIC_URL + "/home/next.png"} onClick={nextPlease} />
             </AnimatePresence>
         </Container>
     )

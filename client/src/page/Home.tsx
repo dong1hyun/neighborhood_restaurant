@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import LocationSet from "../components/home/LocationSet";
 import styled, { createGlobalStyle } from "styled-components";
 import { motion } from "framer-motion";
 import PlaceSlider from "../components/home/PlaceSlider";
 import axios from "axios";
 import FoodSlider from "../components/home/FoodSlider";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    padding-top: 0px;
-  }
-`;
+// const GlobalStyle = createGlobalStyle`
+//   body {
+//     padding-top: 0px;
+//   }
+// `;
 
 const OverLayBox = styled(motion.div)`
   position: fixed;
@@ -71,7 +71,11 @@ function Home() {
     const [japaneseFood, setJapaneseFood] = useState([]);
     const [chineseFood, setChineseFood] = useState([]);
     const [recommendFood, setRecommendFood] = useState([]);
-    const [showAuth, setShowAuth] = useState(false);
+    const navigate = useNavigate();
+    const session =  sessionStorage.getItem('sessionID');
+    const onLocationSetClick = () => {
+        navigate("/locationSet")
+    }
     useEffect(() => {
         async function fetchRestaurant() {
             try {
@@ -94,27 +98,21 @@ function Home() {
 
         fetchRestaurant();
     }, []);
-
-    useEffect(() => {
-        document.body.style.paddingTop = '0px';
-      }, []);
     return (
         <>
-        <GlobalStyle />
         <FoodSlider />
-        <LocationAuth layoutId="location" whileHover={{scale:1.1}} onClick={() => setShowAuth(true)}>동네 인증</LocationAuth>
-        {showAuth ? <><LocationSet /> <OverLayBox onClick={() => setShowAuth(false)} /></> : null}
+        <LocationAuth whileHover={{scale:1.1}} onClick={onLocationSetClick}>동네 인증</LocationAuth>
         <HomeContainer>    
             <div>
-                <Title>한식<Img src={process.env.PUBLIC_URL + "/korea.jpg"} /></Title>
+                <Title>한식<Img src={process.env.PUBLIC_URL + "/home/korea.jpg"} /></Title>
                 <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" },]} />
             </div>
             <div>
-                <Title>일식<Img src={process.env.PUBLIC_URL + "/japan.jpg"} /></Title>
+                <Title>일식<Img src={process.env.PUBLIC_URL + "/home/japan.jpg"} /></Title>
                 <PlaceSlider placeData={japaneseFood} />
             </div>
             <div>
-                <Title>중식<Img src={process.env.PUBLIC_URL + "/china.jpg"} /></Title>
+                <Title>중식<Img src={process.env.PUBLIC_URL + "/home/china.jpg"} /></Title>
                 <PlaceSlider placeData={chineseFood} />
             </div>
             <div>

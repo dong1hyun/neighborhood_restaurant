@@ -7,6 +7,9 @@ import { createGlobalStyle } from "styled-components";
 import Place from "./page/Place";
 import Footer from "./components/Footer";
 import MyPage from "./page/MyPage";
+import LocaionSet from "./page/LocationSet";
+import SignIn from "./page/SignIn";
+import Login from "./page/Login";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -39,7 +42,6 @@ footer, header, hgroup, main, menu, nav, section {
     display: none;
 }
 body {
-  padding-top: 150px;
   line-height: 1;
   background-color: #ffffff;
 }
@@ -72,6 +74,9 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/SignIn" element={<SignIn />} />
+          <Route path="/LogIn" element={<Login />} />
+          <Route path="/locationSet" element={<LocaionSet />} />
           <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
           <Route path="/place/:id" element={<Place />} />

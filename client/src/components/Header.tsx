@@ -7,8 +7,6 @@ import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import Register from "./login/Register";
-import Login from "./login/Login";
 import { MdOutlineFoodBank } from "react-icons/md";
 import { SlMagnifier } from "react-icons/sl";
 import { PiLineVertical } from "react-icons/pi";
@@ -33,9 +31,16 @@ const StyledFoodBankIcon = styled(MdOutlineFoodBank)`
 const InfoContainer = styled.div`
     display: flex;
     gap: 30px;
+    @media screen and (max-width: 700px) {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
 `;
 
 const Info = styled.div`
+    flex: 1;
+    min-width: 150px;
+    text-align: center;
     color: white;
     padding: 20px 20px 10px 20px;
     font-family: "Jua", sans-serif;
@@ -66,27 +71,21 @@ const SearchInput = styled.input`
     padding-left: 40px; /* 아이콘과 겹치지 않도록 패딩 추가 */
     @media screen and (max-width: 700px) {
         font-size: 12px;
-        padding-left: 30px; /* 작은 화면에서 패딩 조정 */
+        padding-left: 40px; /* 작은 화면에서 패딩 조정 */
     }
 `;
 
 const SearchBtn = styled.button`
     position: absolute;
-    left: 10px;
+    right: 10px;
     top: 10px;
     background-color: transparent;
     border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @media screen and (max-width: 700px) {
-        left: 5px;
-    }
 `;
 
 const DeleteBtn = styled(motion.button)`
     position: absolute;
-    right: 10px;
+    left: 10px;
     top: 10px;
     background-color: transparent;
     border: none;
@@ -121,8 +120,6 @@ export default function Header() {
     const { register, handleSubmit, watch } = useForm<searchForm>();
     const navigate = useNavigate();
     const setSearchWord = useSetRecoilState(keyword);
-    const [signin, setSignin] = useRecoilState(signinState);
-    const [login, setLogin] = useRecoilState(loginState);
     const [sessionID, setSessionID] = useRecoilState(session);
     const [nickName, setNickName] = useRecoilState(name);
     const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
@@ -189,9 +186,7 @@ export default function Header() {
 
     return (
         <>
-            {signin ? <Register /> : null}
-            {login ? <Login /> : null}
-            <Navbar expand="lg" className="bg-dark shadow-lg fixed-top mb-50">
+            <Navbar expand="xl" className="bg-dark shadow-lg fixed-top mb-50">
                 <Container fluid>
                     <Navbar.Toggle className="bg-white" aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -227,8 +222,8 @@ export default function Header() {
                                     </>
                                 ) : (
                                     <>
-                                        <LoginBox onClick={() => setLogin((cur) => !cur)}>로그인</LoginBox>
-                                        <LoginBox onClick={() => setSignin((cur) => !cur)}>회원가입</LoginBox>
+                                        <LoginBox onClick={() => navigate("/logIn")}>로그인</LoginBox>
+                                        <LoginBox onClick={() => navigate("/signIn")}>회원가입</LoginBox>
                                     </>
                                 )}
                             </LoginContainer>
