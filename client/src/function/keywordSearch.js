@@ -58,10 +58,11 @@ function afterSearch(keyword) {
         }
     }
 
+    // 음식점 데이터들을 바디에 넣어서 서버로 추가 요청을 보냄
     // 검색 결과 목록과 마커를 표출하는 함수입니다
     function displayPlaces(places) {
-        // console.log(places)
-        // axios.post("http://localhost:3001/restaurant",places);
+        console.log(places)
+        axios.post("http://localhost:3001/restaurant",places);
         let listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),
             fragment = document.createDocumentFragment(),
