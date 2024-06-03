@@ -14,6 +14,9 @@ const Container = styled.div`
 const Title = styled.div`
     margin-top: 50px;
     margin-bottom: 10px;
+    font-family: "Noto Serif KR", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const ReviewContainer = styled.div`
@@ -26,6 +29,9 @@ const ReviewContainer = styled.div`
 
 const ReviewTitle = styled.div`
     font-size: 15px;
+    font-family: "Noto Serif KR", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const StarInput = styled.input`

@@ -39,10 +39,11 @@ router.get('/:id', async (req, res) => {
         // });
 
         // 음식점 정보와 요약된 리뷰 데이터를 함께 응답
-        // res.status(200).json({
-        //     restaurant: restaurant,
-        //     reviewSummary: response.data
-        // });
+        console.log(restaurant)
+        res.status(200).json({
+            restaurant: restaurant,
+            // reviewSummary: response.data
+        });
     } catch (error) {
         console.error("Error fetching data:", error);
         res.status(500).json({ error: "Internal Server Error" });

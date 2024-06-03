@@ -48,23 +48,19 @@ const Input = styled.input`
     padding: 0 10px 0 40px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    &:focus {
-        outline: none;
-        border-color: #007bff;
-    }
 `;
 
 const Button = styled.button`
     width: 100%;
     height: 40px;
     margin-top: 10px;
-    background-color: #007bff;
+    background-color: #3e3e3e;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     &:hover {
-        background-color: #0056b3;
+        background-color: #6a6a6a;
     }
 `;
 

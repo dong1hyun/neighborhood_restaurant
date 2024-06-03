@@ -1,40 +1,78 @@
 import styled from "styled-components";
 import { Img } from "../../styled-components/homeStyle";
+import { FaArrowRight } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
+const Container = styled(motion.div)`
+    width: 100%;
+    height: 100%;
+`
 
 const InfoContainer = styled.div`
     position: absolute;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100vh;
+`
+
+const Info = styled.div`
     width: 80%;
     height: 150px;
     border-radius: 50px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 1;
     color: white;
-    font-size: 50px;
+    font-size: 60px;
     font-weight: 700;
-    display: flex;
-    align-items: center;
     line-height: 150%;
+    @media screen and (max-width: 850px) {
+        font-size: 30px;
+    }
+    @media screen and (max-width: 700px) {
+        font-size: 20px;
+    }
 `;
 
 const Button = styled.button`
-    position: relative;
-    width: 100px;
-    height: 100px;
-    background-color: orange;
-    z-index: 2;
+    background-color: #3e3e3e;
+    color: white;
+    width: 150px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 65px;
+    font-family: "Jua", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 `
 
 export default function Second() {
-    return <>
-        <Img
-            src={`${process.env.PUBLIC_URL}home/meat.jpg`}
-        />
-        <InfoContainer>
-            로그인을 하고 동네인증을 하면 더 많은 기능을 이용할 수 있습니다!
-        </InfoContainer>
-        <Button>test</Button>
-    </>
+    const navigate = useNavigate();
+    return (
+        <Container
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+        >
+            <Img
+                src={`${process.env.PUBLIC_URL}home/meat.jpg`}
+            />
+            <InfoContainer>
+                <Info>
+                    로그인을 하고 동네인증을 해서 <br />더 많은 기능을 이용해보세요!
+                </Info>
+                <Button onClick={() => navigate("/logIn")}>로그인 <FaArrowRight /></Button>
+            </InfoContainer>
+        </Container>
+    )
 }

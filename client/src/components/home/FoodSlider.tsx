@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import First from "./First";
+import First from "./First"
 import Second from "./Second";
-import Third from "./Third";
+import Third from "./Third"
 
 const Container = styled.div`
     position: relative;
@@ -43,13 +43,13 @@ export default function FoodSlider() {
     
     const onClick = (idx: number) => {
         setCurrentIndex(idx);
-        // clearInterval(prevInterval);
-        // setPrevInterval(setSliderTime());
+        clearInterval(prevInterval);
+        setPrevInterval(setSliderTime());
     };
 
     useEffect(() => {
-        // setPrevInterval(setSliderTime());
-        // return () => clearInterval(prevInterval); 
+        setPrevInterval(setSliderTime());
+        return () => clearInterval(prevInterval); 
     }, []);
 
     return (

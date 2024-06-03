@@ -50,41 +50,46 @@ export default function PlaceRecommend() {
             })
     };
     useEffect(() => {
-        // getSimilarPlace();
+        getSimilarPlace();
     }, []);
     return (
         <><TopTitle>주변 추천 식당</TopTitle>
             <SimilarContainer>
-                {[{
-                    restaurantId: 123,
-            restaurantName: "국밥집",
-            img: "http://t1.daumcdn.net/cfile/26408A365228345622"
-        },
-        {
-            restaurantId: 123,
-            restaurantName: "국밥집",
-            img: "http://t1.daumcdn.net/cfile/26408A365228345622"
-        },
-        {
-            restaurantId: 123,
-            restaurantName: "국밥집",
-            img: "http://t1.daumcdn.net/cfile/26408A365228345622"
-        },
-        {
-            restaurantId: 123,
-            restaurantName: "국밥집",
-            img: "http://t1.daumcdn.net/cfile/26408A365228345622"
-        },
-        {
-            restaurantId: 123,
-            restaurantName: "국밥집",
-            img: "http://t1.daumcdn.net/cfile/26408A365228345622"
-        },
-        {
-            restaurantId: 123,
-            restaurantName: "국밥집",
-            img: "http://t1.daumcdn.net/cfile/26408A365228345622"
-        }
-        ].map(item => <PlaceBox><Img src={item.img} alt={item.restaurantName} /><Title>{item.restaurantName}</Title></PlaceBox>)}
-    </SimilarContainer></>)
+                {similarPlace.map(item => <PlaceBox><Img src={item.img} alt={item.restaurantName} /><Title>{item.restaurantName}</Title></PlaceBox>)}
+            </SimilarContainer></>)
 }
+
+
+
+
+// [{
+//     restaurantId: 123,
+//     restaurantName: "국밥집",
+//     img: "http://t1.daumcdn.net/cfile/26408A365228345622"
+// },
+// {
+//     restaurantId: 123,
+//     restaurantName: "국밥집",
+//     img: "http://t1.daumcdn.net/cfile/26408A365228345622"
+// },
+// {
+//     restaurantId: 123,
+//     restaurantName: "국밥집",
+//     img: "http://t1.daumcdn.net/cfile/26408A365228345622"
+// },
+// {
+//     restaurantId: 123,
+//     restaurantName: "국밥집",
+//     img: "http://t1.daumcdn.net/cfile/26408A365228345622"
+// },
+// {
+//     restaurantId: 123,
+//     restaurantName: "국밥집",
+//     img: "http://t1.daumcdn.net/cfile/26408A365228345622"
+// },
+// {
+//     restaurantId: 123,
+//     restaurantName: "국밥집",
+//     img: "http://t1.daumcdn.net/cfile/26408A365228345622"
+// }
+// ]

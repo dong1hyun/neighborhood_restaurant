@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { name, session } from "../atom";
 import { FaUser, FaLock } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     z-index: 5;
@@ -49,23 +50,19 @@ const Input = styled.input`
     padding: 0 10px 0 40px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    &:focus {
-        outline: none;
-        border-color: #007bff;
-    }
 `;
 
 const Button = styled.button`
     width: 100%;
     height: 40px;
     margin-top: 10px;
-    background-color: #007bff;
+    background-color: #3e3e3e;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     &:hover {
-        background-color: #0056b3;
+        background-color: #6a6a6a;
     }
 `;
 
@@ -73,6 +70,7 @@ const HelpText = styled.p`
     margin-top: 10px;
     font-size: 12px;
     color: #666;
+    line-height: 130%;
 `;
 
 const Link = styled.a`
@@ -92,7 +90,7 @@ export default function Login() {
     const { register, handleSubmit } = useForm<LoginForm>();
     const [sessionID, setSessionID] = useRecoilState(session);
     const [nickName, setNickName] = useRecoilState(name);
-
+    const navigate = useNavigate()
     const LoginSuccess = async (data: LoginForm) => {
         try {
             const response = await axios.post('/login', data);
@@ -110,6 +108,11 @@ export default function Login() {
             console.error('로그인 중 오류가 발생했습니다:', error);
         }
     };
+
+    useEffect(() => {
+        const session = sessionStorage.getItem('sessionID');
+        if(session) navigate("/");
+    }, [])
 
     return (
         <Container>

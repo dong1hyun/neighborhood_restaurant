@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, NextBtn, PlaceBox, PlaceImg, PlaceTitle, PrevBtn, Rating, Slider } from "../../styled-components/homeStyle";
+import { Container, ForwardArrow, PlaceBox, PlaceImg, PlaceTitle, BackArrow, Rating, Slider, EllipsisText } from "../../styled-components/homeStyle";
 import { SliderVar, restaurantForm } from "../../lib/homeLib"
 import { AnimatePresence } from "framer-motion";
 
@@ -17,7 +17,6 @@ interface PlaceSliderProps {
 
 
 export default function PlaceSlider({placeData}: PlaceSliderProps) {
-    console.log(placeData)
     const [Index, setIndex] = useState(0);
     const [back, setBack] = useState(false);
     const [leaving, setLeaving] = useState(false);
@@ -47,7 +46,6 @@ export default function PlaceSlider({placeData}: PlaceSliderProps) {
         }
     };
     return (
-        <Container>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
                 <Slider
                     custom={back}
@@ -61,16 +59,15 @@ export default function PlaceSlider({placeData}: PlaceSliderProps) {
                     {placeData.slice(Index, Index + 8).map(
                         (i, idx) => (
                             <PlaceBox key={idx} whileHover={{ scale: 1.1 }}>
-                                <PlaceImg src={i.img} key={idx} alt="Loding" />
-                                <Rating><span style={{ color: "rgba(30, 144, 255,1.0)" }}>&#9733;</span> 3.5</Rating>
-                                <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>{i.restaurantName}</PlaceTitle>
+                                <PlaceImg src={i.img} key={idx} alt="준비중" onClick={() => handleImageClick(i.restaurantId)}/>
+                                <Rating><span style={{ color: "#ff5b32" }}>&#9733;</span> 3.5</Rating>
+                                <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}><EllipsisText>{i.restaurantName}</EllipsisText></PlaceTitle>
                             </PlaceBox>)
                     )}
                 </Slider>
-                <PrevBtn src={process.env.PUBLIC_URL + "/home/back.png"} onClick={prevPlease} />
-                <NextBtn src={process.env.PUBLIC_URL + "/home/next.png"} onClick={nextPlease} />
+                <BackArrow onClick={prevPlease} />
+                <ForwardArrow onClick={nextPlease} />
             </AnimatePresence>
-        </Container>
     )
 }
 

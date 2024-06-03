@@ -5,21 +5,7 @@ import PlaceSlider from "../components/home/PlaceSlider";
 import axios from "axios";
 import FoodSlider from "../components/home/FoodSlider";
 import { Navigate, useNavigate } from "react-router-dom";
-
-// const GlobalStyle = createGlobalStyle`
-//   body {
-//     padding-top: 0px;
-//   }
-// `;
-
-const OverLayBox = styled(motion.div)`
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-`;
+import { Container } from "../styled-components/homeStyle";
 
 const HomeContainer = styled.div`
     display: flex;
@@ -28,18 +14,30 @@ const HomeContainer = styled.div`
 `
 
 const Title = styled.div`
-    font-size: 50px;
+    font-size: 30px;
     margin-left: 50px;
-    margin-right: 10px ;
+    margin-top: 10px;
+    font-family: "Noto Serif KR", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const Img = styled(motion.img)`
-    width: 70px;
-    height: 45px;
+    width: 40px;
+    height: 25px;
     opacity: 0.9;
     border-radius: 5px;
     margin-left: 10px;
 `
+
+const Divider = styled.div`
+  width: 90%;
+  height: 1px;
+  border-radius: 3px;
+  background-color: gray;
+  margin: auto;
+  margin-top: 20px;
+`;
 
 const LocationAuth = styled(motion.div)`
     display: flex;
@@ -103,22 +101,26 @@ function Home() {
         <FoodSlider />
         <LocationAuth whileHover={{scale:1.1}} onClick={onLocationSetClick}>동네 인증</LocationAuth>
         <HomeContainer>    
-            <div>
+            <Container>
                 <Title>한식<Img src={process.env.PUBLIC_URL + "/home/korea.jpg"} /></Title>
-                <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" },]} />
-            </div>
-            <div>
+                <Divider />
+                <PlaceSlider placeData={koreanFood} />
+            </Container>
+            <Container>
                 <Title>일식<Img src={process.env.PUBLIC_URL + "/home/japan.jpg"} /></Title>
+                <Divider />
                 <PlaceSlider placeData={japaneseFood} />
-            </div>
-            <div>
+            </Container>
+            <Container>
                 <Title>중식<Img src={process.env.PUBLIC_URL + "/home/china.jpg"} /></Title>
+                <Divider />
                 <PlaceSlider placeData={chineseFood} />
-            </div>
-            <div>
+            </Container>
+            <Container>
                 <Title>추천 식당</Title>
+                <Divider />
                 <PlaceSlider placeData={recommendFood} />
-            </div>
+            </Container>
         </HomeContainer>
         </>
     )
@@ -127,14 +129,4 @@ function Home() {
 export default Home;
 
 
-{/* <HomeContainer>
-    <LocationSet />
-    <Title>#한식<Img src={process.env.PUBLIC_URL + "/korea.jpg"} /></Title>
-    <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
-    <Title>#일식<Img src={process.env.PUBLIC_URL + "/japan.jpg"} /></Title>
-    <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "japan", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
-    <Title>#중식<Img src={process.env.PUBLIC_URL + "/china.jpg"} /></Title>
-    <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "china", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
-    <Title>#추천 식당</Title>
-    <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "recommend", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
-</HomeContainer> */}
+// [{ restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" },]

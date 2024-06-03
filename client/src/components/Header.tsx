@@ -43,8 +43,8 @@ const Info = styled.div`
     text-align: center;
     color: white;
     padding: 20px 20px 10px 20px;
-    font-family: "Jua", sans-serif;
-    font-weight: 400;
+    font-family: "Noto Serif KR", serif;
+    font-optical-sizing: auto;
     font-style: normal;
 `;
 
@@ -53,6 +53,7 @@ const Search = styled.form`
     background-color: transparent;
     height: 50px;
     margin-top: 25px;
+    margin-left: 30px;
     border-radius: 10px;
     @media screen and (max-width: 700px) {
         width: 300px;
@@ -227,11 +228,11 @@ export default function Header() {
                                     </>
                                 )}
                             </LoginContainer>
-                            {sessionExpiration && (
+                            {/* {sessionExpiration && (
                                 <div className="text-white">
                                     남은 시간: {Math.max(0, Math.floor((sessionExpiration.getTime() - currentTime.getTime()) / 1000))}초
                                 </div>
-                            )}
+                            )} 세션 만료 시간*/}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
