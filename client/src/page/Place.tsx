@@ -9,12 +9,17 @@ import { motion } from "framer-motion";
 import Review from "../components/place/Review";
 import { session } from "../atom";
 import { useRecoilState } from "recoil";
-import Button from 'react-bootstrap/Button';
 import PlaceRecommend from "../components/place/PlaceRecommend";
+import { GiRotaryPhone } from "react-icons/gi";
+import { FaAddressBook } from "react-icons/fa";
+import { MdStarBorder } from "react-icons/md";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { IoStar } from "react-icons/io5";
 
 const WholeContainer = styled.div`
     display: flex;
     justify-content: center;
+    margin-top: 150px;
     @media screen and (max-width: 900px) {
         flex-direction: column;
     }
@@ -24,13 +29,15 @@ const BoxContainer = styled.div`
     display: flex;
     flex-direction: column;
     background-color: whitesmoke;
+    color: white;
     border-radius: 15px;
     height: 100%;
     width: 55%;
-    margin-top: 50px;
     margin-bottom: 100px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
-
+    font-family: "Noto Serif KR", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
     @media screen and (max-width: 900px) {
         width: 90%;
         margin: 0 auto;
@@ -43,43 +50,103 @@ const SideBar = styled.div`
     align-items: center;
     height: auto;
     width: 220px;
+    padding: 10px;
     background-color: whitesmoke;
     margin-left: 20px;
-    margin-top: 50px;
+    margin-bottom: 50px;
     border-radius: 15px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+    @media screen and (max-width: 900px) {
+        width: 90%;
+        margin: auto;
+        margin-top: 50px;
+    }
 `
 
 const PlaceContainer = styled.div`
     display: flex;
     margin: 40px;
-    @media screen and (max-width: 1100px) {
+    @media screen and (max-width: 1200px) {
         flex-direction: column;
         text-align: center;
+        align-items: center;
     }
 `
 const PlaceName = styled.div`
-    font-size: 50px;
+    font-size: 45px;
+    font-weight: 500;
+    min-width: 300px;
     color: black;
     margin-bottom: 40px;
+    @media screen and (max-width: 900px) {
+        font-size: 30px;
+    }
 `
+
+const Divider = styled.div`
+  width: 200px;
+  height: 1px;
+  background-color: #ccc;
+  margin-bottom: 30px;
+  @media screen and (max-width: 1200px) {
+        margin: auto;
+        margin-bottom: 30px;
+    }
+`;
+
+const Divider2 = styled.div`
+  width: 300px;
+  height: 1px;
+  background-color: #ccc;
+  margin-bottom: 30px;
+  margin-left: 40px;
+  @media screen and (max-width: 1200px) {
+        margin: auto;
+        margin-bottom: 30px;
+    }
+`;
 
 const DetailContainer = styled.div`
     margin: 40px;
     color: black;
 `
 
-const Rating = styled.div`
+const RatingContainer = styled.div`
+    position: relative;
     font-size: 30px;
     margin-bottom: 40px;
+    color: #c01c34;
+    @media screen and (max-width: 1200px) {
+        display: flex;
+        justify-content: center;
+    }
+`
+
+const Rating = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 1;
+`
+
+const Paint = styled.img`
+    position: absolute;
+    width: 150px;
+    top: -30%;
+    left: -5%;
+    @media screen and (max-width: 1200px) {
+        left: 25%;
+    }
 `
 
 const Detail = styled.div`
     font-family: "Nanum Gothic Coding", monospace;
     font-weight: 400;
     font-style: normal;
-    font-size: 20px;
+    font-size: 15px;
     margin-bottom: 40px;
+    min-width: 250px;
 `
 
 const Category = styled.div`
@@ -87,15 +154,14 @@ const Category = styled.div`
     font-weight: 400;
     font-style: normal;
     font-size: 15px;
-    color: gray;
+    color: black;
     margin-bottom: 40px;
 `
 
 const Map = styled.div`
-    width: 170px;
+    width: 80%;
     height: 300px;
     border-radius: 10px;
-    /* border: 2px solid black; */
     margin: 20px
 `
 
@@ -110,7 +176,9 @@ const Time = styled.div`
 const TimeBtn = styled.button`
     border: none;
     border-radius: 3px;
-    background-color: whitesmoke;
+    background-color: #3e3e3e;;
+    padding: 5px;
+    color: white;
     width: 60px;
 `
 
@@ -123,9 +191,13 @@ const BookMarker = styled.button`
     height: 25px;
     margin-left: 40px;
     margin-top: 40px;
-    background-color: rgba(37, 204, 247,1.0);
+    background-color: #3e3e3e;
     border-radius: 5px;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 `
 
 const ShareButton = styled.button`
@@ -134,15 +206,24 @@ const ShareButton = styled.button`
     height: 25px;
     margin-left: 40px;
     margin-top: 10px;
-    background-color: #00BFFF;
+    margin-bottom: 30px;
+    background-color: rgba(245, 59, 87, 1.0);
     border-radius: 5px;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 `
 
 const SideContainer = styled.div`
     display: flex;
     flex-direction: column;
-`
+    margin-bottom: 100px;
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    `
 
 function Place() {
     const { id } = useParams()
@@ -161,13 +242,14 @@ function Place() {
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
-                setName(res.data.restaurantName);
-                setAddress(res.data.restaurantAddress);
-                setCategory(res.data.restaurantCategory);
-                setPhone(res.data.restaurantNumber);
-                setX(res.data.x);
-                setY(res.data.y);
-                setTimeList(JSON.parse(res.data.timeList))
+                console.log(res.data);
+                setName(res.data.restaurant.restaurantName);
+                setAddress(res.data.restaurant.restaurantAddress);
+                setCategory(res.data.restaurant.restaurantCategory);
+                setPhone(res.data.restaurant.restaurantNumber);
+                setX(res.data.restaurant.x);
+                setY(res.data.restaurant.y);
+                setTimeList(JSON.parse(res.data.restaurant.timeList))
                 timeList.forEach((i) => {
                     if (i["timeName"] == "휴게시간") {
                         setBreakTime(true)
@@ -175,6 +257,7 @@ function Place() {
                         setLastOrder(true);
                     }
                 });
+                console.log("끝이야")
             })
             .catch(function (error) {
                 // 에러 핸들링
@@ -224,11 +307,121 @@ function Place() {
                 <PlaceContainer>
                     <PlaceImg />
                     <DetailContainer>
+                        <PlaceName>{name}</PlaceName>
+                        <Divider />
+                        <Category>{category}</Category>
+                        <Rating>평점 <>4.6</></Rating>
+                        <Detail><GiRotaryPhone /> {phone}</Detail>
+                        <Detail><FaAddressBook /> {address}</Detail>
+                        영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>보기</TimeBtn>
+                        {
+                            moreInf ?
+                                <TimeContainer
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                >
+                                    {timeList.map((time: any) => {
+                                        if (time["timeName"] == "영업시간") return <Time>{time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                                    })}
+                                    {breakTime ? "휴게시간" : null}
+                                    {timeList.map((time: any) => {
+                                        if (time["timeName"] == "휴게시간") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                                    })}
+                                    {lastOrder ? "라스트오더" : null}
+                                    {timeList.map((time: any) => {
+                                        if (time["timeName"] == "라스트오더") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                                    })}
+                                </ TimeContainer>
+                                : null
+                        }
+                    </DetailContainer>
+                </PlaceContainer>
+                <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
+                <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
+                <Review />
+            </BoxContainer>
+            <SideContainer>
+                <SideBar>
+                    <Map id="placeMap" />
+                </SideBar>
+                <SideBar>
+                    <PlaceRecommend />
+                </SideBar>
+            </SideContainer>
+        </ WholeContainer>
+    )
+}
+
+export default Place;
+
+
+
+
+
+/* 
+<WholeContainer>
+    <BoxContainer>
+        <PlaceContainer>
+            <PlaceImg />
+            <DetailContainer>
+                <PlaceName>{name}</PlaceName>
+                <Divider />
+                <Category>{category}</Category>
+                <Rating>평점 <>4.6</></Rating>
+                <Detail><GiRotaryPhone /> {phone}</Detail>
+                <Detail><FaAddressBook /> {address}</Detail>
+                영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>보기</TimeBtn>
+                {
+                    moreInf ?
+                        <TimeContainer
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                        >
+                            {timeList.map((time: any) => {
+                                if (time["timeName"] == "영업시간") return <Time>{time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                            })}
+                            {breakTime ? "휴게시간" : null}
+                            {timeList.map((time: any) => {
+                                if (time["timeName"] == "휴게시간") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                            })}
+                            {lastOrder ? "라스트오더" : null}
+                            {timeList.map((time: any) => {
+                                if (time["timeName"] == "라스트오더") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
+                            })}
+                        </ TimeContainer>
+                        : null
+                }
+            </DetailContainer>
+        </PlaceContainer>
+        <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
+        <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
+        <Review />
+    </BoxContainer>
+    <SideContainer>
+        <SideBar>
+            <Map id="placeMap" />
+        </SideBar>
+        <SideBar>
+            <PlaceRecommend />
+        </SideBar>
+    </SideContainer>
+</ WholeContainer> */
+
+
+
+
+/* 
+<WholeContainer>
+            <BoxContainer>
+                <PlaceContainer>
+                    <PlaceImg />
+                    <DetailContainer>
                         <PlaceName>끝돈</PlaceName>
+                        <Divider />
                         <Category>한식 육류</Category>
-                        <Rating>평점: <>4.6</></Rating>
-                        <Detail>02-498-0929</Detail>
-                        <Detail>서울 광진구 아차산로 238-1</Detail>
+                        <Rating>평점 <>4.6</></Rating>
+                        <Detail><GiRotaryPhone /> 02-498-0929</Detail>
+                        <Detail><FaAddressBook /> 서울 광진구 아차산로 238-1</Detail>
                         영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?
@@ -252,8 +445,8 @@ function Place() {
                         }
                     </DetailContainer>
                 </PlaceContainer>
-                <BookMarker onClick={handleBookmark}>즐겨 찾기 추가</BookMarker>
-                <ShareButton onClick={sharePage}>페이지 공유하기</ShareButton>
+                <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
+                <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
                 <Review />
             </BoxContainer>
             <SideContainer>
@@ -261,11 +454,7 @@ function Place() {
                     <Map id="placeMap" />
                 </SideBar>
                 <SideBar>
-                    <PlaceRecommend address="dd" />
+                    <PlaceRecommend />
                 </SideBar>
             </SideContainer>
-        </ WholeContainer>
-    )
-}
-
-export default Place;
+        </ WholeContainer> */

@@ -20,33 +20,32 @@ const BoxContainer = styled.div`
     @media screen and (max-width: 700px) {
         width: 90%;
     }
-`;
+`
 
 const PlaceContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin: 0 auto;
-`;
+`
 
 const PlaceBox = styled(motion.div)`
     position: relative;
     text-align: center;
     height: 80%;
-`;
-
+`
 const Rating = styled.div`
     position: absolute;
     font-size: 18px;
     top: 10px;
     right: 12%;
-    background-color: rgba(0, 0, 0, 1);
+    background-color: rgba(0,0,0,1);
     border-radius: 10px;
     padding: 3px;
     color: white;
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width:700px){
         scale: 0.7;
     }
-`;
+`
 
 const PlaceImg = styled(motion.img)`
     background-color: black;
@@ -55,7 +54,10 @@ const PlaceImg = styled(motion.img)`
     width: 80%;
     height: 100%;
     color: black;
-`;
+    @media screen and (max-width: 700px){
+        
+    }
+`
 
 const PlaceTitle = styled(motion.div)`
     position: absolute;
@@ -68,7 +70,7 @@ const PlaceTitle = styled(motion.div)`
     background-color: rgba(178, 178, 178, 0.7);
     left: 20%;
     word-wrap: break-word;
-`;
+`
 
 const ReviewContainer = styled.div`
     border: solid 1px white;
@@ -76,20 +78,20 @@ const ReviewContainer = styled.div`
     margin: 20px;
     font-size: 30px;
     height: 100%;
-`;
+`
 
 const Title = styled.div`
     font-size: 30px;
     margin: 20px;
-`;
+`
 
 const ReviewRating = styled.div`
     margin: 10px;
-`;
+`
 
 const Comment = styled.div`
     margin: 10px;
-`;
+`
 
 function MyPage() {
     const [sessionID, setSessionID] = useState<string>('');
@@ -165,9 +167,9 @@ function MyPage() {
             <PlaceContainer>
                 {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
                     return (
-                        <PlaceBox key={idx} whileHover={{ scale: 1.1 }}>
-                            <Rating><span style={{ color: "rgba(30, 144, 255,1.0)" }}>&#9733;</span> 3.6</Rating>
-                            <PlaceImg src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
+                        <PlaceBox whileHover={{scale:1.1}}>
+                            <Rating><span style={{color:"rgba(30, 144, 255,1.0)" }}>&#9733;</span> 3.6</Rating>
+                            <PlaceImg key={idx} src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
                             <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle>
                         </PlaceBox>
                     )
@@ -196,8 +198,8 @@ function MyPage() {
             </form>
         </BoxContainer>
     );
-}
 
+}
 export default MyPage;
 
 
