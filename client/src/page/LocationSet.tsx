@@ -130,9 +130,9 @@ export default function LocaionSet() {
 
 
     // 카카오API에서 주소 검색 
-    const handleSearch = async ({ location }: searchForm) => {
+    const handleSearch = async () => {
         try {
-            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${location}`, {
+            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
                 headers: {
                     Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
                 }
@@ -148,7 +148,7 @@ export default function LocaionSet() {
                     console.log('검색된 위치와 사용자 위치가 동일하지 않습니다.');
                 }
             } else {
-                console.error('검색 결과를 찾을 수 없습니다.', response.data);
+                console.error('검색 결과를 찾을 수 없습니다.');
             }
         } catch (error) {
             console.error('검색 중 오류가 발생했습니다:', error);
@@ -180,6 +180,8 @@ export default function LocaionSet() {
     const handleGetUserLocation = () => {
         navigator.geolocation.getCurrentPosition(async (position) => {
             const { latitude, longitude } = position.coords;
+            setMarker(latitude, longitude);
+            console.log(latitude, longitude)
             setUserLocation({ x: longitude, y: latitude });
             const address = await getAddressFromCoordinates(latitude, longitude);
             if (address) {
@@ -189,7 +191,6 @@ export default function LocaionSet() {
         });
     };
 
-    //주소 자르고 비교 
     const isAddressMatch = (address1: string, address2: string): boolean => {
         const regex = /(.+?(읍|면|동))/;
         const match1 = address1.match(regex);
@@ -197,8 +198,7 @@ export default function LocaionSet() {
         return !!match1 && !!match2 && match1[1] === match2[1];
     };
 
-
-    //특정 세션 ID(sessionID)와 주소(address)를 서버로 전송
+    //특정 세선 ID와 주소를 서버로 전송
     const sendLocationToServer = async (sessionID: string, address: string) => {
         try {
             // 주소에서 숫자를 제거합니다.
@@ -213,7 +213,7 @@ export default function LocaionSet() {
 
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
-        if (!loggedInSessionID) {
+        if(!loggedInSessionID) {
             alert("로그인이 필요한 서비스 입니다.");
             navigate("/logIn")
         }

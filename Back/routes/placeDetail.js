@@ -61,7 +61,7 @@ router.get('/:id/similar', async function(req, res) {
         });
 
 
-        // 숫자 뒤의 문자열 제거
+        // 문자 뒤의 숫자 제거
         const cleanedAddress = restaurantAddress.replace(/\d.*$/, '').trim();
 
         
