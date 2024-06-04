@@ -65,7 +65,6 @@ router.post('/', async (req, res) => {
 
 // 리뷰 조회 요청 처리 + 5개씩 랜덤으로 조회 함.
 router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/reviews/:restaurantId'로 변경
-    
     try {
         const restaurantId = req.params.restaurantId;
     

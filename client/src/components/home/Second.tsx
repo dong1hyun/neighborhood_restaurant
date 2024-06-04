@@ -30,11 +30,11 @@ const Info = styled.div`
     font-size: 60px;
     font-weight: 700;
     line-height: 150%;
-    @media screen and (max-width: 850px) {
-        font-size: 30px;
+    @media screen and (max-width: 1100px) {
+        font-size: 40px;
     }
     @media screen and (max-width: 700px) {
-        font-size: 20px;
+        font-size: 30px;
     }
 `;
 
@@ -69,7 +69,7 @@ export default function Second() {
             />
             <InfoContainer>
                 <Info>
-                    로그인을 하고 동네인증을 해서 <br />더 많은 기능을 이용해보세요!
+                    로그인을 하고 동네인증을 해서 더 많은 기능을 이용해보세요!
                 </Info>
                 <Button onClick={() => navigate("/logIn")}>로그인 <FaArrowRight /></Button>
             </InfoContainer>

@@ -101,6 +101,7 @@ export default function Login() {
                 sessionStorage.setItem('sessionID', sessionID);
                 sessionStorage.setItem('nickName', nickName);
                 alert("로그인에 성공했습니다.");
+                navigate("/");
             } else {
                 console.error('로그인 실패:', response.data.message);
             }

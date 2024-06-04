@@ -13,6 +13,10 @@ const PlaceImg = styled(motion.img)`
     width: 180px;
     height: 180px;
     border-radius: 20px;
+    @media screen and (max-width: 700px) {
+        width: 25%;
+        height: 100%;
+    }
 `;
 
 const InfoContainer = styled.div`
@@ -31,7 +35,11 @@ const InfoContainer = styled.div`
 const FoodContainer = styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 40px;
+    @media screen and (max-width: 850px) {
+        gap: 20px;
+    }
 `
 
 const Info = styled(motion.div)`
@@ -40,6 +48,9 @@ const Info = styled(motion.div)`
     font-weight: bolder;
     line-height: 150%;
     margin-top: 30px;
+    @media screen and (max-width: 700px) {
+        font-size: 20px;
+    }
 `
 
 const Title = styled(motion.div)`
@@ -52,10 +63,10 @@ const Title = styled(motion.div)`
     font-weight: bolder;
     line-height: 150%;
     @media screen and (max-width: 850px) {
-        font-size: 30px;
+        font-size: 50px;
     }
     @media screen and (max-width: 700px) {
-        font-size: 20px;
+        font-size: 40px;
     }
 `;
 

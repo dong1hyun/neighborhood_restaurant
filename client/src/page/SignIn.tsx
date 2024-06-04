@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components"
 import { FaUser, FaLock, FaUserFriends  } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
     z-index: 5;
@@ -90,10 +91,12 @@ interface loginForm {
 
 export default function SignIn() {
     const { register, handleSubmit, getValues, watch } = useForm<loginForm>()
+    const navigate = useNavigate();
     const onValid = (data: loginForm) => {
         axios.post("/register", data)
             .then((data) => {
-                alert("회원가입에 성공했습니다!!!")
+                alert("회원가입에 성공했습니다!!!");
+                navigate("/");
             })
             .catch((err) => {
                 console.log(err);

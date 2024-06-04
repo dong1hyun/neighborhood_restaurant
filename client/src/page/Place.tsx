@@ -28,6 +28,7 @@ const WholeContainer = styled.div`
 const BoxContainer = styled.div`
     display: flex;
     flex-direction: column;
+    padding: 40px;
     background-color: whitesmoke;
     color: white;
     border-radius: 15px;
@@ -38,6 +39,9 @@ const BoxContainer = styled.div`
     font-family: "Noto Serif KR", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    @media screen and (max-width: 1200px) {
+        align-items: center;
+    }
     @media screen and (max-width: 900px) {
         width: 90%;
         margin: 0 auto;
@@ -65,7 +69,6 @@ const SideBar = styled.div`
 
 const PlaceContainer = styled.div`
     display: flex;
-    margin: 40px;
     @media screen and (max-width: 1200px) {
         flex-direction: column;
         text-align: center;
@@ -73,7 +76,7 @@ const PlaceContainer = styled.div`
     }
 `
 const PlaceName = styled.div`
-    font-size: 45px;
+    font-size: 43px;
     font-weight: 500;
     min-width: 300px;
     color: black;
@@ -95,7 +98,7 @@ const Divider = styled.div`
 `;
 
 const Divider2 = styled.div`
-  width: 300px;
+  width: 200px;
   height: 1px;
   background-color: #ccc;
   margin-bottom: 30px;
@@ -185,11 +188,15 @@ const TimeBtn = styled.button`
 const TimeContainer = styled(motion.div)`
 `
 
+const ButtonContainer = styled.div`
+    
+`
+
 const BookMarker = styled.button`
     color: white;
     width: 200px;
     height: 25px;
-    margin-left: 40px;
+    /* margin-left: 40px; */
     margin-top: 40px;
     background-color: #3e3e3e;
     border-radius: 5px;
@@ -204,7 +211,6 @@ const ShareButton = styled.button`
     color: white;
     width: 200px;
     height: 25px;
-    margin-left: 40px;
     margin-top: 10px;
     margin-bottom: 30px;
     background-color: rgba(245, 59, 87, 1.0);
@@ -257,7 +263,6 @@ function Place() {
                         setLastOrder(true);
                     }
                 });
-                console.log("끝이야")
             })
             .catch(function (error) {
                 // 에러 핸들링
@@ -298,8 +303,8 @@ function Place() {
     };
 
     useEffect(() => {
-        getPlaceData();
-        setMarker(x, y);
+        /* getPlaceData();
+        setMarker(x, y); */
     }, [x, y, breakTime]);
     return (
         <WholeContainer>
@@ -307,13 +312,13 @@ function Place() {
                 <PlaceContainer>
                     <PlaceImg />
                     <DetailContainer>
-                        <PlaceName>{name}</PlaceName>
+                        <PlaceName>로우앤슬로우</PlaceName>
                         <Divider />
-                        <Category>{category}</Category>
-                        <Rating>평점 <>4.6</></Rating>
-                        <Detail><GiRotaryPhone /> {phone}</Detail>
-                        <Detail><FaAddressBook /> {address}</Detail>
-                        영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>보기</TimeBtn>
+                        <Category>한식 육류</Category>
+                        <RatingContainer>평점: 4.6</RatingContainer>
+                        <Detail><GiRotaryPhone /> 02-498-0929</Detail>
+                        <Detail><FaAddressBook /> 서울 광진구 아차산로 238-1</Detail>
+                        영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?
                                 <TimeContainer
@@ -338,6 +343,7 @@ function Place() {
                 </PlaceContainer>
                 <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
                 <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
+                <Divider2 />
                 <Review />
             </BoxContainer>
             <SideContainer>

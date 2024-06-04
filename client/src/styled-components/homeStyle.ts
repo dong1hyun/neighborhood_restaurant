@@ -87,6 +87,7 @@ export const EllipsisText = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
+  line-height: 112%;
 `;
 
 export const BackArrow = styled(IoIosArrowBack)`

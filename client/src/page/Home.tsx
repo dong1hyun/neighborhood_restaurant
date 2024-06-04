@@ -33,7 +33,6 @@ const Img = styled(motion.img)`
 const Divider = styled.div`
   width: 90%;
   height: 1px;
-  border-radius: 3px;
   background-color: gray;
   margin: auto;
   margin-top: 20px;
@@ -104,7 +103,7 @@ function Home() {
             <Container>
                 <Title>한식<Img src={process.env.PUBLIC_URL + "/home/korea.jpg"} /></Title>
                 <Divider />
-                <PlaceSlider placeData={koreanFood} />
+                <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" },]} />
             </Container>
             <Container>
                 <Title>일식<Img src={process.env.PUBLIC_URL + "/home/japan.jpg"} /></Title>

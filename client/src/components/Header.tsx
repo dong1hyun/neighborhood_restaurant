@@ -13,6 +13,7 @@ import { PiLineVertical } from "react-icons/pi";
 
 const Logo = styled(motion.div)`
     text-decoration: none;
+    min-width: 180px;
     color: rgba(245, 59, 87, 1.0);
     margin-left: 30px;
     padding-top: 28px;
@@ -30,22 +31,21 @@ const StyledFoodBankIcon = styled(MdOutlineFoodBank)`
 
 const InfoContainer = styled.div`
     display: flex;
-    gap: 30px;
+    justify-content: space-between;
     @media screen and (max-width: 700px) {
-        flex-wrap: wrap;
-        justify-content: space-between;
+        flex-direction: column;
     }
 `;
 
 const Info = styled.div`
-    flex: 1;
     min-width: 150px;
     text-align: center;
     color: white;
-    padding: 20px 20px 10px 20px;
     font-family: "Noto Serif KR", serif;
     font-optical-sizing: auto;
     font-style: normal;
+    padding-top: 20px;
+    padding-bottom: 20px;
 `;
 
 const Search = styled.form`
@@ -63,6 +63,7 @@ const Search = styled.form`
 
 const SearchInput = styled.input`
     width: 100%;
+    min-width: 220px;
     height: 40px;
     font-size: 20px;
     border-radius: 10px;
@@ -107,10 +108,9 @@ const LoginContainer = styled.div`
 
 const LoginBox = styled(motion.button)`
     color: white;
-    margin: 10px;
-    margin-top: 20px;
     background-color: transparent;
     border: none;
+    min-width: 100px;
 `;
 
 interface searchForm {
@@ -214,7 +214,6 @@ export default function Header() {
                                 <Info>식당 홍보</Info>
                                 <Info>Q&A</Info>
                             </InfoContainer>
-                            <PiLineVertical />
                             <LoginContainer>
                                 {sessionID ? (
                                     <>
