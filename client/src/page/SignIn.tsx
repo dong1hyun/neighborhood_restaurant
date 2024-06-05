@@ -5,6 +5,7 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components"
 import { FaUser, FaLock, FaUserFriends  } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { FaPhoneAlt } from "react-icons/fa";
 
 const Container = styled.div`
     z-index: 5;
@@ -79,20 +80,17 @@ const Link = styled.a`
     }
 `;
 
-interface loginForm {
+interface signInForm {
     id: string,
     password: string,
     nickName: string,
-    // location: {
-    //     x: Number,
-    //     y: Number
-    // }
+    phone: string
 }
 
 export default function SignIn() {
-    const { register, handleSubmit, getValues, watch } = useForm<loginForm>()
+    const { register, handleSubmit, getValues, watch } = useForm<signInForm>()
     const navigate = useNavigate();
-    const onValid = (data: loginForm) => {
+    const onValid = (data: signInForm) => {
         axios.post("/register", data)
             .then((data) => {
                 alert("회원가입에 성공했습니다!!!");
@@ -125,6 +123,12 @@ export default function SignIn() {
                             <FaUserFriends />
                         </Icon>
                         <Input {...register("nickName")} placeholder="닉네임" />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <Icon>
+                            <FaPhoneAlt />
+                        </Icon>
+                        <Input {...register("phone")} placeholder="전화번호" />
                     </InputWrapper>
                     <Button type="submit">회원가입</Button>
                 </Form>
