@@ -127,9 +127,12 @@ export default function LocaionSet() {
     const [sessionID, setSessionID] = useState<string>('');
     const { register, handleSubmit } = useForm<searchForm>();
     const navigate = useNavigate();
-    const handleSearch = async ({ location }: searchForm) => {
+
+
+    // 카카오API에서 주소 검색 
+    const handleSearch = async () => {
         try {
-            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${location}`, {
+            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
                 headers: {
                     Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
                 }
@@ -152,6 +155,7 @@ export default function LocaionSet() {
         }
     };
 
+    // 위도와 경도를 이용해 카카오 로컬 API를 통해 해당 좌표의 주소를 가져옵니다
     const getAddressFromCoordinates = async (latitude: number, longitude: number) => {
         try {
             const response = await axios.get(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`, {
@@ -172,6 +176,7 @@ export default function LocaionSet() {
         }
     };
 
+    //사용자의 현재 위치를 가져오는 기능 + 자신의 위도/경도 getAddressFromCoordinates로 보내서 주소로 변경
     const handleGetUserLocation = () => {
         navigator.geolocation.getCurrentPosition(async (position) => {
             const { latitude, longitude } = position.coords;
@@ -193,6 +198,7 @@ export default function LocaionSet() {
         return !!match1 && !!match2 && match1[1] === match2[1];
     };
 
+    //특정 세선 ID와 주소를 서버로 전송
     const sendLocationToServer = async (sessionID: string, address: string) => {
         try {
             // 주소에서 숫자를 제거합니다.

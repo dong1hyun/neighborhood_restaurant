@@ -60,10 +60,11 @@ router.get('/:id/similar', async function(req, res) {
             where: { restaurantId: restaurantId }
         });
 
-        // 숫자를 제외한 문자열로 주소를 변환합니다.
-        const cleanedAddress = restaurantAddress.replace(/\d+/g, '').trim().replace(/-$/, '');
 
+        // 문자 뒤의 숫자 제거
+        const cleanedAddress = restaurantAddress.replace(/\d.*$/, '').trim();
 
+        
         // 동일한 주소를 가진 다른 음식점을 가져옵니다. 부분 일치를 사용하여 유사한 식당을 찾습니다.
         const similarRestaurants = await Restaurant.findAll({
             where: {

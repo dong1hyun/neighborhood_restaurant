@@ -142,6 +142,25 @@ function MyPage() {
     const handleReviewClick = (restaurantId: string) => {
         navigate(`/place/${restaurantId}`);
     };
+
+     // 사용자 인증 주소 표시
+     const handleSubmitGetAddress = async (event: any) => {
+        event.preventDefault();
+        try {
+            // Make a request to retrieve the address
+            const response = await axios.get(`/userAddress/${sessionID}`);
+            if (response.data.success) {
+                // Update the state with the retrieved address
+                setCurrentAddress(response.data.address);
+                console.log('Address retrieved successfully!');
+            } else {
+                console.error('Failed to retrieve address.');
+            }
+        } catch (error) {
+            console.error('Error retrieving address:', error);
+        }
+    };
+
     return (
         <BoxContainer>
             <Title>즐겨 찾는 식당</Title>
@@ -165,6 +184,18 @@ function MyPage() {
                 </ReviewContainer>
             ))}
             <InfoUpdate />
+            <form onSubmit={handleSubmitGetAddress}>
+                <label htmlFor="address">현재 주소:</label>
+                <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    value={currentAddress}
+                    readOnly // Make the input readOnly to prevent user input
+                    placeholder="현재 주소"
+                />
+                <button type="submit">주소 조회</button>
+            </form>
         </BoxContainer>
     );
 

@@ -6,6 +6,7 @@ const axios = require('axios');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+//사용자 즐겨찾기 저장
 router.post('/', async (req, res) => {
     const { sessionID, restaurantId } = req.body;
     try {
@@ -19,10 +20,8 @@ router.post('/', async (req, res) => {
         if (existingFavorite) {
             return res.status(400).json({ error: '이미 즐겨찾기에 추가된 레스토랑입니다.' });
         }
-        console.log("1이요")
         // 새로운 즐겨찾기 항목을 생성합니다.
         await Favorites.create({ id: user.id, restaurantId });
-        console.log("2요")
         // 성공적인 응답을 전송합니다.
         res.json({ message: '즐겨찾기가 성공적으로 추가되었습니다.' });
     } catch (error) {
@@ -31,11 +30,11 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/read/:sessionID', async (req, res) => {
-    await Favorites.findAll()
-    .then((result) => {
-        res.json(result);
-    })
-})
+// router.get('/read/:sessionID', async (req, res) => {
+//     await Favorites.findAll()
+//     .then((result) => {
+//         res.json(result);
+//     })
+// })
 
 module.exports = router;
