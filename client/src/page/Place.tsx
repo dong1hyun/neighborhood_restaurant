@@ -36,7 +36,12 @@ const BoxContainer = styled.div`
     width: 55%;
     margin-bottom: 100px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
-
+    font-family: "Noto Serif KR", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    @media screen and (max-width: 1200px) {
+        align-items: center;
+    }
     @media screen and (max-width: 900px) {
         width: 90%;
         margin: 0 auto;
@@ -64,18 +69,45 @@ const SideBar = styled.div`
 
 const PlaceContainer = styled.div`
     display: flex;
-    margin: 40px;
-    @media screen and (max-width: 1100px) {
+    @media screen and (max-width: 1200px) {
         flex-direction: column;
         text-align: center;
         align-items: center;
     }
 `
 const PlaceName = styled.div`
-    font-size: 50px;
+    font-size: 43px;
+    font-weight: 500;
+    min-width: 300px;
     color: black;
     margin-bottom: 40px;
+    @media screen and (max-width: 900px) {
+        font-size: 30px;
+    }
 `
+
+const Divider = styled.div`
+  width: 200px;
+  height: 1px;
+  background-color: #ccc;
+  margin-bottom: 30px;
+  @media screen and (max-width: 1200px) {
+        margin: auto;
+        margin-bottom: 30px;
+    }
+`;
+
+const Divider2 = styled.div`
+  width: 200px;
+  height: 1px;
+  background-color: #ccc;
+  margin-bottom: 30px;
+  margin-left: 40px;
+  @media screen and (max-width: 1200px) {
+        margin: auto;
+        margin-bottom: 30px;
+    }
+`;
 
 const DetailContainer = styled.div`
     margin: 40px;
@@ -281,13 +313,13 @@ function Place() {
                 <PlaceContainer>
                     <PlaceImg />
                     <DetailContainer>
-                        <PlaceName>{name}</PlaceName>
+                        <PlaceName>로우앤슬로우</PlaceName>
                         <Divider />
-                        <Category>{category}</Category>
-                        <Rating>평점 <>4.6</></Rating>
-                        <Detail><GiRotaryPhone /> {phone}</Detail>
-                        <Detail><FaAddressBook /> {address}</Detail>
-                        영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>보기</TimeBtn>
+                        <Category>한식 육류</Category>
+                        <RatingContainer>평점: 4.6</RatingContainer>
+                        <Detail><GiRotaryPhone /> 02-498-0929</Detail>
+                        <Detail><FaAddressBook /> 서울 광진구 아차산로 238-1</Detail>
+                        영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?
                                 <TimeContainer
@@ -312,6 +344,7 @@ function Place() {
                 </PlaceContainer>
                 <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
                 <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
+                <Divider2 />
                 <Review />
             </BoxContainer>
             <SideContainer>
@@ -391,10 +424,11 @@ export default Place;
                     <PlaceImg />
                     <DetailContainer>
                         <PlaceName>끝돈</PlaceName>
+                        <Divider />
                         <Category>한식 육류</Category>
-                        <Rating>평점: <>4.6</></Rating>
-                        <Detail>02-498-0929</Detail>
-                        <Detail>서울 광진구 아차산로 238-1</Detail>
+                        <Rating>평점 <>4.6</></Rating>
+                        <Detail><GiRotaryPhone /> 02-498-0929</Detail>
+                        <Detail><FaAddressBook /> 서울 광진구 아차산로 238-1</Detail>
                         영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?
@@ -418,8 +452,8 @@ export default Place;
                         }
                     </DetailContainer>
                 </PlaceContainer>
-                <BookMarker onClick={handleBookmark}>즐겨 찾기 추가</BookMarker>
-                <ShareButton onClick={sharePage}>페이지 공유하기</ShareButton>
+                <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
+                <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
                 <Review />
             </BoxContainer>
             <SideContainer>
@@ -430,8 +464,4 @@ export default Place;
                     <PlaceRecommend />
                 </SideBar>
             </SideContainer>
-        </ WholeContainer>
-    )
-}
-
-export default Place;
+        </ WholeContainer> */

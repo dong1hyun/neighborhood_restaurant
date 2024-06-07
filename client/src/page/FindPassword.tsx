@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { name, session } from "../atom";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
+import { FaPhoneAlt } from "react-icons/fa";
 
 const Container = styled.div`
     z-index: 5;
@@ -71,56 +72,36 @@ const HelpText = styled.p`
     font-size: 12px;
     color: #666;
     line-height: 130%;
-    color: #007bff;
-    a {
-        color: #007bff;
-    }
 `;
 
 const StyledLink = styled(Link)`
     &:hover {
         text-decoration: underline;
     }
+    color: #007bff;
 `;
 
-interface LoginForm {
+interface FindForm {
     id: string,
-    password: string,
+    phone: string,
+    newPassword: string
 }
 
-export default function Login() {
-    const { register, handleSubmit } = useForm<LoginForm>();
-    const [sessionID, setSessionID] = useRecoilState(session);
-    const [nickName, setNickName] = useRecoilState(name);
-    const navigate = useNavigate()
-    const LoginSuccess = async (data: LoginForm) => {
-        try {
-            const response = await axios.post('/login', data);
-            const { sessionID, nickName } = response.data;
-            if (response.data.message === '로그인 성공' && sessionID) {
-                setSessionID(sessionID);
-                setNickName(nickName);
-                sessionStorage.setItem('sessionID', sessionID);
-                sessionStorage.setItem('nickName', nickName);
-                alert("로그인에 성공했습니다.");
-                navigate("/");
-            } else {
-                console.error('로그인 실패:', response.data.message);
-            }
-        } catch (error) {
-            console.error('로그인 중 오류가 발생했습니다:', error);
-        }
-    };
-
-    useEffect(() => {
-        const session = sessionStorage.getItem('sessionID');
-        if(session) navigate("/");
-    }, [])
-
+export default function FindPassword() {
+    const { register, handleSubmit } = useForm<FindForm>();
+    const onSubmit = async (data: FindForm) => {
+        await axios.post("/login/FPassword", data)
+            .then((res) => {
+                alert(res.data.message);
+            })
+            .catch((err) => {
+                alert(err.response.data.message);
+            })
+    }
     return (
         <Container>
-            <Title>로그인</Title>
-            <Form onSubmit={handleSubmit(LoginSuccess)}>
+            <Title>비밀번호 찾기</Title>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <InputWrapper>
                     <Icon>
                         <FaUser />
@@ -129,16 +110,20 @@ export default function Login() {
                 </InputWrapper>
                 <InputWrapper>
                     <Icon>
+                        <FaPhoneAlt />
+                    </Icon>
+                    <Input {...register("phone")} placeholder="전화번호" />
+                </InputWrapper>
+                <InputWrapper>
+                    <Icon>
                         <FaLock />
                     </Icon>
-                    <Input type="password" {...register("password")} placeholder="비밀번호" />
+                    <Input type="password" {...register("newPassword")} placeholder="새비밀번호" />
                 </InputWrapper>
-                <Button type="submit">로그인</Button>
+                <Button type="submit">확인</Button>
             </Form>
             <HelpText>
-                <StyledLink to="/FindId">아이디</StyledLink> /  <StyledLink to='/FindPassword'>비밀번호</StyledLink> 찾기
-                <br />
-                <StyledLink to="/SignIn">회원 가입</StyledLink>
+                <StyledLink to="/FindId">아이디 찾기</StyledLink>
             </HelpText>
         </Container>
     );

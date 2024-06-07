@@ -10,6 +10,9 @@ import MyPage from "./page/MyPage";
 import LocaionSet from "./page/LocationSet";
 import SignIn from "./page/SignIn";
 import Login from "./page/Login";
+import Find from "./page/FindId";
+import FindId from "./page/FindId";
+import FindPassword from "./page/FindPassword";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -76,6 +79,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/SignIn" element={<SignIn />} />
           <Route path="/LogIn" element={<Login />} />
+          <Route path="/FindId" element={<FindId />} />
+          <Route path="/FindPassword" element={<FindPassword />} />
           <Route path="/locationSet" element={<LocaionSet />} />
           <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />

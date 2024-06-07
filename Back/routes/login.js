@@ -39,17 +39,17 @@ router.post('/', (req, res, next) => {
 
 // 아이디 찾기 라우터
 router.get('/FId', async (req, res) => {
-    const { phone } = req.body;
+    const { phone } = req.query;
     try {
         const user = await User.findOne({ where: { phone } });
         if (user) {
-            return res.status(200).json({ message: '아이디 찾기 성공', id: user.id });
+            res.status(200).json({ message: '아이디 찾기 성공', id: user.id });
         } else {
-            return res.status(404).json({ message: '해당 번호로 가입된 사용자가 없습니다.' });
+            res.status(404).json({ message: '해당 번호로 가입된 사용자가 없습니다.' });
         }
     } catch (error) {
         console.error('아이디 찾기 중 오류 발생:', error);
-        return res.status(500).json({ message: '아이디 찾기 중 오류 발생' });
+        res.status(500).json({ message: '아이디 찾기 중 오류 발생' });
     }
 });
 
@@ -58,7 +58,7 @@ router.post('/FPassword', async (req, res) => {
     const { id, phone, newPassword } = req.body;
 
     if (!id || !phone || !newPassword) {
-        return res.status(400).json({ message: '아이디, 전화번호, 새 비밀번호를 모두 입력해주세요.' });
+        res.status(400).json({ message: '아이디, 전화번호, 새 비밀번호를 모두 입력해주세요.' });
     }
 
     try {
@@ -68,14 +68,12 @@ router.post('/FPassword', async (req, res) => {
             const hashedPassword = await bcrypt.hash(newPassword, 10);
             // 데이터베이스에 저장
             await User.update({ password: hashedPassword }, { where: { id } });
-
-            return res.status(200).json({ message: '비밀번호 재설정 성공' });
+            res.status(200).json({ message: '비밀번호 재설정 성공' });
         } else {
-            return res.status(404).json({ message: '해당 정보로 가입된 사용자가 없습니다.' });
+            res.status(404).json({ message: '아이디와 비밀번호 혹은 전화번호를 정확하게 입력하세요' });
         }
     } catch (error) {
-        console.error('비밀번호 재설정 중 오류 발생:', error);
-        return res.status(500).json({ message: '비밀번호 재설정 중 오류 발생' });
+        res.status(500).json({ message: '비밀번호 재설정 중 오류 발생' });
     }
 });
 

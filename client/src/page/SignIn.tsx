@@ -92,7 +92,7 @@ export default function SignIn() {
     const navigate = useNavigate();
     const onValid = (data: signInForm) => {
         axios.post("/register", data)
-            .then((data) => {
+            .then(() => {
                 alert("회원가입에 성공했습니다!!!");
                 navigate("/");
             })
@@ -100,7 +100,7 @@ export default function SignIn() {
                 console.log(err);
                 if (err.request.status == 400) alert("이미 존재하는 아이디입니다.");
             })
-    }
+    };
     return (
         <>
             <Container>

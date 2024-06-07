@@ -22,8 +22,6 @@ router.get('/restaurantData', async (_req, res) => {
             limit: 24 // 24개의 레코드만 가져오기
         });
 
-       
-
         // 각 음식점의 정보만 추출하여 배열에 담습니다.
         for (const restaurant of restaurants) {
             try {
@@ -37,7 +35,6 @@ router.get('/restaurantData', async (_req, res) => {
                 console.error(`Error fetching additional info for restaurant ${restaurant.restaurantId}:`, error);
             }
         }
-
 
         res.json({ restaurantData }); // 클라이언트에 음식점 데이터를 JSON 형태로 응답합니다.
     } catch (error) {
@@ -54,8 +51,6 @@ router.get('/restaurantData/korean', async (_req, res) => {
             order: Sequelize.literal('RAND()'),
             limit: 24
         });
-        
-        
         const restaurantData = [];
 
         for (const restaurant of koreanRestaurants) {
@@ -144,7 +139,6 @@ router.get('/restaurantData/japanese', async (_req, res) => {
 // 마이페이지 사용자 주소 조회
 router.get('/userAddress/:sessionID', async (req, res) => {
     const { sessionID } = req.params;
-
     try {
         // Find the user based on sessionID
         const user = await User.findOne({ where: { sessionID } });
