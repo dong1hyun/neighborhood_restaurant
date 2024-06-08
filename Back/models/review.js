@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         restaurantId: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        like: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, 
     {

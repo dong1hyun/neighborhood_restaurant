@@ -4,11 +4,15 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import InfoUpdate from "../components/myPage/InfoUpdate";
+import { Comment, Divider, InteractionContainer, InteractionItem, ProfileContainer, ProfileInfo, Rating } from "../styled-components/reviewStyle";
+import { RxAvatar } from "react-icons/rx";
+import { FaThumbsUp } from "react-icons/fa6";
 
 
-const BoxContainer = styled.div`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
+    padding: 50px;
     background-color: whitesmoke;
     color: black;
     border-radius: 15px;
@@ -16,7 +20,11 @@ const BoxContainer = styled.div`
     width: 55%;
     margin: 0 auto;
     margin-bottom: 100px;
+    margin-top: 150px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+    font-family: "Noto Serif KR", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
     @media screen and (max-width: 700px) {
         width: 90%;
     }
@@ -33,19 +41,7 @@ const PlaceBox = styled(motion.div)`
     text-align: center;
     height: 80%;
 `
-const Rating = styled.div`
-    position: absolute;
-    font-size: 18px;
-    top: 10px;
-    right: 12%;
-    background-color: rgba(0,0,0,1);
-    border-radius: 10px;
-    padding: 3px;
-    color: white;
-    @media screen and (max-width:700px){
-        scale: 0.7;
-    }
-`
+
 
 const PlaceImg = styled(motion.img)`
     background-color: black;
@@ -72,34 +68,51 @@ const PlaceTitle = styled(motion.div)`
     word-wrap: break-word;
 `
 
-const ReviewContainer = styled.div`
-    border: solid 1px white;
-    border-radius: 5px;
-    margin: 20px;
-    font-size: 30px;
-    height: 100%;
-`
-
 const Title = styled.div`
     font-size: 30px;
-    margin: 20px;
+    margin-bottom: 30px;
 `
 
-const ReviewRating = styled.div`
-    margin: 10px;
-`
+const ReviewContainer = styled(motion.div)`
+  border: solid 1px #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin-bottom: 50px;
+  cursor: pointer;
+`;
 
-const Comment = styled.div`
-    margin: 10px;
-`
+
+const BasicDivider = styled.div`
+  width: 200px;
+  height: 1px;
+  background-color: #ccc;
+  margin-top: 80px;
+  margin-bottom: 30px;
+  @media screen and (max-width: 1200px) {
+        margin: auto;
+        margin-bottom: 30px;
+    }
+`;
+
+interface reviewForm {
+    comment: string;
+    rating: number;
+    restaurantId: string;
+}
 
 function MyPage() {
     const [sessionID, setSessionID] = useState<string>('');
     const [restaurantData, setRestaurantData] = useState<any[]>([]);
-    const [userReviews, setUserReviews] = useState<{ comment: string, rating: number, restaurantId: string }[]>([]);
-    const [showTitle, setShowTitle] = useState(0);
+    const [userReviews, setUserReviews] = useState<reviewForm[]>([]);
     const [nickName, setNickName] = useState<string>(''); // 사용자 이름 상태 추가
-    const [newnickName, setnewnickName] = useState('');
+    const [like, setLike] = useState();
+    const [newNickName, setNewNickName] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [currentAddress, setCurrentAddress] = useState('');
     const navigate = useNavigate();
@@ -132,6 +145,7 @@ function MyPage() {
             if (response.data.success) {
                 setUserReviews(response.data.reviews);
                 setNickName(response.data.nickName); // 사용자 이름 설정
+                setLike(response.data.like)
             } else {
                 console.error('사용자 리뷰를 불러오지 못했습니다.');
             }
@@ -162,28 +176,42 @@ function MyPage() {
     };
 
     return (
-        <BoxContainer>
+        <Container>
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
                 {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
                     return (
                         <PlaceBox whileHover={{scale:1.1}}>
                             <Rating><span style={{color:"rgba(30, 144, 255,1.0)" }}>&#9733;</span> 3.6</Rating>
-                            <PlaceImg key={idx} src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
+                            <PlaceImg key={idx} src={item} />
                             <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle>
                         </PlaceBox>
                     )
                 })}
             </PlaceContainer>
+            <BasicDivider />
             <Title>나의 리뷰</Title>
-            {userReviews.map((review, index) => (
-                <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}>
-                    <div>작성자: {nickName}</div>
-                    <ReviewRating>&#9733; {review.rating}</ReviewRating>
+            {[{restaurantId: "123", rating: 3, comment: "굳"}].map((review, index) => (
+                <ReviewContainer whileHover={{scale:1.03}} key={index} onClick={() => handleReviewClick(review.restaurantId)}>
+                    <ProfileContainer>
+                        <RxAvatar size={30} />
+                        <ProfileInfo>{nickName}</ProfileInfo>
+                        <Rating>&#9733; {review.rating}</Rating>
+                    </ProfileContainer>
+                    <Divider />
                     <Comment>{review.comment}</Comment>
+                    <InteractionContainer>
+                        <InteractionItem type="submit">
+                            <FaThumbsUp />
+                            {like}
+                        </InteractionItem>
+                    </InteractionContainer>
                 </ReviewContainer>
             ))}
+            <BasicDivider />
+            <Title>정보 수정</Title>
             <InfoUpdate />
+            <BasicDivider />
             <form onSubmit={handleSubmitGetAddress}>
                 <label htmlFor="address">현재 주소:</label>
                 <input
@@ -196,7 +224,7 @@ function MyPage() {
                 />
                 <button type="submit">주소 조회</button>
             </form>
-        </BoxContainer>
+        </Container>
     );
 
 }

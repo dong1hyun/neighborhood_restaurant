@@ -4,73 +4,83 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { session } from "../../atom";
 import axios from "axios";
-
-const Title = styled.div`
-    font-size: 30px;
-    margin: 20px;
-`
-
-const Form = styled.form`
-    width: 70%;
-    border-radius: 10px;
-`
+import { FaPhoneAlt, FaUserFriends } from "react-icons/fa";
+import { FaLock, FaUser } from "react-icons/fa6";
 
 const Container = styled.div`
-    text-align: right;
-    margin-right: 20%;
-`
-
-const InputBox = styled.div`
-    margin: 20px;
-    @media screen and (max-width: 1400px){
-        display: flex;
-        flex-direction: column;
+    top: 300px;
+    margin-bottom: 50px;
+    text-align: center;
+    width: 400px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+    @media screen and (max-width: 700px) {
+        width: 80%;
     }
-`
+`;
 
-const Label = styled.label`
-    margin-left: 10px;
-    text-align: left;
-`
+const Title = styled.h2`
+    margin-bottom: 20px;
+`;
+
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+`;
+
+const InputWrapper = styled.div`
+    position: relative;
+    margin-bottom: 15px;
+`;
+
+const Icon = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+`;
 
 const Input = styled.input`
-    margin: 10px;
+    width: 100%;
+    height: 40px;
+    padding: 0 10px 0 40px;
     border-radius: 5px;
-    background-color: #c7c7c7;
-    outline: none;
-    border: none;
-    padding: 5px;
-    width: 300px;
-    @media screen and (max-width:1200px) {
-        width: 100%;
-    }
-`
+    border: 1px solid #ccc;
+`;
 
 const Button = styled.button`
-    margin: 10px;
-    margin-left: 30px;
-`
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    background-color: #3e3e3e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+        background-color: #6a6a6a;
+    }
+`;
 
 interface updateForm {
     nickName: string;
-    id: string
-    password: string;
+    phone: string;
 }
 
 export default function InfoUpdate() {
     const { register, handleSubmit } = useForm<updateForm>();
     const sessionID = useRecoilValue(session);
-    const onValid = async ({ nickName, id, password }: updateForm) => {
-        console.log(nickName, id, password);
+    const onValid = async ({ nickName, phone }: updateForm) => {
         await axios.put(`/infoUpdate/${sessionID}`, {
             nickName,
-            id,
-            password
+            phone
         })
     }
     return (
         <>
-            <Title>정보 수정</Title>
+            {/* <Title>정보 수정</Title>
             <Form onSubmit={handleSubmit(onValid)} >
                 <Container>
                     <InputBox>
@@ -93,7 +103,25 @@ export default function InfoUpdate() {
                     </InputBox>
                 </Container>
                 <Button type="submit">수정</Button>
-            </Form>
+            </Form> */}
+            <Container>
+                <Title>로그인</Title>
+                <Form onSubmit={handleSubmit(onValid)}>
+                    <InputWrapper>
+                        <Icon>
+                            <FaUserFriends />
+                        </Icon>
+                        <Input {...register("nickName")} placeholder="닉네임" />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <Icon>
+                            <FaPhoneAlt />
+                        </Icon>
+                        <Input {...register("phone")} placeholder="전화번호" />
+                    </InputWrapper>
+                    <Button type="submit">확인</Button>
+                </Form>
+            </Container>
         </>
     )
 }

@@ -161,8 +161,7 @@ router.put('/infoUpdate/:sessionID', async (req, res) => {
     const { nickName, id, password } = req.body;
     try {
         if (nickName) await User.update({ nickName }, { where: { sessionID } });
-        if (id) await User.update({ id }, { where: { sessionID } });
-        if (password) await User.update({ password }, { where: { sessionID } });
+        if (phone) await User.update({ phone }, { where: { sessionID } });
         res.json({ message: '사용자 정보가 성공적으로 업데이트되었습니다' });
     } catch (error) {
         console.error('사용자 정보를 업데이트하는 중 오류 발생:', error);
