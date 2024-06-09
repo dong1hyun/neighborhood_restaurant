@@ -116,6 +116,27 @@ router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/revie
     }
 });
 
+// 특정 restaurantId에 대한 평균 rating값 응답
+router.get('/reviews/ratings/:restaurantId', async (req, res) => {
+    try {
+        const restaurantId = req.params.restaurantId;
+
+        // 해당 음식점의 모든 리뷰를 가져와서 평균 rating을 계산합니다.
+        const reviews = await Review.findAll({
+            where: { restaurantId: restaurantId },
+            attributes: [[Sequelize.fn('AVG', Sequelize.col('rating')), 'avgRating']] // 평균 rating 계산
+        });
+
+        const avgRating = parseFloat(reviews[0].get('avgRating')).toFixed(1); // 평균 rating 값 추출 후 소수점 한 자리까지 반올림
+
+        res.status(200).json({ success: true, averageRating: avgRating });
+    } catch (error) {
+        console.error('평균 rating 계산 중 오류가 발생했습니다:', error);
+        res.status(500).json({ success: false, message: '평균 rating 계산 중 오류가 발생했습니다.' });
+    }
+});
+
+
 
 // 마이페이지 로그인 사용자 리뷰들 조회
 router.get('/userReviews/:sessionID', async (req, res) => {
