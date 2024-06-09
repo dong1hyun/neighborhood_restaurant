@@ -7,6 +7,7 @@ import InfoUpdate from "../components/myPage/InfoUpdate";
 import { Comment, Divider, InteractionContainer, InteractionItem, ProfileContainer, ProfileInfo, Rating } from "../styled-components/reviewStyle";
 import { RxAvatar } from "react-icons/rx";
 import { FaThumbsUp } from "react-icons/fa6";
+import { EllipsisText } from "../styled-components/homeStyle";
 
 
 const Container = styled.div`
@@ -33,13 +34,18 @@ const Container = styled.div`
 const PlaceContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin: 0 auto;
+    row-gap: 30px;
+    place-items: center;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 50px;
 `
 
 const PlaceBox = styled(motion.div)`
     position: relative;
     text-align: center;
     height: 80%;
+    width: 80%;
 `
 
 
@@ -47,7 +53,7 @@ const PlaceImg = styled(motion.img)`
     background-color: black;
     text-align: center;
     border-radius: 10px;
-    width: 80%;
+    width: 100%;
     height: 100%;
     color: black;
     @media screen and (max-width: 700px){
@@ -57,15 +63,15 @@ const PlaceImg = styled(motion.img)`
 
 const PlaceTitle = styled(motion.div)`
     position: absolute;
-    width: 60%;
+    width: 100%;
     height: 40px;
-    bottom: -10px;
-    color: white;
-    font-size: 20px;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
     border-radius: 5px;
-    background-color: rgba(178, 178, 178, 0.7);
-    left: 20%;
-    word-wrap: break-word;
+    font-family: "Noto Serif KR", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 `
 
 const Title = styled.div`
@@ -74,6 +80,7 @@ const Title = styled.div`
 `
 
 const ReviewContainer = styled(motion.div)`
+  position: relative;
   border: solid 1px #ddd;
   border-radius: 10px;
   padding: 20px;
@@ -85,6 +92,11 @@ const ReviewContainer = styled(motion.div)`
   width: 90%;
   margin-bottom: 50px;
   cursor: pointer;
+`;
+
+export const MyRating = styled.div`
+  font-size: 20px;
+  margin-left: auto;
 `;
 
 
@@ -182,9 +194,9 @@ function MyPage() {
                 {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
                     return (
                         <PlaceBox whileHover={{scale:1.1}}>
-                            <Rating><span style={{color:"rgba(30, 144, 255,1.0)" }}>&#9733;</span> 3.6</Rating>
+                            <Rating><span style={{ color: "#ff5b32" }}>&#9733;</span> 3.6</Rating>
                             <PlaceImg key={idx} src={item} />
-                            <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle>
+                            <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}><EllipsisText>식당이름</EllipsisText></PlaceTitle>
                         </PlaceBox>
                     )
                 })}
@@ -195,8 +207,8 @@ function MyPage() {
                 <ReviewContainer whileHover={{scale:1.03}} key={index} onClick={() => handleReviewClick(review.restaurantId)}>
                     <ProfileContainer>
                         <RxAvatar size={30} />
-                        <ProfileInfo>{nickName}</ProfileInfo>
-                        <Rating>&#9733; {review.rating}</Rating>
+                        <ProfileInfo>ㅎㅇ</ProfileInfo>
+                        <MyRating>&#9733; {review.rating}</MyRating>
                     </ProfileContainer>
                     <Divider />
                     <Comment>{review.comment}</Comment>

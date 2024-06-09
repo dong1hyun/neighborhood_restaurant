@@ -11,13 +11,13 @@ const Container = styled.div`
     top: 300px;
     margin-bottom: 50px;
     text-align: center;
-    width: 400px;
+    width: 80%;
     padding: 20px;
     background-color: rgba(255, 255, 255, 1);
     border-radius: 10px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 700px) {
-        width: 80%;
+        width: 90%;
     }
 `;
 
@@ -105,7 +105,6 @@ export default function InfoUpdate() {
                 <Button type="submit">수정</Button>
             </Form> */}
             <Container>
-                <Title>로그인</Title>
                 <Form onSubmit={handleSubmit(onValid)}>
                     <InputWrapper>
                         <Icon>
@@ -119,7 +118,7 @@ export default function InfoUpdate() {
                         </Icon>
                         <Input {...register("phone")} placeholder="전화번호" />
                     </InputWrapper>
-                    <Button type="submit">확인</Button>
+                    <Button type="submit">수정 완료</Button>
                 </Form>
             </Container>
         </>

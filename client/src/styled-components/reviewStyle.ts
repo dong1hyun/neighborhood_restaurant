@@ -61,8 +61,17 @@ export const ProfileInfo = styled.div`
 `;
 
 export const Rating = styled.div`
-  font-size: 20px;
-  margin-left: auto;
+    position: absolute;
+    font-size: 18px;
+    top: 0px;
+    right: 0px;
+    background-color: rgba(0,0,0,1);
+    border-radius: 10px;
+    padding: 3px;
+    color: white;
+    @media screen and (max-width: 700px){
+        font-size: 15px;
+    }
 `;
 
 export const Comment = styled.div`
