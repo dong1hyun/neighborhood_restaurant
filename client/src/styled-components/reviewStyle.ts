@@ -47,6 +47,7 @@ export const ReviewBox = styled.input`
 `;
 
 export const ProfileContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   margin-bottom: 10px;
@@ -61,17 +62,9 @@ export const ProfileInfo = styled.div`
 `;
 
 export const Rating = styled.div`
-    position: absolute;
-    font-size: 18px;
-    top: 0px;
-    right: 0px;
-    background-color: rgba(0,0,0,1);
-    border-radius: 10px;
-    padding: 3px;
-    color: white;
-    @media screen and (max-width: 700px){
-        font-size: 15px;
-    }
+  color: #c01c34;
+   position: absolute;
+   right: 0px;
 `;
 
 export const Comment = styled.div`

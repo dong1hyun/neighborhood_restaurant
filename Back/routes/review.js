@@ -48,13 +48,29 @@ router.post('/', async (req, res) => {
             // 사용자와 음식점이 동일한 지역에 있는 경우에만 리뷰 작성 가능
             // Review 모델을 사용하여 데이터베이스에 새로운 리뷰 생성
             // 반환은 하지 않음
-            const newReview = await Review.create({
+            await Review.create({
                 id: userID, // 사용자 ID
                 restaurantId: restaurantId,
                 comment: comment,
                 rating: rating,
                 like: 0
             });
+
+            // restaurantId를 가진 리뷰의 개수 출력
+            // const reviewCount = await Review.count({
+            //     where: { restaurantId: restaurantId }
+            // });
+            const averageRating = await Review.findOne({
+                where: { restaurantId: restaurantId },
+                attributes: [[Sequelize.fn('AVG', Sequelize.col('rating')), 'avgRating']]
+            });
+            const avgRating = parseFloat(averageRating.get('avgRating')).toFixed(1);
+            
+            // Restaurant 테이블에서 해당 restaurantId의 컬럼을 찾아 averageRating 업데이트
+            await Restaurant.update(
+                { averageRating: avgRating },
+                { where: { restaurantId: restaurantId } }
+            );
 
             // 새로운 리뷰가 성공적으로 생성되었을 경우 클라이언트에 응답
             res.status(200).json({ success: true, message: '리뷰가 성공적으로 작성되었습니다.' });
@@ -110,14 +126,13 @@ router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/revie
                 nickName // 리뷰에 사용자 닉네임 추가
             };
         }));
-
+        console.log(commentsWithRating);
         res.status(200).json(commentsWithRating); // 클라이언트에게 comment와 rating 배열을 응답으로 보냄
     } catch (error) {
         console.error('리뷰 조회 중 오류가 발생했습니다:', error);
         res.status(500).json({ success: false, message: '리뷰 조회 중 오류가 발생했습니다.' });
     }
 });
-
 
 // 마이페이지 로그인 사용자 리뷰들 조회
 router.get('/userReviews/:sessionID', async (req, res) => {
@@ -188,8 +203,5 @@ router.post("/like", async (req, res) => {
         res.status(500).json({ success: false, message: '좋아요 증가 중 오류가 발생했습니다.' });
     }
 });
-
-
-
 
 module.exports = router;

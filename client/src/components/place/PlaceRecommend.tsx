@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const TopTitle = styled.div`
@@ -21,6 +21,7 @@ const PlaceBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 `
 
 const Img = styled.img`
@@ -45,17 +46,16 @@ export default function PlaceRecommend() {
     const getSimilarPlace = async () => {
         await axios.get(`/placeDetail/${id}/similar`)
             .then((res) => {
-                console.log(res);
                 setSimilarPlace(res.data);
             })
     };
     useEffect(() => {
-        // getSimilarPlace();
+        getSimilarPlace();
     }, []);
     return (
         <><TopTitle>주변 추천 식당</TopTitle>
             <SimilarContainer>
-                {similarPlace.map(item => <PlaceBox><Img src={item.img} alt={item.restaurantName} /><Title>{item.restaurantName}</Title></PlaceBox>)}
+                {similarPlace.map(item => <a href={`/place/${item.restaurantId}`}><PlaceBox><Img src={item.img} alt={item.restaurantName} /><Title>{item.restaurantName}</Title></PlaceBox></a>)}
             </SimilarContainer></>)
 }
 

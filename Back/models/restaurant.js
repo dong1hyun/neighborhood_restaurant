@@ -36,9 +36,13 @@ module.exports = (sequelize, DataTypes) => {
         y: {
             type: DataTypes.DOUBLE,
             allowNull: true // 음식점 위도는 null이 될 수 있음
+        },
+        averageRating: {
+            type: DataTypes.FLOAT,
+            allowNull: true
         }
     }, 
-    {
+    {   
         charset: "utf8",
         collate: "utf8_general_ci",
         tableName: "Restaurant",

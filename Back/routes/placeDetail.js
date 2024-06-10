@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
         const restaurant = await Restaurant.findOne({
             where: { restaurantId: req.params.id }
         });
-
+        console.log(restaurant)
         if (!restaurant) {
             return res.status(404).json({ error: 'Restaurant not found' });
         }
@@ -38,8 +38,8 @@ router.get('/:id', async (req, res) => {
         //     reviews: reviewComments
         // });
 
+        // console.log(response.data);
         // 음식점 정보와 요약된 리뷰 데이터를 함께 응답
-        console.log(restaurant)
         res.status(200).json({
             restaurant: restaurant,
             // reviewSummary: response.data
@@ -85,7 +85,6 @@ router.get('/:id/similar', async function(req, res) {
             restaurantName: restaurant.restaurantName,
             img: restaurant.img
         }));
-
         res.json(formattedRestaurants);
     } catch (error) {
         console.error("유사한 음식점을 가져오는 중 에러 발생:", error);

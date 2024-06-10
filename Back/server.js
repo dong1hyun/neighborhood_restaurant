@@ -65,8 +65,6 @@ app.use('/placeDetail', placeDetailRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
 
-
-
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/', function (req, res) {

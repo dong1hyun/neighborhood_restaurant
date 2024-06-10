@@ -104,6 +104,7 @@ export const BackArrow = styled(IoIosArrowBack)`
     top: 50%;
     scale: 1.5;
     transition: transform 0.3s ease; /* 애니메이션을 부드럽게 하기 위해 transition 추가 */
+    cursor: pointer;
     &:hover {
         transform: scale(1.7);
     }
@@ -115,6 +116,7 @@ export const ForwardArrow = styled(IoIosArrowForward)`
     top: 50%;
     scale: 1.5;
     transition: transform 0.3s ease; /* 애니메이션을 부드럽게 하기 위해 transition 추가 */
+    cursor: pointer;
     &:hover {
         transform: scale(1.7);
     }

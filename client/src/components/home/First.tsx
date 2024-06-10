@@ -19,6 +19,16 @@ const PlaceImg = styled(motion.img)`
     }
 `;
 
+const ReviewImg = styled(motion.img)`
+    width: 400px;
+    height: 180px;
+    border-radius: 20px;
+    @media screen and (max-width: 700px) {
+        width: 25%;
+        height: 100%;
+    }
+`;
+
 const InfoContainer = styled.div`
     position: absolute;
     text-align: center;
@@ -83,7 +93,7 @@ export default function First() {
             animate={{opacity: 1}}
             transition={{duration: 1}}
             >
-            <Img src={`${process.env.PUBLIC_URL}home/lemon.jpg`} />
+            <Img src={`${process.env.PUBLIC_URL}home/plate.jpg`} />
             <InfoContainer>
                 <Title ref={imgRef1}
                     initial={{ opacity: 0, y: 50 }}
@@ -99,19 +109,26 @@ export default function First() {
                         animate={inView1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
                     />
-                    <PlaceImg
+                    <ReviewImg
                         ref={imgRef2}
-                        src={`${process.env.PUBLIC_URL}home/어머니대성집.png`}
+                        src={`${process.env.PUBLIC_URL}home/review1.png`}
                         initial={{ opacity: 0, y: 50 }}
                         animate={inView2 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
                     />
                     <PlaceImg
                         ref={imgRef3}
-                        src={`${process.env.PUBLIC_URL}home/오레노라멘.png`}
+                        src={`${process.env.PUBLIC_URL}home/어머니대성집.png`}
                         initial={{ opacity: 0, y: 50 }}
                         animate={inView3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                         transition={{ duration: 0.5, delay: 0.6 }}
+                    />
+                    <ReviewImg
+                        ref={imgRef4}
+                        src={`${process.env.PUBLIC_URL}home/review2.png`}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={inView3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                        transition={{ duration: 0.5, delay: 0.8 }}
                     />
                 </FoodContainer>
                 <Info>

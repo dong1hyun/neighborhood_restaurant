@@ -39,7 +39,7 @@ const BoxContainer = styled.div`
     font-family: "Noto Serif KR", serif;
     font-optical-sizing: auto;
     font-style: normal;
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1350px) {
         align-items: center;
     }
     @media screen and (max-width: 900px) {
@@ -69,7 +69,7 @@ const SideBar = styled.div`
 
 const PlaceContainer = styled.div`
     display: flex;
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1350px) {
         flex-direction: column;
         text-align: center;
         align-items: center;
@@ -78,9 +78,9 @@ const PlaceContainer = styled.div`
 const PlaceName = styled.div`
     font-size: 43px;
     font-weight: 500;
-    min-width: 300px;
     color: black;
     margin-bottom: 40px;
+    white-space: pre-line; /* Preserve whitespace and handle line breaks */
     @media screen and (max-width: 900px) {
         font-size: 30px;
     }
@@ -91,7 +91,7 @@ const Divider = styled.div`
   height: 1px;
   background-color: #ccc;
   margin-bottom: 30px;
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1350px) {
         margin: auto;
         margin-bottom: 30px;
     }
@@ -102,11 +102,6 @@ const Divider2 = styled.div`
   height: 1px;
   background-color: #ccc;
   margin-bottom: 30px;
-  margin-left: 40px;
-  @media screen and (max-width: 1200px) {
-        margin: auto;
-        margin-bottom: 30px;
-    }
 `;
 
 const DetailContainer = styled.div`
@@ -122,24 +117,6 @@ const RatingContainer = styled.div`
     @media screen and (max-width: 1200px) {
         display: flex;
         justify-content: center;
-    }
-`
-
-const Rating = styled.div`
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    z-index: 1;
-`
-
-const Paint = styled.img`
-    position: absolute;
-    width: 150px;
-    top: -30%;
-    left: -5%;
-    @media screen and (max-width: 1200px) {
-        left: 25%;
     }
 `
 
@@ -196,7 +173,6 @@ const BookMarker = styled.button`
     color: white;
     width: 200px;
     height: 25px;
-    /* margin-left: 40px; */
     margin-top: 40px;
     background-color: #3e3e3e;
     border-radius: 5px;
@@ -229,13 +205,14 @@ const SideContainer = styled.div`
     font-family: "Jua", sans-serif;
     font-weight: 400;
     font-style: normal;
-    `
+`
 
 function Place() {
-    const { id } = useParams()
+    const { id } = useParams();
     const [name, setName] = useState();
     const [address, setAddress] = useState();
     const [category, setCategory] = useState();
+    const [rating, setRating] = useState();
     const [phone, setPhone] = useState();
     const [timeList, setTimeList] = useState<any[]>([]);
     const [x, setX] = useState();
@@ -248,14 +225,16 @@ function Place() {
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
-                console.log(res.data);
-                setName(res.data.restaurant.restaurantName);
+                const tempName = res.data.restaurant.restaurantName;
+                tempName.replace(' ', "\n");
+                setName(tempName.replace(' ', "\n"));
                 setAddress(res.data.restaurant.restaurantAddress);
                 setCategory(res.data.restaurant.restaurantCategory);
                 setPhone(res.data.restaurant.restaurantNumber);
                 setX(res.data.restaurant.x);
                 setY(res.data.restaurant.y);
-                setTimeList(JSON.parse(res.data.restaurant.timeList))
+                setTimeList(JSON.parse(res.data.restaurant.timeList));
+                setRating(res.data.restaurant.averageRating);
                 timeList.forEach((i) => {
                     if (i["timeName"] == "휴게시간") {
                         setBreakTime(true)
@@ -304,8 +283,8 @@ function Place() {
     };
 
     useEffect(() => {
-        /* getPlaceData();
-        setMarker(x, y); */
+        getPlaceData();
+        setMarker(x, y);
     }, [x, y, breakTime]);
     return (
         <WholeContainer>
@@ -313,12 +292,12 @@ function Place() {
                 <PlaceContainer>
                     <PlaceImg />
                     <DetailContainer>
-                        <PlaceName>로우앤슬로우</PlaceName>
+                        <PlaceName>{name}</PlaceName>
                         <Divider />
-                        <Category>한식 육류</Category>
-                        <RatingContainer>평점: 4.6</RatingContainer>
-                        <Detail><GiRotaryPhone /> 02-498-0929</Detail>
-                        <Detail><FaAddressBook /> 서울 광진구 아차산로 238-1</Detail>
+                        <Category>{category}</Category>
+                        <RatingContainer>평점: {rating}</RatingContainer>
+                        <Detail><GiRotaryPhone /> {phone}</Detail>
+                        <Detail><FaAddressBook /> {address}</Detail>
                         영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
                         {
                             moreInf ?
@@ -360,108 +339,3 @@ function Place() {
 }
 
 export default Place;
-
-
-
-
-
-/* 
-<WholeContainer>
-    <BoxContainer>
-        <PlaceContainer>
-            <PlaceImg />
-            <DetailContainer>
-                <PlaceName>{name}</PlaceName>
-                <Divider />
-                <Category>{category}</Category>
-                <Rating>평점 <>4.6</></Rating>
-                <Detail><GiRotaryPhone /> {phone}</Detail>
-                <Detail><FaAddressBook /> {address}</Detail>
-                영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>보기</TimeBtn>
-                {
-                    moreInf ?
-                        <TimeContainer
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                        >
-                            {timeList.map((time: any) => {
-                                if (time["timeName"] == "영업시간") return <Time>{time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                            })}
-                            {breakTime ? "휴게시간" : null}
-                            {timeList.map((time: any) => {
-                                if (time["timeName"] == "휴게시간") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                            })}
-                            {lastOrder ? "라스트오더" : null}
-                            {timeList.map((time: any) => {
-                                if (time["timeName"] == "라스트오더") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                            })}
-                        </ TimeContainer>
-                        : null
-                }
-            </DetailContainer>
-        </PlaceContainer>
-        <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
-        <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
-        <Review />
-    </BoxContainer>
-    <SideContainer>
-        <SideBar>
-            <Map id="placeMap" />
-        </SideBar>
-        <SideBar>
-            <PlaceRecommend />
-        </SideBar>
-    </SideContainer>
-</ WholeContainer> */
-
-
-
-
-/* 
-<WholeContainer>
-            <BoxContainer>
-                <PlaceContainer>
-                    <PlaceImg />
-                    <DetailContainer>
-                        <PlaceName>끝돈</PlaceName>
-                        <Divider />
-                        <Category>한식 육류</Category>
-                        <Rating>평점 <>4.6</></Rating>
-                        <Detail><GiRotaryPhone /> 02-498-0929</Detail>
-                        <Detail><FaAddressBook /> 서울 광진구 아차산로 238-1</Detail>
-                        영업시간 <TimeBtn onClick={() => showMoreInf(cur => !cur)}>더보기</TimeBtn>
-                        {
-                            moreInf ?
-                                <TimeContainer
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                >
-                                    {timeList.map((time: any) => {
-                                        if (time["timeName"] == "영업시간") return <Time>{time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                    })}
-                                    {breakTime ? "휴게시간" : null}
-                                    {timeList.map((time: any) => {
-                                        if (time["timeName"] == "휴게시간") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                    })}
-                                    {lastOrder ? "라스트오더" : null}
-                                    {timeList.map((time: any) => {
-                                        if (time["timeName"] == "라스트오더") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
-                                    })}
-                                </ TimeContainer>
-                                : null
-                        }
-                    </DetailContainer>
-                </PlaceContainer>
-                <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
-                <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
-                <Review />
-            </BoxContainer>
-            <SideContainer>
-                <SideBar>
-                    <Map id="placeMap" />
-                </SideBar>
-                <SideBar>
-                    <PlaceRecommend />
-                </SideBar>
-            </SideContainer>
-        </ WholeContainer> */

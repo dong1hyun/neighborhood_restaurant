@@ -55,8 +55,6 @@ negative_words = [
 ]
 
 
-
-
 @app.post("/ais", response_model=Response)
 async def summarize_reviews(request: DataRequest):
     # 클라이언트로부터 받은 리뷰 데이터
@@ -67,7 +65,7 @@ async def summarize_reviews(request: DataRequest):
     # 리뷰 데이터 처리 및 요약
     okt = Okt()
     all_nouns = []
-    sentiment_score = 5.0  # 초기 점수를 5.0으로 설정
+    sentiment_score = 0
 
     for review in review_data:
         nouns = okt.nouns(review)  # 리뷰에서 명사 추출
@@ -76,22 +74,28 @@ async def summarize_reviews(request: DataRequest):
         # 감성 분석
         for word in okt.morphs(review):
             if word in positive_words:
-                sentiment_score += 1  # 긍정적인 단어일 경우 1점 추가
+                sentiment_score += 1
             elif word in negative_words:
-                sentiment_score -= 1  # 부정적인 단어일 경우 1점 감소
-
-    # 점수가 0 미만일 경우 0으로 설정, 10 이상일 경우 10으로 설정
-    sentiment_score = min(max(sentiment_score, 0), 10)
+                sentiment_score -= 1
 
     counter = Counter(all_nouns)
     most_common_nouns = counter.most_common(10)  # 가장 빈도 높은 상위 10개의 명사 추출
 
     summary = ", ".join([word for word, freq in most_common_nouns])
 
+    # 감성 판단
+    if sentiment_score > 0:
+        sentiment = "전반적으로 리뷰 내용이 긍정적입니다."
+    elif sentiment_score < 0:
+        sentiment = "전반적으로 리뷰 내용이 부정적입니다"
+    else:
+        sentiment = "전반적으로 리뷰 내용이 중립적입니다"
+
     # 성공 응답과 요약 및 감성 데이터를 반환
-    return {"success": True, "summary": summary, "sentiment_score": sentiment_score}
+    return {"success": True, "summary": summary, "sentiment": sentiment}
 
 # uvicorn main:app --reload --host 0.0.0.0 --port 4000
+
 
 
 
@@ -105,7 +109,7 @@ async def summarize_reviews(request: DataRequest):
 #     # 리뷰 데이터 처리 및 요약
 #     okt = Okt()
 #     all_nouns = []
-#     sentiment_score = 0
+#     sentiment_score = 5.0  # 초기 점수를 5.0으로 설정
 
 #     for review in review_data:
 #         nouns = okt.nouns(review)  # 리뷰에서 명사 추출
@@ -114,22 +118,17 @@ async def summarize_reviews(request: DataRequest):
 #         # 감성 분석
 #         for word in okt.morphs(review):
 #             if word in positive_words:
-#                 sentiment_score += 1
+#                 sentiment_score += 1  # 긍정적인 단어일 경우 1점 추가
 #             elif word in negative_words:
-#                 sentiment_score -= 1
+#                 sentiment_score -= 1  # 부정적인 단어일 경우 1점 감소
+
+#     # 점수가 0 미만일 경우 0으로 설정, 10 이상일 경우 10으로 설정
+#     sentiment_score = min(max(sentiment_score, 0), 10)
 
 #     counter = Counter(all_nouns)
 #     most_common_nouns = counter.most_common(10)  # 가장 빈도 높은 상위 10개의 명사 추출
 
 #     summary = ", ".join([word for word, freq in most_common_nouns])
 
-#     # 감성 판단
-#     if sentiment_score > 0:
-#         sentiment = "긍정적"
-#     elif sentiment_score < 0:
-#         sentiment = "부정적"
-#     else:
-#         sentiment = "중립적"
-
 #     # 성공 응답과 요약 및 감성 데이터를 반환
-#     return {"success": True, "summary": summary, "sentiment": sentiment}
+#     return {"success": True, "summary": summary, "sentiment_score": sentiment_score}

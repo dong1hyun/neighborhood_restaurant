@@ -34,7 +34,8 @@ router.post('/', async (req, res) => {
                     img: img_url,
                     timeList: timeList,
                     x: place.x,
-                    y: place.y
+                    y: place.y,
+                    averageRating: 0
                 });
             } else {
                 // 존재하지 않는 레스토랑인 경우 생성합니다.
@@ -47,7 +48,8 @@ router.post('/', async (req, res) => {
                     img: img_url,
                     timeList: timeList,
                     x: place.x,
-                    y: place.y
+                    y: place.y,
+                    averageRating: 0
                 });
             
                 addedRestaurants.push(newRestaurant);
