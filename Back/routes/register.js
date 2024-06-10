@@ -15,7 +15,7 @@ router.post('/', async (req, res, next) => {
         // 이미 존재하는 아이디인지 확인
         const existingUser = await User.findOne({ where: { id } });
         if (existingUser) {
-            return res.status(400).json({ message: '이미 존재하는 아이디입니다.' });
+            res.status(400).json({ message: '이미 존재하는 아이디입니다.' });
         }
 
         // 비밀번호 해싱

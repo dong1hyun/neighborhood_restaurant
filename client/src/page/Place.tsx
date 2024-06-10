@@ -263,7 +263,6 @@ function Place() {
                         setLastOrder(true);
                     }
                 });
-                console.log("끝이야")
             })
             .catch(function (error) {
                 // 에러 핸들링
@@ -272,16 +271,17 @@ function Place() {
     }
     const handleBookmark = async () => {
         if (sessionID) {
-            try {
-                const favoritePlaceInfo = {
-                    sessionID: sessionID,
-                    restaurantId: id
-                };
-
-                const response = await axios.post('/favorite', favoritePlaceInfo);
-            } catch (error) {
-                console.error('즐겨찾기 추가 중 오류가 발생했습니다:', error);
-            }
+            const favoritePlaceInfo = {
+                sessionID: sessionID,
+                restaurantId: id
+            };
+            await axios.post('/favorite', favoritePlaceInfo)
+                .then((res) => {
+                    alert(res.data.message);
+                })
+                .catch((err) => {
+                    alert(err.response.data.message);
+                })
         } else {
             alert("로그인을 먼저해주세요.");
         }

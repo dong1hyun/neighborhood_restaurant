@@ -46,6 +46,7 @@ const PlaceBox = styled(motion.div)`
     text-align: center;
     height: 80%;
     width: 80%;
+    cursor: pointer;
 `
 
 

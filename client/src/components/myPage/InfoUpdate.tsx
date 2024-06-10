@@ -11,7 +11,7 @@ const Container = styled.div`
     top: 300px;
     margin-bottom: 50px;
     text-align: center;
-    width: 80%;
+    width: 50%;
     padding: 20px;
     background-color: rgba(255, 255, 255, 1);
     border-radius: 10px;
@@ -77,6 +77,12 @@ export default function InfoUpdate() {
             nickName,
             phone
         })
+            .then((res) => {
+                alert(res.data.message);
+            })
+            .catch((err) => {
+                alert(err.response.data.message);
+            })
     }
     return (
         <>

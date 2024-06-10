@@ -5,7 +5,7 @@ import PlaceSlider from "../components/home/PlaceSlider";
 import axios from "axios";
 import FoodSlider from "../components/home/FoodSlider";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Container } from "../styled-components/homeStyle";
+import { Container, Loading } from "../styled-components/homeStyle";
 
 const HomeContainer = styled.div`
     display: flex;
@@ -68,6 +68,7 @@ function Home() {
     const [japaneseFood, setJapaneseFood] = useState([]);
     const [chineseFood, setChineseFood] = useState([]);
     const [recommendFood, setRecommendFood] = useState([]);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const session =  sessionStorage.getItem('sessionID');
     const onLocationSetClick = () => {
@@ -76,6 +77,7 @@ function Home() {
     useEffect(() => {
         async function fetchRestaurant() {
             try {
+                setLoading(true);
                 let response = await axios.get('/restaurantData/korean');
                 let restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
                 setKoeanFood(restData);
@@ -88,6 +90,7 @@ function Home() {
                 response = await axios.get('/restaurantData');
                 restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
                 setRecommendFood(restData);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching images:', error);
             }
@@ -103,22 +106,22 @@ function Home() {
             <Container>
                 <Title>한식<Img src={process.env.PUBLIC_URL + "/home/korea.jpg"} /></Title>
                 <Divider />
-                <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />
+                {loading ? <Loading /> : <PlaceSlider placeData={[{ restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "korea", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }, { restaurantId: 123, restaurantName: "한촌설렁탕아아아아아아아아아아아아아아아아아아아", img: "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2" }]} />}
             </Container>
             <Container>
                 <Title>일식<Img src={process.env.PUBLIC_URL + "/home/japan.jpg"} /></Title>
                 <Divider />
-                <PlaceSlider placeData={japaneseFood} />
+                {loading ? <Loading /> : <PlaceSlider placeData={japaneseFood} />}
             </Container>
             <Container>
                 <Title>중식<Img src={process.env.PUBLIC_URL + "/home/china.jpg"} /></Title>
                 <Divider />
-                <PlaceSlider placeData={chineseFood} />
+                {loading ? <Loading /> : <PlaceSlider placeData={chineseFood} />}
             </Container>
             <Container>
                 <Title>추천 식당</Title>
                 <Divider />
-                <PlaceSlider placeData={recommendFood} />
+                {loading ? <Loading /> : <PlaceSlider placeData={recommendFood} />}
             </Container>
         </HomeContainer>
         </>
