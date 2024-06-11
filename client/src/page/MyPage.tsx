@@ -160,7 +160,7 @@ function MyPage() {
         } catch (error) {
             console.error('즐겨찾는 식당 데이터를 가져오는 중 오류가 발생했습니다:', error);
         }
-    }
+    };
 
     // 마이페이지 사용자 리뷰
     const getReviewData = async (sessionID: string) => {
@@ -181,8 +181,8 @@ function MyPage() {
         navigate(`/place/${restaurantId}`);
     };
 
-     // 사용자 인증 주소 표시
-     const handleSubmitGetAddress = async (event: any) => {
+    // 사용자 인증 주소 표시
+    const handleSubmitGetAddress = async (event: any) => {
         event.preventDefault();
         try {
             // Make a request to retrieve the address
@@ -203,23 +203,21 @@ function MyPage() {
         <Container>
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
-                {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
-                    return (
-                        <PlaceBox whileHover={{scale:1.1}}>
-                            <Rating><span style={{ color: "#ff5b32" }}>&#9733;</span> 3.6</Rating>
-                            <PlaceImg key={idx} src={item} />
-                            <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}><EllipsisText>식당이름</EllipsisText></PlaceTitle>
-                        </PlaceBox>
-                    )
-                })}
+                {restaurantData.map((restaurant, idx) => (
+                    <PlaceBox key={idx} whileHover={{ scale: 1.1 }} onClick={() => handleReviewClick(restaurant.restaurantId)}>
+                        <Rating><span style={{ color: "#ff5b32" }}>&#9733;</span> {restaurant.averageRating}</Rating>
+                        <PlaceImg src={restaurant.img} alt={restaurant.restaurantName} />
+                        <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}><EllipsisText>{restaurant.restaurantName}</EllipsisText></PlaceTitle>
+                    </PlaceBox>
+                ))}
             </PlaceContainer>
             <BasicDivider />
             <Title>나의 리뷰</Title>
-            {[{restaurantId: "123", rating: 3, comment: "굳"}].map((review, index) => (
-                <ReviewContainer whileHover={{scale:1.03}} key={index} onClick={() => handleReviewClick(review.restaurantId)}>
+            {userReviews.map((review, index) => (
+                <ReviewContainer whileHover={{ scale: 1.03 }} key={index} onClick={() => handleReviewClick(review.restaurantId)}>
                     <ProfileContainer>
                         <RxAvatar size={30} />
-                        <ProfileInfo>ㅎㅇ</ProfileInfo>
+                        <ProfileInfo>{nickName}</ProfileInfo>
                         <MyRating>&#9733; {review.rating}</MyRating>
                     </ProfileContainer>
                     <Divider />
