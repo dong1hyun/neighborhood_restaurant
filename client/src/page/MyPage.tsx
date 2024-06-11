@@ -113,6 +113,16 @@ const BasicDivider = styled.div`
     }
 `;
 
+const LocationInput = styled.input`
+    border: none;
+    border-radius: 5px;
+`
+
+const LocationButton = styled.button`
+    border: none;
+    border-radius: 5px;
+`
+
 interface reviewForm {
     comment: string;
     rating: number;
@@ -226,8 +236,8 @@ function MyPage() {
             <InfoUpdate />
             <BasicDivider />
             <form onSubmit={handleSubmitGetAddress}>
-                <label htmlFor="address">현재 주소:</label>
-                <input
+                <label htmlFor="address">현재 주소: </label>
+                <LocationInput
                     type="text"
                     id="address"
                     name="address"
@@ -235,7 +245,7 @@ function MyPage() {
                     readOnly // Make the input readOnly to prevent user input
                     placeholder="현재 주소"
                 />
-                <button type="submit">주소 조회</button>
+                <LocationButton type="submit">주소 조회</LocationButton>
             </form>
         </Container>
     );

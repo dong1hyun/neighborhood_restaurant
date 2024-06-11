@@ -38,7 +38,8 @@ function Review() {
       sessionID,
     };
     await axios.post("/review", reviewData)
-      .then(() => {
+      .then((res) => {
+        alert(res.data.message)
         setRating(0);
         reset();
       })
