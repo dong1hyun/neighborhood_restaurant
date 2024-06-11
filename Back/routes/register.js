@@ -9,13 +9,13 @@ router.use(express.urlencoded({ extended: true }));
 //. get으로 먼저 DB조회해서 동일 값 있는 지 확인하는 로직 추가!
 
 router.post('/', async (req, res, next) => {
-    const { nickName, id, password } = req.body; // 아이디와 비밀번호만 받음
+    const { nickName, id, password, phone } = req.body; 
     
     try {
         // 이미 존재하는 아이디인지 확인
         const existingUser = await User.findOne({ where: { id } });
         if (existingUser) {
-            return res.status(400).json({ message: '이미 존재하는 아이디입니다.' });
+            res.status(400).json({ message: '이미 존재하는 아이디입니다.' });
         }
 
         // 비밀번호 해싱
@@ -26,6 +26,7 @@ router.post('/', async (req, res, next) => {
             nickName,
             id,
             password: hashedPassword,
+            phone,
         });
         
         res.status(201).json(user);

@@ -2,15 +2,17 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Home from "./page/Home";
 import { KeywordSearchResult } from "./page/KeywordSearchResult";
 import Header from "./components/Header";
-import { KakaoMap } from "./components/KakaoMap";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle } from "styled-components";
 import Place from "./page/Place";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import React from 'react';
 import Footer from "./components/Footer";
 import MyPage from "./page/MyPage";
+import LocaionSet from "./page/LocationSet";
+import SignIn from "./page/SignIn";
+import Login from "./page/Login";
+import Find from "./page/FindId";
+import FindId from "./page/FindId";
+import FindPassword from "./page/FindPassword";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -44,7 +46,7 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
-  background-color: #d3d7d9
+  background-color: #ffffff;
 }
 menu, ol, ul {
   list-style: none;
@@ -67,7 +69,6 @@ a {
     color: black;
 }
 `
-
 function App() {
   return (
     <RecoilRoot>
@@ -76,6 +77,11 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/SignIn" element={<SignIn />} />
+          <Route path="/LogIn" element={<Login />} />
+          <Route path="/FindId" element={<FindId />} />
+          <Route path="/FindPassword" element={<FindPassword />} />
+          <Route path="/locationSet" element={<LocaionSet />} />
           <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
           <Route path="/place/:id" element={<Place />} />

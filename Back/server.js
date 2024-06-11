@@ -45,7 +45,6 @@ sequelize.sync({ force: false })
             cookie: {
                 httpOnly: true,
                 secure: false
-                //maxAge: 60000  
             },
             name: 'session-cookie'
         })
@@ -65,8 +64,6 @@ app.use('/logout', logoutRouter);
 app.use('/placeDetail', placeDetailRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
-
-
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 

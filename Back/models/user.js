@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         sessionID: {
             type: DataTypes.STRING(100),
             allowNull: true // null이 될 수 있음
+        },
+        phone: {
+            type: DataTypes.STRING(100),
+            allowNull: true // null이 될 수 있음
         }
     }, 
     {

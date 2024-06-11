@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         restaurantName: {
             type: DataTypes.STRING(100),
-            allowNull: false // 음식점 이름은 null이 될 수 없음
+            allowNull: true // 음식점 이름은 null이 될 수 있음
         },
         restaurantAddress: {
             type: DataTypes.STRING(100),
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         restaurantNumber: {
             type: DataTypes.STRING(100),
-            allowNull: false // 음식점 번호는 null이 될 수 없음
+            allowNull: true // 음식점 번호는 null이 될 수 있음
         },
         restaurantCategory: {
             type: DataTypes.STRING(100),
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         img: {
             type: DataTypes.STRING(300),
-            allowNull: false // 음식점 이미지는 null이 될 수 없음
+            allowNull: true // 음식점 이미지는 null이 될 수 있음
         },
         timeList: {
             type: DataTypes.STRING(500),
@@ -36,9 +36,13 @@ module.exports = (sequelize, DataTypes) => {
         y: {
             type: DataTypes.DOUBLE,
             allowNull: true // 음식점 위도는 null이 될 수 있음
+        },
+        averageRating: {
+            type: DataTypes.FLOAT,
+            allowNull: true
         }
     }, 
-    {
+    {   
         charset: "utf8",
         collate: "utf8_general_ci",
         tableName: "Restaurant",
