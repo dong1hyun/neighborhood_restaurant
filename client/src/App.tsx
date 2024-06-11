@@ -44,6 +44,7 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
+  background-color: #d3d7d9
 }
 menu, ol, ul {
   list-style: none;
@@ -75,8 +76,6 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/registerPage" element={<Register />} />
-          <Route path="/loginpage" element={<Login />} />
           <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
           <Route path="/place/:id" element={<Place />} />

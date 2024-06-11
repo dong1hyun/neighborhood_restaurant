@@ -1,18 +1,21 @@
 import axios from "axios";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
 
 const BoxContainer = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: black;
-    color: white;
+    background-color: whitesmoke;
+    color: black;
     border-radius: 15px;
     height: 100%;
     width: 55%;
     margin: 0 auto;
     margin-bottom: 100px;
+    box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     @media screen and (max-width: 900px) {
         width: 90%;
     }
@@ -24,16 +27,34 @@ const PlaceContainer = styled.div`
     margin: 0 auto;
 `
 
-const PlaceBox = styled(motion.img)`
-    margin: 30px;
-    background-color: white;
-    width: 300px;
-    height: 300px;
-    background-size: cover;
-    background-position: center center;
+const PlaceBox = styled.div`
+    position: relative;
+    text-align: center;
+    height: 80%;
+`
+
+const PlaceImg = styled(motion.img)`
+    background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    width: 80%;
+    height: 100%;
     color: black;
     @media screen and (max-width: 700px){
+        
     }
+`
+
+const PlaceTitle = styled(motion.div)`
+    position: absolute;
+    width: 80%;
+    height: 25px;
+    bottom: 0;
+    left: 10%;
+    color: white;
+    font-size: 20px ;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
 `
 
 const ReviewContainer = styled.div`
@@ -58,131 +79,89 @@ const Comment = styled.div`
 `
 
 function MyPage() {
-    const [searchResult, setSearchResult] = useState<string>('');
     const [sessionID, setSessionID] = useState<string>('');
-    const [userAddress, setUserAddress] = useState<string>('');
-    const [userLocation, setUserLocation] = useState<{ x: number, y: number } | null>(null);
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    const [restaurantData, setRestaurantData] = useState();
+    const [restaurantData, setRestaurantData] = useState<any[]>([]);
+    const [showTitle, setShowTitle] = useState(0);
+    const [userReviews, setUserReviews] = useState<{ restaurantId: string, comment: string, rating: number }[]>([]);
+    const [nickName, setNickName] = useState<string>(''); // 사용자 이름 상태 추가
+    const navigate = useNavigate();
 
-    const handleSearch = async () => {
-        try {
-            const response = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchTerm}`, {
-                headers: {
-                    Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
-                }
-            });
-            if (response.data.documents && response.data.documents.length > 0) {
-                const { address_name } = response.data.documents[0];
-                setSearchResult(address_name);
-                if (isAddressMatch(address_name, userAddress)) {
-                    console.log('검색된 위치와 사용자 위치가 동일합니다.');
-                    // 여기서 서버로 값을 보내는 작업 수행
-                    sendLocationToServer(sessionID, address_name);
-                } else {
-                    console.log('검색된 위치와 사용자 위치가 동일하지 않습니다.');
-                }
-            } else {
-                console.error('검색 결과를 찾을 수 없습니다.');
-            }
-        } catch (error) {
-            console.error('검색 중 오류가 발생했습니다:', error);
-        }
-    };
-
-
-    const handleGetUserLocation = () => {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const { latitude, longitude } = position.coords;
-            setUserLocation({ x: longitude, y: latitude });
-            const address = await getAddressFromCoordinates(latitude, longitude);
-            if (address) {
-                setUserAddress(address);
-                console.log('사용자 위치:', address);
-            }
-        });
-    };
-
-
-    const getAddressFromCoordinates = async (latitude: number, longitude: number) => {
-        try {
-            const response = await axios.get(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`, {
-                headers: {
-                    Authorization: "KakaoAK f1a6ff5fce786c3d0407226bb3e8ec57"
-                }
-            });
-            if (response.data.documents && response.data.documents.length > 0) {
-                const address = response.data.documents[0].address.address_name;
-                return address;
-            } else {
-                console.error('주소를 찾을 수 없습니다.');
-                return null;
-            }
-        } catch (error) {
-            console.error('주소를 가져오는 중 오류가 발생했습니다:', error);
-            return null;
-        }
-    };
-
-    const isAddressMatch = (address1: string, address2: string): boolean => {
-        const regex = /(.+?(읍|면|동))/;
-        const match1 = address1.match(regex);
-        const match2 = address2.match(regex);
-        return !!match1 && !!match2 && match1[1] === match2[1];
-    };
-
-    const sendLocationToServer = async (sessionID: string, address: string) => {
-        try {
-            const response = await axios.post('/location', { sessionID, address });
-            console.log('서버로부터의 응답:', response.data);
-        } catch (error) {
-            console.error('서버로 위치 전송 중 오류가 발생했습니다:', error);
-        }
-    };
-
-    const getFavoriteData = async (sessionID:string) => {
-        await axios.get(`/favorite/read/${sessionID}`) //추후에 ㅁ -> id로 바꿀 예정
-        .then((res) => {
-            console.log(res.data);
-        })
-    }
-
-    const getReviewData = async (sessionID:string) => {
-        await axios.get(`/myPage/reviews/${sessionID}`)
-    }
 
     useEffect(() => {
-        const loggedInSessionID = sessionStorage.getItem('sessionID') + ''; // 세션 스토리지에서 세션 아이디 가져오기
+        const loggedInSessionID = sessionStorage.getItem('sessionID') + '';
         setSessionID(loggedInSessionID);
         getFavoriteData(loggedInSessionID);
+        getReviewData(loggedInSessionID);
     }, [])
-    //위치, 리뷰, 즐겨찾기
+
+    // 마이페이지 사용자 즐겨찾기
+    const getFavoriteData = async (sessionID: string) => {
+        try {
+            const response = await axios.get(`/restaurant/${sessionID}`);
+            if (response.data.restaurantData) {
+                setRestaurantData(response.data.restaurantData);
+            } else {
+                console.error('즐겨찾는 식당 데이터를 불러오지 못했습니다.');
+            }
+        } catch (error) {
+            console.error('즐겨찾는 식당 데이터를 가져오는 중 오류가 발생했습니다:', error);
+        }
+    }
+
+    // 마이페이지 사용자 리뷰
+    const getReviewData = async (sessionID: string) => {
+        try {
+            const response = await axios.get(`/review/userReviews/${sessionID}`);
+            if (response.data.success) {
+                setUserReviews(response.data.reviews);
+                setNickName(response.data.nickName); // 사용자 이름 설정
+            } else {
+                console.error('사용자 리뷰를 불러오지 못했습니다.');
+            }
+        } catch (error) {
+            console.error('사용자 리뷰를 가져오는 중 오류가 발생했습니다:', error);
+        }
+    }
+    const handleReviewClick = (restaurantId: string) => {
+        navigate(`/place/${restaurantId}`);
+    };
+
     return (
         <BoxContainer>
             <Title>즐겨 찾는 식당</Title>
             <PlaceContainer>
-                {
-                    
-                }
+                {restaurantData.map((restaurant, index) => (
+                    <PlaceBox>
+                        <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} onClick={() => navigate(`/place/${restaurant.restaurantId}`)} // 이미지 클릭 시 페이지 이동
+                        />
+                        {showTitle == index + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
+                    </PlaceBox>
+                ))}
             </PlaceContainer>
             <Title>나의 리뷰</Title>
-            {["리뷰 1", "리뷰 2", "리뷰 3", "리뷰 4"].map((comment) => {
-                return (
-                    <ReviewContainer>
-                        <Rating>&#9733; 4.3</Rating>
-                        <Comment>{comment}</Comment>
-                    </ReviewContainer>
-                )
-            })}
+            {userReviews.map((review, index) => (
+                <ReviewContainer key={index} onClick={() => handleReviewClick(review.restaurantId)}>
+                    <div>작성자: {nickName}</div>
+                    <Rating>&#9733; {review.rating}</Rating>
+                    <Comment>{review.comment}</Comment>
+                </ReviewContainer>
+            ))}
         </BoxContainer>
     )
 }
 
 export default MyPage;
 
+// {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037"].map((item, idx) => {
+//     return (
+//         <PlaceBox>
+//             <PlaceImg key={idx} src={item} onMouseEnter={() => setShowTitle(idx + 1)} onMouseLeave={() => setShowTitle(0)} />
+//             {showTitle == idx + 1 ? <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}>식당이름</PlaceTitle> : null}
+//         </PlaceBox>
+//     )
+// })}
 
 
-
-// {["http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2", "http://t1.kakaocdn.net/fiy_reboot/place/CD74C63DB35E45FFA11AA7C4DD1E26D2", "http://t1.kakaocdn.net/fiy_reboot/place/246DFFE302E54D8FBC8CB3DD78029037", "http://t1.daumcdn.net/place/8945492B67AF436DBFD1156AF8685A67", "http://t1.daumcdn.net/place/4969C82B70A74BD891BC815EBBA835C2"].map((i) => {
-//                     return <PlaceBox src={i} />;
-//                 })}
+// {restaurantData.map((restaurant, index) => (
+//     <PlaceImg key={index} src={restaurant.img} alt={restaurant.restaurantName} />
+// ))}
