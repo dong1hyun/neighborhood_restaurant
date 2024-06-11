@@ -129,26 +129,26 @@ router.put('/infoUpdate/:sessionID', async (req, res) => {
     }
 });
 
-// 회원 탈퇴 라우터
-router.delete('/deleteUser/:id', async (req, res) => {
-    const { id } = req.params;
+// // 회원 탈퇴 라우터
+// router.delete('/deleteUser/:id', async (req, res) => {
+//     const { id } = req.params;
 
-    console.log('Received ID:', id); // 전달된 ID를 로그로 확인합니다.
+//     console.log('Received ID:', id); // 전달된 ID를 로그로 확인합니다.
 
 
-    try {
-        const result = await User.destroy({ where: { id } });
+//     try {
+//         const result = await User.destroy({ where: { id } });
 
-        if (result) {
-            res.json({ success: true, message: '사용자가 성공적으로 삭제되었습니다.' });
-        } else {
-            res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
-        }
-    } catch (error) {
-        console.error('사용자 삭제 중 오류 발생:', error);
-        res.status(500).json({ error: '사용자를 삭제하는 중 오류가 발생했습니다.' });
-    }
-});
+//         if (result) {
+//             res.json({ success: true, message: '사용자가 성공적으로 삭제되었습니다.' });
+//         } else {
+//             res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
+//         }
+//     } catch (error) {
+//         console.error('사용자 삭제 중 오류 발생:', error);
+//         res.status(500).json({ error: '사용자를 삭제하는 중 오류가 발생했습니다.' });
+//     }
+// });
 
 
 module.exports = router;

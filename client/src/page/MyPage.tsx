@@ -123,14 +123,7 @@ const LocationButton = styled.button`
     border-radius: 5px;
 `
 
-const DeleteButton = styled.button`
-    border: none;
-    border-radius: 5px;
-    background-color: red;
-    color: white;
-    padding: 10px 20px;
-    cursor: pointer;
-`;
+
 
 interface reviewForm {
     comment: string;
@@ -208,23 +201,7 @@ function MyPage() {
         }
     };
 
-    // // 회원 탈퇴 요청 함수
-    // const handleDeleteUser = async () => {
-    //     try {
-    //         const response = await axios.delete(`/deleteUser/${sessionID}`);
-    //         if (response.data.success) {
-    //             alert(response.data.message);
-    //             // 로그아웃 후 홈으로 이동
-    //             sessionStorage.removeItem('sessionID');
-    //             navigate('/');
-    //         } else {
-    //             alert(response.data.message);
-    //         }
-    //     } catch (error) {
-    //         console.error('회원 탈퇴 중 오류가 발생했습니다:', error);
-    //         alert('회원 탈퇴 중 오류가 발생했습니다.');
-    //     }
-    // };
+
 
     return (
         <Container>
@@ -273,8 +250,7 @@ function MyPage() {
                 />
                 <LocationButton type="submit">주소 조회</LocationButton>
             </form>
-            {/* 회원 탈퇴 버튼
-            <button onClick={handleDeleteUser}>회원 탈퇴</button> */}
+        
         </Container>
     );
 
