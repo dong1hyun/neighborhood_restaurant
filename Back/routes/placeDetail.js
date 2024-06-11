@@ -33,10 +33,10 @@ router.get('/:id', async (req, res) => {
         const reviewComments = reviews.map(review => review.comment);
 
         // FastAPI 서버에 리뷰 데이터를 요약 요청 (음식점 ID 포함)
-        // const response = await axios.post(`${FASTAPI_URL}/ais`, {
-        //     restaurantId: req.params.id,
-        //     reviews: reviewComments
-        // });
+        const response = await axios.post(`${FASTAPI_URL}/ais`, {
+            restaurantId: req.params.id,
+            reviews: reviewComments
+        });
 
         // console.log(response.data);
         // 음식점 정보와 요약된 리뷰 데이터를 함께 응답
