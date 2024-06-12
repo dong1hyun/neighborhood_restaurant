@@ -177,19 +177,33 @@ export default function LocaionSet() {
     };
 
     //사용자의 현재 위치를 가져오는 기능 + 자신의 위도/경도 getAddressFromCoordinates로 보내서 주소로 변경
+    // 사용자의 현재 위치를 가져오는 기능 + 자신의 위도/경도 getAddressFromCoordinates로 보내서 주소로 변경
     const handleGetUserLocation = () => {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const { latitude, longitude } = position.coords;
-            setMarker(latitude, longitude);
-            console.log(latitude, longitude)
-            setUserLocation({ x: longitude, y: latitude });
-            const address = await getAddressFromCoordinates(latitude, longitude);
-            if (address) {
-                setUserAddress(address);
-                console.log('사용자의 위치:', address);
+        console.log("실행됨");
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+                setMarker(latitude, longitude);
+                console.log(latitude, longitude);
+                setUserLocation({ x: longitude, y: latitude });
+                const address = await getAddressFromCoordinates(latitude, longitude);
+                if (address) {
+                    setUserAddress(address);
+                    console.log('사용자의 위치:', address);
+                }
+            },
+            (error) => {
+                console.error("Error occurred while fetching location: ", error);
+                alert(`위치 정보를 가져오지 못했습니다: ${error.message}`);
+            },
+            {
+                enableHighAccuracy: true, // 고정밀도 위치 정보 사용
+                timeout: 5000, // 타임아웃 설정
+                maximumAge: 0 // 캐시된 위치 정보를 사용하지 않음
             }
-        });
+        );
     };
+
 
     const isAddressMatch = (address1: string, address2: string): boolean => {
         const regex = /(.+?(읍|면|동))/;
