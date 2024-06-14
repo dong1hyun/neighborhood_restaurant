@@ -63,7 +63,8 @@ function afterSearch(keyword) {
         
         axios.post("http://192.210.246.72:3001/restaurant", places);
         axios.post("http://192.168.0.40:3001/restaurant", places);
-        // axios.post("http://localhost:3001/restaurant",places);
+        axios.post("http://localhost:3001/restaurant",places);
+        
         let listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),
             fragment = document.createDocumentFragment(),
