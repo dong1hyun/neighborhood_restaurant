@@ -43,13 +43,13 @@ export default function FoodSlider() {
     
     const onClick = (idx: number) => {
         setCurrentIndex(idx);
-        // clearInterval(prevInterval);
-        // setPrevInterval(setSliderTime());
+        clearInterval(prevInterval);
+        setPrevInterval(setSliderTime());
     };
 
     useEffect(() => {
-        // setPrevInterval(setSliderTime());
-        // return () => clearInterval(prevInterval); 
+        setPrevInterval(setSliderTime());
+        return () => clearInterval(prevInterval); 
     }, []);
 
     return (

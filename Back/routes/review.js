@@ -85,6 +85,8 @@ router.post('/', async (req, res) => {
     }
 });
 
+
+
 // 두 주소가 동일한 지역인지 확인하는 함수
 function isAddressMatch(address1, address2) {
     // 주소에서 '읍', '면', '동'을 포함한 부분을 추출하는 정규식
