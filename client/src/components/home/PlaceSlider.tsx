@@ -23,17 +23,6 @@ export default function PlaceSlider({ placeData }: PlaceSliderProps) {
     const [leaving, setLeaving] = useState(false);
     const [restaurantData, setRestaurantData] = useState([]);
     const navigate = useNavigate();
-
-    const getRating = async (id: number) => {
-        await axios.get(`/review/reviews/ratings/${id}`)
-            .then((res) => {
-                return res.data.averageRating;
-            })
-            .catch((err) => {
-                return "평점오류"
-                alert(err.response.data.message);
-            })
-    };
     
     const nextPlease = async () => {
         if (leaving) return;
@@ -70,7 +59,6 @@ export default function PlaceSlider({ placeData }: PlaceSliderProps) {
             >
                 {placeData.slice(Index, Index + 8).map(
                     (i, idx) => {
-                        const rating = getRating(i.restaurantId);
                         return(
                         <PlaceBox key={idx} whileHover={{ scale: 1.1 }}>
                             <PlaceImg src={i.img} key={idx} alt="준비중" onClick={() => handleImageClick(i.restaurantId)} />

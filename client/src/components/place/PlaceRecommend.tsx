@@ -50,7 +50,7 @@ export default function PlaceRecommend() {
             })
     };
     useEffect(() => {
-        getSimilarPlace();
+        // getSimilarPlace();
     }, []);
     return (
         <><TopTitle>주변 추천 식당</TopTitle>

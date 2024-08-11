@@ -30,7 +30,7 @@ export default function PlaceImg() {
             })
     }
     useEffect(() => {
-        getPlaceImg();
+        // getPlaceImg();
     }, [])
     return (
         <Place_Img src={imgURL} alt="준비중" />

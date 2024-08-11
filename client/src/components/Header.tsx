@@ -32,13 +32,14 @@ const StyledFoodBankIcon = styled(MdOutlineFoodBank)`
 const InfoContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    gap: 70px;
     @media screen and (max-width: 700px) {
         flex-direction: column;
+        gap: 0px;
     }
 `;
 
 const Info = styled.div`
-    min-width: 150px;
     text-align: center;
     color: white;
     font-family: "Noto Serif KR", serif;
@@ -46,6 +47,7 @@ const Info = styled.div`
     font-style: normal;
     padding-top: 20px;
     padding-bottom: 20px;
+    cursor: pointer;
 `;
 
 const Search = styled.form`
@@ -71,6 +73,7 @@ const SearchInput = styled.input`
     background-color: #eeeeee;
     outline: none;
     padding-left: 40px; /* 아이콘과 겹치지 않도록 패딩 추가 */
+    padding-right: 40px; /* 아이콘과 겹치지 않도록 패딩 추가 */
     @media screen and (max-width: 700px) {
         font-size: 12px;
         padding-left: 40px; /* 작은 화면에서 패딩 조정 */
@@ -209,7 +212,7 @@ export default function Header() {
                                 </SearchBtn>
                             </Search>
                             <InfoContainer>
-                                <Info>공지사항</Info>
+                                <Info onClick={() => navigate("/notice")}>공지사항</Info>
                                 <Info>동네맛집 소개</Info>
                                 <Info>식당 홍보</Info>
                                 <Info>Q&A</Info>

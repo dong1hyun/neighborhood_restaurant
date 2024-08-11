@@ -13,6 +13,7 @@ import Login from "./page/Login";
 import Find from "./page/FindId";
 import FindId from "./page/FindId";
 import FindPassword from "./page/FindPassword";
+import Notice from "./page/Notice";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -68,6 +69,14 @@ a {
     text-decoration-line: none;
     color: black;
 }
+
+body{
+    -ms-overflow-style: none;
+    }
+   ::-webkit-scrollbar {
+     display: none;
+   }
+
 `
 function App() {
   return (
@@ -84,7 +93,7 @@ function App() {
           <Route path="/locationSet" element={<LocaionSet />} />
           <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
-          <Route path="/place/:id" element={<Place />} />
+          <Route path="/notice" element={<Notice />} />
         </Routes>
         <Footer />
       </BrowserRouter>
