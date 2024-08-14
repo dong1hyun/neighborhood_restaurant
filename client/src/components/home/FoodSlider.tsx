@@ -31,20 +31,30 @@ const Button = styled.button<{ isSelected: boolean }>`
 `;
 
 export default function FoodSlider() {
+    const isLogin = sessionStorage.getItem('sessionID');
     const Infos = [
         <First />,
         <Second />,
         <Third />
     ];
-    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const pageIdx = isLogin ? [1, 2] : [0, 1, 2];
+    const [currentIndex, setCurrentIndex] = useState(isLogin ? 1 : 0);
     const [prevInterval, setPrevInterval] = useState<NodeJS.Timer>();
 
     const setSliderTime = () => setInterval(() => setCurrentIndex(cur => cur === 2 ? 0 : cur + 1), 4000);
-    
+    const setLoginSliderTime = () => setInterval(() => {
+        setCurrentIndex(cur => {
+            if(cur == 0 || cur == 2) return 1;
+            return cur + 1;
+        })
+    }, 4000);
+
     const onClick = (idx: number) => {
         setCurrentIndex(idx);
         clearInterval(prevInterval);
-        setPrevInterval(setSliderTime());
+        if(isLogin) setPrevInterval(setLoginSliderTime()); //로그인시 첫 번째 페이지는 생략
+        else setPrevInterval(setSliderTime());
     };
 
     useEffect(() => {
@@ -56,13 +66,14 @@ export default function FoodSlider() {
         <Container>
             {Infos[currentIndex]}
             <ButtonContainer>
-                {[0, 1, 2].map(i => (
+                {pageIdx.map(i => {
+                    return (
                     <Button
                         key={i}
                         isSelected={i === currentIndex}
                         onClick={() => onClick(i)}
                     />
-                ))}
+                )})}
             </ButtonContainer>
         </Container>
     );

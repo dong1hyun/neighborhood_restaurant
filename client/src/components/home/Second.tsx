@@ -1,13 +1,44 @@
+import React from "react";
 import styled from "styled-components";
-import { Img } from "../../styled-components/homeStyle";
-import { FaArrowRight } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { Img } from "../../styled-components/homeStyle";
 
 const Container = styled(motion.div)`
     width: 100%;
     height: 100%;
 `
+
+const PlaceReview = styled.div`
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    @media screen and (max-width: 700px) {
+        flex-direction: column;
+    }
+`
+
+const PlaceImg = styled(motion.img)`
+    width: 180px;
+    height: 180px;
+    border-radius: 20px;
+    @media screen and (max-width: 700px) {
+        width: 120px;
+        height: 100%;
+        border-radius: 10px;
+    }
+`;
+
+const ReviewImg = styled(motion.img)`
+    width: 400px;
+    height: 180px;
+    border-radius: 20px;
+    @media screen and (max-width: 700px) {
+        width: 300px;
+        height: 100%;
+        border-radius: 10px;
+    }
+`;
 
 const InfoContainer = styled.div`
     position: absolute;
@@ -15,64 +46,117 @@ const InfoContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    top: 90%;
+    top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100vh;
-`
-
-const Info = styled.div`
-    width: 80%;
-    height: 150px;
-    border-radius: 50px;
-    color: white;
-    font-size: 60px;
-    font-weight: 700;
-    line-height: 150%;
-    @media screen and (max-width: 1100px) {
-        font-size: 40px;
+    gap: 60px;
+    @media screen and (max-width: 850px) {
+        gap: 20px;
     }
     @media screen and (max-width: 700px) {
-        font-size: 30px;
+        gap: 0px;
+    }
+`
+
+const FoodContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    @media screen and (max-width: 850px) {
+        gap: 20px;
+        flex-direction: column;
+    }
+`
+
+const Info = styled(motion.div)`
+    color: black;
+    font-size: 40px;
+    font-weight: bolder;
+    line-height: 150%;
+    margin-top: 30px;
+    @media screen and (max-width: 700px) {
+        font-size: 20px;
+    }
+`
+
+const Title = styled(motion.div)`
+    width: 80%;
+    border-radius: 50px;
+    color: black;
+    font-size: 80px;
+    font-weight: bolder;
+    line-height: 150%;
+    @media screen and (max-width: 850px) {
+        font-size: 50px;
+    }
+    @media screen and (max-width: 700px) {
+        font-size: 40px;
     }
 `;
 
-const Button = styled.button`
-    background-color: #3e3e3e;
-    color: white;
-    width: 150px;
-    height: 50px;
-    border: none;
-    border-radius: 10px;
-    margin-top: 65px;
-    font-family: "Jua", sans-serif;
-    font-weight: 300;
-    font-style: normal;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-`
 
-export default function Second() {
-    const navigate = useNavigate();
+
+export default function First() {
+    const { ref: imgRef1, inView: inView1 } = useInView({ triggerOnce: false });
+    const { ref: imgRef2, inView: inView2 } = useInView({ triggerOnce: false });
+    const { ref: imgRef3, inView: inView3 } = useInView({ triggerOnce: false });
+    const { ref: imgRef4, inView: inView4 } = useInView({ triggerOnce: false });
     return (
         <Container
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
         >
-            <Img
-                src={`${process.env.PUBLIC_URL}home/meat.jpg`}
-            />
+            <Img src={`${process.env.PUBLIC_URL}home/plate.jpg`} />
             <InfoContainer>
+                <Title ref={imgRef1}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={inView1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                    transition={{ duration: 0.5 }}>
+                    동네맛집
+                </Title>
+                <FoodContainer>
+                    <PlaceReview>
+                        <PlaceImg
+                            ref={imgRef1}
+                            src={`${process.env.PUBLIC_URL}home/진미평양냉면.png`}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={inView1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                        />
+                        <ReviewImg
+                            ref={imgRef2}
+                            src={`${process.env.PUBLIC_URL}home/review1.png`}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={inView2 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                        />
+                    </PlaceReview>
+                    <PlaceReview>
+                        <PlaceImg
+                            ref={imgRef3}
+                            src={`${process.env.PUBLIC_URL}home/어머니대성집.png`}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={inView3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                        />
+                        <ReviewImg
+                            ref={imgRef4}
+                            src={`${process.env.PUBLIC_URL}home/review2.png`}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={inView3 ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                            transition={{ duration: 0.5, delay: 0.8 }}
+                        />
+                    </PlaceReview>
+                </FoodContainer>
                 <Info>
-                    로그인을 하고 동네인증을 해서 더 많은 기능을 이용해보세요!
+                    현지인이 평가한 식당들을 만나보세요!
                 </Info>
-                <Button onClick={() => navigate("/logIn")}>로그인 <FaArrowRight /></Button>
             </InfoContainer>
         </Container>
-    )
+    );
 }
