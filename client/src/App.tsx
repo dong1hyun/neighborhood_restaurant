@@ -4,16 +4,15 @@ import { KeywordSearchResult } from "./page/KeywordSearchResult";
 import Header from "./components/Header";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle } from "styled-components";
-import Place from "./page/Place";
 import Footer from "./components/Footer";
 import MyPage from "./page/MyPage";
 import LocaionSet from "./page/LocationSet";
 import SignIn from "./page/SignIn";
 import Login from "./page/Login";
-import Find from "./page/FindId";
 import FindId from "./page/FindId";
 import FindPassword from "./page/FindPassword";
 import Notice from "./page/Notice";
+import "./index.css"
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,

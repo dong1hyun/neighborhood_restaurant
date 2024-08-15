@@ -69,7 +69,7 @@ export default function Second() {
             />
             <InfoContainer>
                 <Info>
-                    로그인을 하고 동네인증을 해서 더 많은 기능을 이용해보세요!
+                    로그인을 해서 더 많은 기능을 이용해보세요!
                 </Info>
                 <Button onClick={() => navigate("/logIn")}>로그인 <FaArrowRight /></Button>
             </InfoContainer>
