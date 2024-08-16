@@ -7,7 +7,7 @@ const Container = styled(motion.div)`
     position: relative;
     width: 100%;
     height: 100%;
-    background-image: url(${process.env.PUBLIC_URL}/home/macarong.jpg);
+    background-image: url(${process.env.PUBLIC_URL}/home/벽.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -22,6 +22,7 @@ const Container = styled(motion.div)`
 `;
 
 const ImgContainer = styled.div`
+    margin-top: 80px;
     display: flex;
     gap: 30px;
     align-items: center;
