@@ -27,8 +27,8 @@ export function KeywordSearchResult() {
     const [searchWord, setSearchWord] = useRecoilState(keyword);
     
     useEffect(() => {
-        searchPlaces(searchParams.get("keyword") + '');
-        setSearchWord(searchParams.get("keyword") + '');
+        // searchPlaces(searchParams.get("keyword") + '');
+        // setSearchWord(searchParams.get("keyword") + '');
     }, [searchWord]);
     return (
         <div>
