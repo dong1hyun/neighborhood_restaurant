@@ -12,6 +12,11 @@ const passportConfig = require('./passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
+const fs = require('fs');
+const https = require('https');
+const http = require('http');
+const expressSanitizer = require("express-sanitizer");
+
 const indexRouter = require('./routes');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
@@ -28,9 +33,9 @@ passportConfig();
 const app = express();
 app.set('port', 3001);
 
-// sequelize.sync({ force: false })
-//     .then(() => console.log('데이터베이스 연결 성공'))
-//     .catch(err => console.error(err));
+sequelize.sync({ force: false })
+    .then(() => console.log('데이터베이스 연결 성공'))
+    .catch(err => console.error(err));
 
 app.use(
     morgan('dev'), //HTTP 요청을 콘솔에 로그로 기록
@@ -75,6 +80,23 @@ app.get('*', function (req, res) {
 });
 
 
-app.listen(app.get('port'), () => {
-    console.log(`Server is running on port ${app.get('port')}`);
+const options = {
+    key: fs.readFileSync("./config/cert.key"),
+    cert: fs.readFileSync("./config/cert.crt"),
+  };
+
+
+// HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
+https.createServer(options, app).listen(443, '192.168.11.179', () => {
+    console.log(`HTTPS server started on https://192.168.11.179`);
 });
+
+
+// HTTP 서버 시작
+http.createServer(app).listen(app.get('port'), () => {
+    console.log(`HTTP server is running on port ${app.get('port')}`);
+});
+
+// app.listen(app.get('port'), () => {
+//     console.log(`Server is running on port ${app.get('port')}`);
+// });
