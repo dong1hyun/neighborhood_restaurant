@@ -28,36 +28,36 @@ passportConfig();
 const app = express();
 app.set('port', 3001);
 
-sequelize.sync({ force: false })
-    .then(() => console.log('데이터베이스 연결 성공'))
-    .catch(err => console.error(err));
+// sequelize.sync({ force: false })
+//     .then(() => console.log('데이터베이스 연결 성공'))
+//     .catch(err => console.error(err));
 
-    app.use(
-        morgan('dev'), //HTTP 요청을 콘솔에 로그로 기록
-        express.static(path.join(__dirname, 'index')),
-        express.json(),
-        express.urlencoded({ extended: false }),
-        cookieParser('SECRET'), // 비밀 키를 'SECRET'로 설정
-        session({
-            resave: false,
-            saveUninitialized: false,
-            secret: 'SECRET', // 비밀 키를 'SECRET'로 설정
-            cookie: {
-                httpOnly: true,
-                secure: false
-            },
-            name: 'session-cookie'
-        })
-    );
-    
+app.use(
+    morgan('dev'), //HTTP 요청을 콘솔에 로그로 기록
+    express.static(path.join(__dirname, 'index')),
+    express.json(),
+    express.urlencoded({ extended: false }),
+    cookieParser('SECRET'), // 비밀 키를 'SECRET'로 설정
+    session({
+        resave: false,
+        saveUninitialized: false,
+        secret: 'SECRET', // 비밀 키를 'SECRET'로 설정
+        cookie: {
+            httpOnly: true,
+            secure: false
+        },
+        name: 'session-cookie'
+    })
+);
+
 
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
 
 app.use('/', indexRouter);
-app.use('/login', loginRouter); 
-app.use('/register', registerRouter); 
+app.use('/login', loginRouter);
+app.use('/register', registerRouter);
 app.use('/restaurant', restaurantRouter);
 app.use('/location', locationRouter);
 app.use('/logout', logoutRouter);
