@@ -4,8 +4,6 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const { sequelize } = require('./models');
 const bodyParser = require('body-parser');
-const { User, Review, Restaurant, favorites } = require("./models");
-const axios = require('axios');
 const cors = require('cors');
 const passport = require('passport');
 const passportConfig = require('./passport');
@@ -21,6 +19,7 @@ const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
 const favoriteRouter = require('./routes/favorite');
 const reviewRouter = require('./routes/review');
+const noticeRouter = require('./routes/notice')
 
 dotenv.config();
 passportConfig();
@@ -28,9 +27,9 @@ passportConfig();
 const app = express();
 app.set('port', 3001);
 
-// sequelize.sync({ force: false })
-//     .then(() => console.log('데이터베이스 연결 성공'))
-//     .catch(err => console.error(err));
+sequelize.sync({ force: false })
+    .then(() => console.log('데이터베이스 연결 성공'))
+    .catch(err => console.error(err));
 
 app.use(
     morgan('dev'), //HTTP 요청을 콘솔에 로그로 기록
@@ -64,6 +63,7 @@ app.use('/logout', logoutRouter);
 app.use('/placeDetail', placeDetailRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
+app.use('/notice', noticeRouter);
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 

@@ -23,6 +23,6 @@
   "include": [
     "src",
     "build",
-    "server.js"
+    "../Back/server.js"
   ]
 }

@@ -212,7 +212,7 @@ export default function Header() {
                                 </SearchBtn>
                             </Search>
                             <InfoContainer>
-                                <Info onClick={() => navigate("/notice")}>공지사항</Info>
+                                <Info onClick={() => navigate("/noticeList")}>공지사항</Info>
                                 <Info>동네맛집 소개</Info>
                                 <Info>식당 홍보</Info>
                                 <Info>Q&A</Info>

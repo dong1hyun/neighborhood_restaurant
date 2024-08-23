@@ -22,7 +22,8 @@ const Review = require('./review')(sequelize, Sequelize.DataTypes);
 const Restaurant = require('./restaurant')(sequelize, Sequelize.DataTypes);
 // favorites 모델 정의
 const Favorites = require('./favorites')(sequelize, Sequelize.DataTypes);
-
+// notice 모델 정의
+const Notice = require('./notice')(sequelize, Sequelize.DataTypes);
 
 
 // User 모델과 Review 모델 간의 관계 설정

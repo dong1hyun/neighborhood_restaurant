@@ -11,8 +11,9 @@ import SignIn from "./page/SignIn";
 import Login from "./page/Login";
 import FindId from "./page/FindId";
 import FindPassword from "./page/FindPassword";
-import Notice from "./page/Notice";
+import NoticeList from "./page/NoticeList";
 import "./index.css"
+import Notice from "./page/Notice";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -92,7 +93,8 @@ function App() {
           <Route path="/locationSet" element={<LocaionSet />} />
           <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
-          <Route path="/notice" element={<Notice />} />
+          <Route path="/noticeList" element={<NoticeList />} />
+          <Route path="/notice/:id" element={<Notice />} />
         </Routes>
         <Footer />
       </BrowserRouter>
