@@ -94,7 +94,7 @@ function App() {
           <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
           <Route path="/noticeList" element={<NoticeList />} />
-          <Route path="/notice/:id" element={<Notice />} />
+          <Route path="/noticeList/:id" element={<Notice />} />
         </Routes>
         <Footer />
       </BrowserRouter>

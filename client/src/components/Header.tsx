@@ -32,6 +32,7 @@ const StyledFoodBankIcon = styled(MdOutlineFoodBank)`
 const InfoContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 70px;
     @media screen and (max-width: 700px) {
         flex-direction: column;

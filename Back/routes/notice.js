@@ -5,27 +5,43 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.get("/", async (req, res) => {
+router.get("/list", async (req, res) => {
     console.log("here")
     try {
         const data = await Notice.findAll({
+            attributes: ["noticeId", "title", "createdAt"],
             order: [
                 ['createdAt', 'DESC']
             ]
         });
         
-        console.log(data)
         const notices = data.map((notice) => ({
             id: notice.dataValues.noticeId,
             title: notice.dataValues.title,
             description: notice.dataValues.description,
-            createAt: notice.dataValues.createdAt
+            createdAt: notice.dataValues.createdAt
         }));
         res.json(notices);
     } catch(error) {
         console.error(error)
     }
-})
+});
+
+router.get("/:id", async (req, res) => {
+    console.log("here22");
+    try {
+        const result = await Notice.findOne({
+            where: {
+                noticeId: req.params.id
+            },
+            attributes: ["noticeId", "title", "description", "createdAt"],
+        });
+        console.log(result.dataValues)
+        res.json(result.dataValues);
+    } catch(error) {
+        console.error(error)
+    }
+});
 
 router.post("/add", async (req, res) => {
     try {
