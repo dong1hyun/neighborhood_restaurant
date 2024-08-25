@@ -25,7 +25,8 @@ const Title = styled.div`
 
 const TitleDivider = styled.div`
     border-bottom: 2px solid #bdc3c7;
-    margin: 20px 0;
+    margin-top: 20px;
+    margin-bottom: 40px;
     width: 350px;
 `;
 
@@ -41,7 +42,7 @@ const NoticeAddForm = styled.form`
     width: 100%;
     max-width: 500px;
     margin: 30px 0;
-    background-color: #ffffff;
+    background-color: white;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -77,7 +78,7 @@ const NoticeDescription = styled.textarea`
 
 const SubmitButton = styled.button`
     padding: 10px;
-    background-color: #3498db;
+    background-color: #3e3e3e;
     color: white;
     font-size: 1rem;
     font-weight: 600;
@@ -115,6 +116,10 @@ const Notice = styled(motion.div)`
     }
 `;
 
+const CreatedDate = styled.div`
+    color: #f39c12
+`
+
 interface noticeForm {
     title: string;
     description: string;
@@ -130,6 +135,7 @@ export default function NoticeList() {
     const navigate = useNavigate();
     const { register, handleSubmit, reset } = useForm<noticeForm>();
     const [notices, setNotice] = useState<NewNoticeForm[]>([]);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const onValid = async (data: noticeForm) => {
         await axios.post("/notice/add", data);
@@ -143,20 +149,40 @@ export default function NoticeList() {
         setNotice(notices);
     };
 
+    const getAdmin = async () => {
+        const session = sessionStorage.getItem('sessionID');
+        console.log(session);
+        if (session) {
+            const admin = await axios.get('/admin', {
+                params: {
+                    session
+                }
+            });
+            console.log(admin);
+            if (admin.data.id === "admin") {
+                setIsAdmin(true);
+            }
+        }
+    }
+
     useEffect(() => {
         // fetchNotice();
-        setNotice([{ id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date },{ id: 1, title: "testdddd", createdAt: new Date }])
+        getAdmin();
+        setNotice([{ id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }])
+
     }, []);
 
     return (
         <Container>
             <Title>공지사항</Title>
             <TitleDivider />
-            {/* <NoticeAddForm onSubmit={handleSubmit(onValid)}>
-                <NoticeInput {...register("title")} placeholder="제목" required />
-                <NoticeDescription {...register("description")} placeholder="내용" required />
-                <SubmitButton type="submit">완료</SubmitButton>
-            </NoticeAddForm> */}
+            {
+                isAdmin ? <NoticeAddForm onSubmit={handleSubmit(onValid)}>
+                    <NoticeInput {...register("title")} placeholder="제목" required />
+                    <NoticeDescription {...register("description")} placeholder="내용" required />
+                    <SubmitButton type="submit">완료</SubmitButton>
+                </NoticeAddForm>
+                    : null}
             <NoticeContainer>
                 {notices.map((notice, idx) => (
                     <div key={notice.id}>
@@ -166,7 +192,7 @@ export default function NoticeList() {
                             whileHover={{ color: "#3498db" }}
                         >
                             <div>{notice.title}</div>
-                            <div>{new Date(notice.createdAt).toLocaleDateString()}</div>
+                            <CreatedDate>{new Date(notice.createdAt).toLocaleDateString()}</CreatedDate>
                         </Notice>
                     </div>
                 ))}

@@ -10,6 +10,22 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 
+router.get('/admin', async (req, res) => {
+    console.log("here");
+    console.log(req.query.session)
+    try {
+        const admin = await User.findOne({
+            where: {
+                sessionId: req.query.session       
+            }
+        });
+        res.json(admin);
+    } catch(error) {
+        console.error(error);
+        res.status(500).json({ error: 'admin 데이터를 가져오는 중 오류가 발생했습니다' })
+    }
+})
+
 // 메인 페이지에서 데이터베이스로 조회 (24개씩 랜덤으로 가져오기)
 router.get('/restaurantData', async (_req, res) => {
     try {

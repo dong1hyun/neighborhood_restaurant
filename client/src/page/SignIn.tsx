@@ -116,7 +116,7 @@ export default function SignIn() {
                         <Icon>
                             <FaLock />
                         </Icon>
-                        <Input {...register("password")} placeholder="비밀번호" />
+                        <Input {...register("password")} placeholder="비밀번호" type="password" />
                     </InputWrapper>
                     <InputWrapper>
                         <Icon>

@@ -214,7 +214,7 @@ export default function Header() {
                             </Search>
                             <InfoContainer>
                                 <Info onClick={() => navigate("/noticeList")}>공지사항</Info>
-                                <Info>동네맛집 소개</Info>
+                                <Info onClick={() => window.location.href = "https://kind-form-f61.notion.site/e61496672ccd4eb496119e05b0c0ddf7?pvs=74"}>동네맛집 소개</Info>
                                 <Info>식당 홍보</Info>
                                 <Info>Q&A</Info>
                             </InfoContainer>
