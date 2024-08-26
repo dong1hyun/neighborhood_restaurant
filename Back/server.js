@@ -19,7 +19,8 @@ const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
 const favoriteRouter = require('./routes/favorite');
 const reviewRouter = require('./routes/review');
-const noticeRouter = require('./routes/notice')
+const noticeRouter = require('./routes/notice');
+const qnaRouter = require('./routes/qna');
 
 dotenv.config();
 passportConfig();
@@ -64,6 +65,7 @@ app.use('/placeDetail', placeDetailRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
 app.use('/notice', noticeRouter);
+app.use('/qna', qnaRouter);
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 

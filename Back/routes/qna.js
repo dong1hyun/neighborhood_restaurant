@@ -1,5 +1,5 @@
 const express = require('express');
-const { Notice } = require('../models');
+const { QnA } = require('../models');
 const router = express.Router();
 
 router.use(express.json());
@@ -7,33 +7,35 @@ router.use(express.urlencoded({ extended: true }));
 
 router.get("/list", async (req, res) => {
     try {
-        const data = await Notice.findAll({
-            attributes: ["noticeId", "title", "createdAt"],
+        const data = await QnA.findAll({
+            attributes: ["qnaId", "question", "createdAt"],
             order: [
                 ['createdAt', 'DESC']
             ]
         });
         
-        const notices = data.map((notice) => ({
-            id: notice.dataValues.noticeId,
-            title: notice.dataValues.title,
-            description: notice.dataValues.description,
-            createdAt: notice.dataValues.createdAt
+        const qna = data.map((question) => ({
+            id: question.dataValues.qnaId,
+            question: question.dataValues.question,
+            answer: question.dataValues.answer,
+            createdAt: question.dataValues.createdAt
         }));
-        res.json(notices);
+        res.json(qna);
     } catch(error) {
         console.error(error)
     }
 });
 
 router.get("/:id", async (req, res) => {
+    console.log("qna")
     try {
-        const result = await Notice.findOne({
+        const result = await QnA.findOne({
             where: {
-                noticeId: req.params.id
+                qnaId: req.params.id
             },
-            attributes: ["noticeId", "title", "description", "createdAt"],
+            attributes: ["qnaId", "question", "answer", "createdAt"],
         });
+        console.log(result.dataValues)
         res.json(result.dataValues);
     } catch(error) {
         console.error(error)
@@ -41,11 +43,13 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
+    console.log("add");
+    console.log(req.body)
     try {
-        const { title, description } = req.body;
-        const result = await Notice.create({
-            title,
-            description
+        const { question, answer } = req.body;
+        const result = await QnA.create({
+            question,
+            answer
         });
 
         if (result) {

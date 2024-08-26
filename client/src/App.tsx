@@ -5,15 +5,17 @@ import Header from "./components/Header";
 import { RecoilRoot } from "recoil";
 import { createGlobalStyle } from "styled-components";
 import Footer from "./components/Footer";
-import MyPage from "./page/MyPage";
+import MyPage from "./page/header/MyPage";
 import LocaionSet from "./page/LocationSet";
-import SignIn from "./page/SignIn";
-import Login from "./page/Login";
+import SignIn from "./page/header/SignIn";
+import Login from "./page/header/Login";
 import FindId from "./page/FindId";
 import FindPassword from "./page/FindPassword";
-import NoticeList from "./page/NoticeList";
+import NoticeList from "./page/header/NoticeList";
 import "./index.css"
-import Notice from "./page/Notice";
+import Notice from "./page/header/Notice";
+import QnA_List from "./page/header/QnA_List";
+import QnA from "./page/header/QnA";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -95,6 +97,8 @@ function App() {
           <Route path="/search" element={<KeywordSearchResult />} />
           <Route path="/noticeList" element={<NoticeList />} />
           <Route path="/noticeList/:id" element={<Notice />} />
+          <Route path="/QnA_List" element={<QnA_List />} />
+          <Route path="/QnA_List/:id" element={<QnA />} />
         </Routes>
         <Footer />
       </BrowserRouter>

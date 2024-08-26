@@ -11,8 +11,6 @@ router.use(express.urlencoded({ extended: true }));
 
 
 router.get('/admin', async (req, res) => {
-    console.log("here");
-    console.log(req.query.session)
     try {
         const admin = await User.findOne({
             where: {

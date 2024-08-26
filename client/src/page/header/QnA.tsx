@@ -73,33 +73,33 @@ const Description = styled.div`
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 `;
 
-interface noticeForm {
-    noticeId: number;
-    title: string;
-    description: string;
+interface qnaForm {
+    qnaId: number;
+    question: string;
+    answer: string;
     createdAt: Date;
 }
 
-export default function Notice() {
+export default function QnA() {
     const { id } = useParams();
-    const [notice, setNotice] = useState<noticeForm | null>(null);
+    const [qna, setQnA] = useState<qnaForm | null>(null);
 
-    const fetchNotice = async () => {
-        const response = await axios.get(`/notice/${id}`);
-        setNotice(response.data);
+    const fetchQnA = async () => {
+        const response = await axios.get(`/qna/${id}`);
+        setQnA(response.data);
     };
 
     useEffect(() => {
-        fetchNotice();
+        fetchQnA();
     }, []);
 
-    const createAt = new Date(notice?.createdAt ?? "");
-    const date = `${createAt?.getFullYear()}/${(createAt?.getMonth() + 1)}/${createAt.getDate()} ${createAt.getHours()} ${createAt.getMinutes()}`
+    const createAt = new Date(qna?.createdAt ?? "");
+    const date = `${createAt?.getFullYear()}/${(createAt?.getMonth() + 1)}/${createAt.getDate()} ${createAt.getHours()}:${createAt.getMinutes()}`
     return (
         <Container>
-            <Title>공지사항</Title>
+            <Title>자주 묻는 질문</Title>
             <TitleDivider />
-            <SubTitle>{notice?.title}</SubTitle>
+            <SubTitle>{qna?.question}</SubTitle>
             <MetaInfo>
                 <Author>
                     <FcPortraitMode />
@@ -107,7 +107,7 @@ export default function Notice() {
                 </Author>
                 <div>{date} 작성됨</div>
             </MetaInfo>
-            <Description>{notice?.description}</Description>
+            <Description>{qna?.answer}</Description>
         </Container>
     );
 }

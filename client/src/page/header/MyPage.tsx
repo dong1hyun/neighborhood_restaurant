@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import InfoUpdate from "../components/myPage/InfoUpdate";
-import { Comment, Divider, InteractionContainer, InteractionItem, ProfileContainer, ProfileInfo, Rating } from "../styled-components/reviewStyle";
+import InfoUpdate from "../../components/myPage/InfoUpdate";
+import { Comment, Divider, InteractionContainer, InteractionItem, ProfileContainer, ProfileInfo, Rating } from "../../styled-components/reviewStyle";
 import { RxAvatar } from "react-icons/rx";
 import { FaThumbsUp } from "react-icons/fa6";
-import { EllipsisText } from "../styled-components/homeStyle";
+import { EllipsisText } from "../../styled-components/homeStyle";
 
 
 const Container = styled.div`

@@ -35,7 +35,7 @@ const Divider = styled.div`
     width: 100%;
 `;
 
-const NoticeAddForm = styled.form`
+const QnAaddForm = styled.form`
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -48,7 +48,7 @@ const NoticeAddForm = styled.form`
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
-const NoticeInput = styled.input`
+const QnAInput = styled.input`
     border: 1px solid #bdc3c7;
     padding: 10px;
     border-radius: 8px;
@@ -61,7 +61,7 @@ const NoticeInput = styled.input`
     }
 `;
 
-const NoticeDescription = styled.textarea`
+const QnADescription = styled.textarea`
     border: 1px solid #bdc3c7;
     padding: 10px;
     border-radius: 8px;
@@ -92,7 +92,7 @@ const SubmitButton = styled.button`
     }
 `;
 
-const NoticeContainer = styled.div`
+const QnAContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -100,7 +100,7 @@ const NoticeContainer = styled.div`
     max-width: 600px;
 `;
 
-const Notice = styled(motion.div)`
+const QnA = styled(motion.div)`
     display: flex;
     justify-content: space-between;
     padding: 15px 20px;
@@ -120,45 +120,43 @@ const CreatedDate = styled.div`
     color: #f39c12
 `
 
-interface noticeForm {
-    title: string;
-    description: string;
+interface qnaForm {
+    question: string;
+    answer: string;
 }
 
-interface NewNoticeForm {
+interface NewQnAForm {
     id: number;
-    title: string;
+    question: string;
     createdAt: Date;
 }
 
-export default function NoticeList() {
+export default function QnAList() {
     const navigate = useNavigate();
-    const { register, handleSubmit, reset } = useForm<noticeForm>();
-    const [notices, setNotice] = useState<NewNoticeForm[]>([]);
+    const { register, handleSubmit, reset } = useForm<qnaForm>();
+    const [qnas, setQnA] = useState<NewQnAForm[]>([]);
     const [isAdmin, setIsAdmin] = useState(false);
 
-    const onValid = async (data: noticeForm) => {
-        await axios.post("/notice/add", data);
+    const onValid = async (data: qnaForm) => {
+        await axios.post("/qna/add", data);
         reset();
-        fetchNotice();
+        fetchQnA();
     };
 
-    const fetchNotice = async () => {
-        const response = await axios.get("/notice/list");
-        const notices = response.data;
-        setNotice(notices);
+    const fetchQnA = async () => {
+        const response = await axios.get("/qna/list");
+        const qnas = response.data;
+        setQnA(qnas);
     };
 
     const getAdmin = async () => {
         const session = sessionStorage.getItem('sessionID');
-        console.log(session);
         if (session) {
             const admin = await axios.get('/admin', {
                 params: {
                     session
                 }
             });
-            console.log(admin);
             if (admin.data.id === "admin") {
                 setIsAdmin(true);
             }
@@ -166,37 +164,37 @@ export default function NoticeList() {
     }
 
     useEffect(() => {
-        // fetchNotice();
+        fetchQnA();
         getAdmin();
-        setNotice([{ id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }])
+        /* setQnA([{ id: 1, question: "testdddd", createdAt: new Date }, { id: 1, question: "test", createdAt: new Date }, { id: 1, question: "test", createdAt: new Date }, { id: 1, question: "testdddd", createdAt: new Date }, { id: 1, question: "testdddd", createdAt: new Date }, { id: 1, question: "testdddd", createdAt: new Date }]) */
 
     }, []);
 
     return (
         <Container>
-            <Title>공지사항</Title>
+            <Title>자주 묻는 질문</Title>
             <TitleDivider />
             {
-                isAdmin ? <NoticeAddForm onSubmit={handleSubmit(onValid)}>
-                    <NoticeInput {...register("title")} placeholder="제목" required />
-                    <NoticeDescription {...register("description")} placeholder="내용" required />
+                isAdmin ? <QnAaddForm onSubmit={handleSubmit(onValid)}>
+                    <QnAInput {...register("question")} placeholder="제목" required />
+                    <QnADescription {...register("answer")} placeholder="내용" required />
                     <SubmitButton type="submit">완료</SubmitButton>
-                </NoticeAddForm>
+                </QnAaddForm>
                     : null}
-            <NoticeContainer>
-                {notices.map((notice, idx) => (
-                    <div key={notice.id}>
+            <QnAContainer>
+                {qnas.map((qna, idx) => (
+                    <div key={qna.id}>
                         {idx > 0 && <Divider />}
-                        <Notice
-                            onClick={() => navigate(`/noticeList/${notice.id}`)}
+                        <QnA
+                            onClick={() => navigate(`/QnA_List/${qna.id}`)}
                             whileHover={{ color: "#3498db" }}
                         >
-                            <div>{notice.title}</div>
-                            <CreatedDate>{new Date(notice.createdAt).toLocaleDateString()}</CreatedDate>
-                        </Notice>
+                            <div>{qna.question}</div>
+                            <CreatedDate>{new Date(qna.createdAt).toLocaleDateString()}</CreatedDate>
+                        </QnA>
                     </div>
                 ))}
-            </NoticeContainer>
+            </QnAContainer>
         </Container>
     );
 }
