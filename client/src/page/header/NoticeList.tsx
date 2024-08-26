@@ -164,9 +164,9 @@ export default function NoticeList() {
     }
 
     useEffect(() => {
-        // fetchNotice();
+        fetchNotice();
         getAdmin();
-        setNotice([{ id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }])
+        /* setNotice([{ id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "test", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }, { id: 1, title: "testdddd", createdAt: new Date }]) */
 
     }, []);
 

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, ForwardArrow, PlaceBox, PlaceImg, PlaceTitle, BackArrow, Rating, Slider, EllipsisText } from "../../styled-components/homeStyle";
 import { SliderVar, restaurantForm } from "../../lib/homeLib"
 import { AnimatePresence } from "framer-motion";
+import { handleImgError } from "../../lib/util";
 
 interface Place {
     restaurantId: number;
@@ -73,7 +74,7 @@ export default function PlaceSlider({ placeData }: PlaceSliderProps) {
                         // const rating = getRating(i.restaurantId);
                         return(
                         <PlaceBox key={idx} whileHover={{ scale: 1.1 }}>
-                            <PlaceImg src={i.img} key={idx} alt="준비중" onClick={() => handleImageClick(i.restaurantId)} />
+                            <PlaceImg src={i.img} key={idx} alt="준비중" onClick={() => handleImageClick(i.restaurantId)} onError={handleImgError} />
                             <Rating><span style={{ color: "#ff5b32" }}>&#9733;</span>{i.averageRating}</Rating>
                             <PlaceTitle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }}><EllipsisText>{i.restaurantName}</EllipsisText></PlaceTitle>
                         </PlaceBox>

@@ -96,7 +96,7 @@ function Home() {
             }
         }
 
-        // fetchRestaurant();
+        fetchRestaurant();
     }, []);
     return (
         <>

@@ -16,6 +16,7 @@ import "./index.css"
 import Notice from "./page/header/Notice";
 import QnA_List from "./page/header/QnA_List";
 import QnA from "./page/header/QnA";
+import Place from "./page/Place";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -95,6 +96,7 @@ function App() {
           <Route path="/locationSet" element={<LocaionSet />} />
           <Route path="/myPage/:sessionID" element={<MyPage />} />
           <Route path="/search" element={<KeywordSearchResult />} />
+          <Route path="/place/:id" element={<Place />} />
           <Route path="/noticeList" element={<NoticeList />} />
           <Route path="/noticeList/:id" element={<Notice />} />
           <Route path="/QnA_List" element={<QnA_List />} />
