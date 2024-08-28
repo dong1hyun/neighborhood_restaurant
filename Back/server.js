@@ -26,6 +26,8 @@ const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
 const favoriteRouter = require('./routes/favorite');
 const reviewRouter = require('./routes/review');
+const aiRouter = require('./routes/ai');
+
 
 dotenv.config();
 passportConfig();
@@ -69,6 +71,8 @@ app.use('/logout', logoutRouter);
 app.use('/placeDetail', placeDetailRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
+app.use('/ai', aiRouter);
+
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -86,11 +90,16 @@ const options = {
   };
 
 
-// HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
-https.createServer(options, app).listen(443, '192.168.11.179', () => {
-    console.log(`HTTPS server started on https://192.168.11.179`);
-});
+// // HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
+// https.createServer(options, app).listen(443, '192.168.11.179', () => {
+//     console.log(`HTTPS server started on https://192.168.11.179`);
+// });
 
+
+// HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
+https.createServer(options, app).listen(443, () => {
+    console.log(`HTTPS server started on https`);
+});
 
 // HTTP 서버 시작
 http.createServer(app).listen(app.get('port'), () => {
