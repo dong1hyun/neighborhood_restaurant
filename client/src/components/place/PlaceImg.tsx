@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
+import { handleImgError } from "../../lib/util";
 
 const Place_Img = styled.img`
     border-radius: 10px;
@@ -26,14 +27,15 @@ export default function PlaceImg() {
     const getPlaceImg = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
-                setImgURL(res.data.restaurant.img)
+                setImgURL(res.data.restaurant.img);
             })
-    }
+    };
+
     useEffect(() => {
-        // getPlaceImg();
-    }, [])
+        getPlaceImg();
+    }, []);
     return (
-        <Place_Img src={imgURL} alt="준비중" />
+        <Place_Img src={imgURL} alt="준비중" onError={handleImgError} />
     )
 }
 

@@ -32,6 +32,7 @@ const StyledFoodBankIcon = styled(MdOutlineFoodBank)`
 const InfoContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 70px;
     @media screen and (max-width: 700px) {
         flex-direction: column;
@@ -212,10 +213,10 @@ export default function Header() {
                                 </SearchBtn>
                             </Search>
                             <InfoContainer>
-                                <Info onClick={() => navigate("/notice")}>공지사항</Info>
-                                <Info>동네맛집 소개</Info>
+                            <Info onClick={() => window.location.href = "https://kind-form-f61.notion.site/e61496672ccd4eb496119e05b0c0ddf7?pvs=74"}>동네맛집 소개</Info>
+                                <Info onClick={() => navigate("/noticeList")}>공지사항</Info>
                                 <Info>식당 홍보</Info>
-                                <Info>Q&A</Info>
+                                <Info onClick={() => navigate("/QnA_List")}>자주 묻는 질문</Info>
                             </InfoContainer>
                             <LoginContainer>
                                 {sessionID ? (

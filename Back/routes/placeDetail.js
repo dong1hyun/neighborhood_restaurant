@@ -14,29 +14,30 @@ const FASTAPI_URL = 'http://127.0.0.1:4000';
 
 // 상세 음식점 정보 조회 + 해당 리뷰를 통한 간단한 평가 서비스
 router.get('/:id', async (req, res) => {
+    console.log("식당쓰")
     try {
         // 음식점 정보 가져오기
         const restaurant = await Restaurant.findOne({
             where: { restaurantId: req.params.id }
         });
-        console.log(restaurant)
+        console.log("식당정보:",restaurant)
         if (!restaurant) {
             return res.status(404).json({ error: 'Restaurant not found' });
         }
         
          // 리뷰 데이터 가져오기
-         const reviews = await Review.findAll({
-            where: { restaurantId: req.params.id },
-            attributes: ['comment']
-        });
+        //  const reviews = await Review.findAll({
+        //     where: { restaurantId: req.params.id },
+        //     attributes: ['comment']
+        // });
 
-        const reviewComments = reviews.map(review => review.comment);
+        // const reviewComments = reviews.map(review => review.comment);
 
         // FastAPI 서버에 리뷰 데이터를 요약 요청 (음식점 ID 포함)
-        const response = await axios.post(`${FASTAPI_URL}/ais`, {
-            restaurantId: req.params.id,
-            reviews: reviewComments
-        });
+        // const response = await axios.post(`${FASTAPI_URL}/ais`, {
+        //     restaurantId: req.params.id,
+        //     reviews: reviewComments
+        // });
 
         // console.log(response.data);
         // 음식점 정보와 요약된 리뷰 데이터를 함께 응답

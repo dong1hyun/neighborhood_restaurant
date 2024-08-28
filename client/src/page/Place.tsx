@@ -227,15 +227,16 @@ function Place() {
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
+                console.log(res.data.restaurant.restaurantNumber ? res.data.restaurant.restaurantNumber : "미제공")
                 const tempName = res.data.restaurant.restaurantName;
                 tempName.replace(' ', "\n");
                 setName(tempName.replace(' ', "\n"));
-                setAddress(res.data.restaurant.restaurantAddress);
-                setCategory(res.data.restaurant.restaurantCategory);
-                setPhone(res.data.restaurant.restaurantNumber);
+                setAddress(res.data.restaurant.restaurantAddress ? res.data.restaurant.restaurantAddress : "미제공");
+                setCategory(res.data.restaurant.restaurantCategory ? res.data.restaurant.restaurantCategory : "미제공");
+                setPhone(res.data.restaurant.restaurantNumber ? res.data.restaurant.restaurantNumber : "미제공");
                 setX(res.data.restaurant.x);
                 setY(res.data.restaurant.y);
-                setTimeList(JSON.parse(res.data.restaurant.timeList));
+                setTimeList(JSON.parse(res.data.restaurant.timeList === "none" ? "미제공" : res.data.restaurant.timeList));
                 setRating(res.data.restaurant.averageRating);
                 timeList.forEach((i) => {
                     if (i["timeName"] == "휴게시간") {
@@ -285,8 +286,8 @@ function Place() {
     };
 
     useEffect(() => {
-        /* getPlaceData();
-        setMarker(x, y); */
+        getPlaceData();
+        setMarker(x, y);
     }, [x, y, breakTime]);
     
     return (

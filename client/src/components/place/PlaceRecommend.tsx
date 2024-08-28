@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { handleImgError } from "../../lib/util";
 
 const TopTitle = styled.div`
     font-size: 20px;
@@ -50,12 +51,12 @@ export default function PlaceRecommend() {
             })
     };
     useEffect(() => {
-        // getSimilarPlace();
+        getSimilarPlace();
     }, []);
     return (
         <><TopTitle>주변 추천 식당</TopTitle>
             <SimilarContainer>
-                {similarPlace.map(item => <a href={`/place/${item.restaurantId}`}><PlaceBox><Img src={item.img} alt={item.restaurantName} /><Title>{item.restaurantName}</Title></PlaceBox></a>)}
+                {similarPlace.map(item => <a href={`/place/${item.restaurantId}`}><PlaceBox><Img src={item.img} alt={item.restaurantName} onError={handleImgError} /><Title>{item.restaurantName}</Title></PlaceBox></a>)}
             </SimilarContainer></>)
 }
 

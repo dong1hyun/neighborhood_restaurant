@@ -78,7 +78,7 @@ function Review() {
   }
 
   useEffect(() => {
-    // getReviews();
+    getReviews();
   }, []);
 
   return (

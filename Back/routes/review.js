@@ -106,7 +106,6 @@ function isAddressMatch(address1, address2) {
 router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/reviews/:restaurantId'로 변경
     try {
         const restaurantId = req.params.restaurantId;
-
         // 음식점 아이디로 리뷰를 랜덤으로 5개 조회합니다.
         const reviews = await Review.findAll({
             where: { restaurantId: restaurantId },
