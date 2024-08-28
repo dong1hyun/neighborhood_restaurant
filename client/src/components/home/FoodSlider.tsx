@@ -52,14 +52,14 @@ export default function FoodSlider() {
 
     const onClick = (idx: number) => {
         setCurrentIndex(idx);
-        // clearInterval(prevInterval);
-        // if(isLogin) setPrevInterval(setLoginSliderTime()); //로그인시 첫 번째 페이지는 생략
-        // else setPrevInterval(setSliderTime());
+        clearInterval(prevInterval);
+        if(isLogin) setPrevInterval(setLoginSliderTime()); //로그인시 첫 번째 페이지는 생략
+        else setPrevInterval(setSliderTime());
     };
 
     useEffect(() => {
-        // setPrevInterval(setSliderTime());
-        // return () => clearInterval(prevInterval); 
+        setPrevInterval(setSliderTime());
+        return () => clearInterval(prevInterval); 
     }, []);
 
     return (
