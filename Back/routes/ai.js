@@ -7,7 +7,7 @@
 // router.use(express.urlencoded({ extended: true }));
 
 // // OpenAI API 키와 카카오 API 키를 환경 변수로 설정하세요.
-// const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+// const OPENAI_API_KEY = process.env.OPENAI_API_KEY;  //sk-T0oDN6hb0HYQTTOCZPUPF3Ynuej_aDrZl3yVEASUzsT3BlbkFJGOOTG6XcIqIwhh3W0oEOAHeNRg6LIdZrHg_C--QvYA
 // const KAKAO_API_KEY = process.env.KAKAO_API_KEY;
 
 // // 주소를 위도 및 경도로 변환하는 함수
@@ -32,23 +32,27 @@
 // // 카카오 API를 사용하여 특정 위치 주변의 음식점을 검색하는 함수
 // async function getKakaoRestaurants(location, query) {
 //     try {
+//         console.log('Searching for restaurants at location:', location, 'with query:', query);
 //         const response = await axios.get('https://dapi.kakao.com/v2/local/search/keyword.json', {
 //             params: {
 //                 query: query,
 //                 x: location.lng,
 //                 y: location.lat,
 //                 radius: 5000, // 5km 반경
-//                 category_group_code: 'FD6' // 음식점 카테고리
+//                 category_group_code: 'FD6', // 음식점 카테고리
+//                 size: 5 // 최대 5개의 결과만 반환
 //             },
 //             headers: { 'Authorization': `KakaoAK ${KAKAO_API_KEY}` }
 //         });
 
+//         console.log('Kakao API response for restaurants:', response.data);
+
 //         return response.data.documents;
 //     } catch (error) {
+//         console.error('Error fetching restaurants from Kakao API:', error.message);
 //         throw new Error('Failed to fetch restaurants from Kakao API');
 //     }
 // }
-
 
 // router.get('/recommend', async (req, res) => {
 //     try {
@@ -77,7 +81,7 @@
 //         const gptResponse = await axios.post(
 //             'https://api.openai.com/v1/chat/completions',
 //             {
-//                 model: 'gpt-4',
+//                 model: 'gpt-3.5-turbo',
 //                 messages: [
 //                     { role: 'system', content: 'You are a helpful assistant.' },
 //                     { 
@@ -85,7 +89,7 @@
 //                         content: `Here are some restaurants near the address "${address}": ${restaurants.map(r => r.place_name).join(', ')}. Recommend the best one and explain why.` 
 //                     }
 //                 ],
-//                 max_tokens: 150,
+//                 max_tokens: 1000, // 필요에 따라 조정
 //             },
 //             {
 //                 headers: {
@@ -112,6 +116,10 @@
 
 
 
+
+/**
+ * 테스트 코드: 카카오맵을 통해서 사용자의 위치 주변 음식점 데이터를 추출 후 GPT에게 값은 던져주지 않음.
+ */
 const express = require('express');
 const router = express.Router();
 const { User } = require('../models'); // User 모델
@@ -122,7 +130,7 @@ router.use(express.urlencoded({ extended: true }));
 
 // OpenAI API 키와 카카오 API 키를 환경 변수로 설정하세요.
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const KAKAO_API_KEY = process.env.REST_KE;
+const KAKAO_API_KEY = 'f1a6ff5fce786c3d0407226bb3e8ec57'
 
 
 // 주소를 위도 및 경도로 변환하는 함수
@@ -158,7 +166,8 @@ async function getKakaoRestaurants(location, query) {
                 x: location.lng,
                 y: location.lat,
                 radius: 5000, // 5km 반경
-                category_group_code: 'FD6' // 음식점 카테고리
+                category_group_code: 'FD6', // 음식점 카테고리
+                size: 10 // 최대 5개의 결과만 반환
             },
             headers: { 'Authorization': `KakaoAK ${KAKAO_API_KEY}` }
         });
@@ -171,6 +180,7 @@ async function getKakaoRestaurants(location, query) {
         throw new Error('Failed to fetch restaurants from Kakao API');
     }
 }
+
 
 router.get('/recommend', async (req, res) => {
     try {
