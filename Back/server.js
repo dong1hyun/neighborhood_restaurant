@@ -24,10 +24,11 @@ const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
 const favoriteRouter = require('./routes/favorite');
 const reviewRouter = require('./routes/review');
-const aiRouter = require('./routes/ai');
+
 
 const noticeRouter = require('./routes/notice');
 const qnaRouter = require('./routes/qna');
+const aiRouter = require('./routes/ai');
 
 dotenv.config();
 passportConfig();
@@ -38,9 +39,7 @@ app.set('port', 3001);
 sequelize.sync({ force: false })
     .then(() => console.log('데이터베이스 연결 성공'))
     .catch(err => console.error(err));
-sequelize.sync({ force: false })
-    .then(() => console.log('데이터베이스 연결 성공'))
-    .catch(err => console.error(err));
+
 
 app.use(
     morgan('dev'), //HTTP 요청을 콘솔에 로그로 기록
@@ -74,10 +73,10 @@ app.use('/logout', logoutRouter);
 app.use('/placeDetail', placeDetailRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
-app.use('/ai', aiRouter);
-
 app.use('/notice', noticeRouter);
 app.use('/qna', qnaRouter);
+app.use('/ai', aiRouter);
+
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -95,16 +94,16 @@ const options = {
   };
 
 
-// // HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
-// https.createServer(options, app).listen(443, '192.168.11.179', () => {
-//     console.log(`HTTPS server started on https://192.168.11.179`);
-// });
-
-
 // HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
-https.createServer(options, app).listen(443, () => {
-    console.log(`HTTPS server started on https`);
+https.createServer(options, app).listen(443, '192.210.69.12', () => {
+    console.log(`HTTPS server started on https://192.210.69.12`);
 });
+
+
+// // HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
+// https.createServer(options, app).listen(443, () => {
+//     console.log(`HTTPS server started on https`);
+// });
 
 // HTTP 서버 시작
 http.createServer(app).listen(app.get('port'), () => {
