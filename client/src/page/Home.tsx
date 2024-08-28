@@ -102,7 +102,7 @@ function Home() {
         <>
         <FoodSlider />
         <LocationAuth whileHover={{scale:1.1}} onClick={onLocationSetClick}>동네 인증</LocationAuth>
-        <HomeContainer>    
+        <HomeContainer>
             <Container>
                 <Title>한식<Img src={process.env.PUBLIC_URL + "/home/korea.jpg"} /></Title>
                 <Divider />

@@ -22,7 +22,12 @@ interface reviewForm {
   nickName: string;
 }
 
-function Review() {
+
+interface ReviewComponentProps {
+  refreshFn: () => Promise<void>;
+};
+
+const Review: React.FC<ReviewComponentProps> = ({ refreshFn }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [reviews, setReviews] = useState<reviewForm[]>([]);
@@ -47,6 +52,7 @@ function Review() {
         alert(err.response.data.message);
       })
     getReviews();
+    refreshFn();
   };
 
   const getReviews = async () => {

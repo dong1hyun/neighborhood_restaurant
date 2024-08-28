@@ -14,7 +14,6 @@ const FASTAPI_URL = 'http://127.0.0.1:4000';
 
 // 상세 음식점 정보 조회 + 해당 리뷰를 통한 간단한 평가 서비스
 router.get('/:id', async (req, res) => {
-    console.log("식당쓰")
     try {
         // 음식점 정보 가져오기
         const restaurant = await Restaurant.findOne({

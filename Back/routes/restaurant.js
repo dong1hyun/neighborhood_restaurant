@@ -7,6 +7,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.post('/', async (req, res) => {
+    console.log("Restaurant update");
     try {
         const restaurantList = req.body;
 

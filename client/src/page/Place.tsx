@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import styled from "styled-components";
 import React from 'react';
 import setMarker from "../function/placeMarker";
@@ -222,12 +222,12 @@ function Place() {
     const [moreInf, showMoreInf] = useState(false);
     const [breakTime, setBreakTime] = useState(false);
     const [lastOrder, setLastOrder] = useState(false);
-    const [sessionID, setSessionID] = useRecoilState(session)
+    const [sessionID, setSessionID] = useRecoilState(session);
 
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
-                console.log(res.data.restaurant.restaurantNumber ? res.data.restaurant.restaurantNumber : "미제공")
+                console.log(res.data.restaurant);
                 const tempName = res.data.restaurant.restaurantName;
                 tempName.replace(' ', "\n");
                 setName(tempName.replace(' ', "\n"));
@@ -236,7 +236,7 @@ function Place() {
                 setPhone(res.data.restaurant.restaurantNumber ? res.data.restaurant.restaurantNumber : "미제공");
                 setX(res.data.restaurant.x);
                 setY(res.data.restaurant.y);
-                setTimeList(JSON.parse(res.data.restaurant.timeList === "none" ? "미제공" : res.data.restaurant.timeList));
+                setTimeList(JSON.parse(res.data.restaurant.timeList === "none" ? '[{"운영시간": "미제공"}]' : res.data.restaurant.timeList));
                 setRating(res.data.restaurant.averageRating);
                 timeList.forEach((i) => {
                     if (i["timeName"] == "휴게시간") {
@@ -284,12 +284,15 @@ function Place() {
             console.log('Web share not supported on this browser.');
         }
     };
-
     useEffect(() => {
         getPlaceData();
         setMarker(x, y);
     }, [x, y, breakTime]);
-    
+
+    useLayoutEffect(() => {
+        window.scrollTo(0, 0);
+    }, []); // 빈 배열을 사용하여 컴포넌트가 처음 렌더링될 때만 실행
+
     return (
         <WholeContainer>
             <BoxContainer>
@@ -309,15 +312,16 @@ function Place() {
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                 >
-                                    {timeList.map((time: any) => {
+                                    {timeList[0]["영업시간"] === "미제공" ? <Time>미제공</Time> : null}
+                                    {timeList.map((time) => {
                                         if (time["timeName"] == "영업시간") return <Time>{time["dayOfWeek"]}: {time["timeSE"]}</Time>
                                     })}
                                     {breakTime ? "휴게시간" : null}
-                                    {timeList.map((time: any) => {
+                                    {timeList.map((time) => {
                                         if (time["timeName"] == "휴게시간") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
                                     })}
                                     {lastOrder ? "라스트오더" : null}
-                                    {timeList.map((time: any) => {
+                                    {timeList.map((time) => {
                                         if (time["timeName"] == "라스트오더") return <Time> {time["dayOfWeek"]}: {time["timeSE"]}</Time>
                                     })}
                                 </ TimeContainer>
@@ -328,7 +332,7 @@ function Place() {
                 <BookMarker onClick={handleBookmark}>즐겨 찾기 추가<MdStarBorder /></BookMarker>
                 <ShareButton onClick={sharePage}>페이지 공유하기<IoShareSocialOutline /></ShareButton>
                 <Divider2 />
-                <Review />
+                <Review refreshFn={getPlaceData} />
             </BoxContainer>
             <SideContainer>
                 <SideBar>
