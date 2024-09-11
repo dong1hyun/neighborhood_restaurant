@@ -177,7 +177,6 @@ export default function LocaionSet() {
     };
 
     //사용자의 현재 위치를 가져오는 기능 + 자신의 위도/경도 getAddressFromCoordinates로 보내서 주소로 변경
-    // 사용자의 현재 위치를 가져오는 기능 + 자신의 위도/경도 getAddressFromCoordinates로 보내서 주소로 변경
     const handleGetUserLocation = () => {
         console.log("실행됨");
         navigator.geolocation.getCurrentPosition(
