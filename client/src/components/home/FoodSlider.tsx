@@ -4,6 +4,7 @@ import styled from "styled-components";
 import First from "./First"
 import Second from "./Second";
 import Third from "./Third"
+import Fourth from "./Fourth";
 
 const Container = styled.div`
     position: relative;
@@ -35,10 +36,11 @@ export default function FoodSlider() {
     const Infos = [
         <First />,
         <Second />,
-        <Third />
+        <Third />,
+        <Fourth />
     ];
 
-    const pageIdx = isLogin ? [1, 2] : [0, 1, 2];
+    const pageIdx = isLogin ? [1, 2, 3] : [0, 1, 2, 3];
     const [currentIndex, setCurrentIndex] = useState(isLogin ? 1 : 0);
     const [prevInterval, setPrevInterval] = useState<NodeJS.Timer>();
 
@@ -52,14 +54,14 @@ export default function FoodSlider() {
 
     const onClick = (idx: number) => {
         setCurrentIndex(idx);
-        clearInterval(prevInterval);
-        if(isLogin) setPrevInterval(setLoginSliderTime()); //로그인시 첫 번째 페이지는 생략
-        else setPrevInterval(setSliderTime());
+        // clearInterval(prevInterval);
+        // if(isLogin) setPrevInterval(setLoginSliderTime()); //로그인시 첫 번째 페이지는 생략
+        // else setPrevInterval(setSliderTime());
     };
 
     useEffect(() => {
-        setPrevInterval(setSliderTime());
-        return () => clearInterval(prevInterval); 
+        // setPrevInterval(setSliderTime());
+        // return () => clearInterval(prevInterval); 
     }, []);
 
     return (

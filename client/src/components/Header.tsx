@@ -191,7 +191,7 @@ export default function Header() {
 
     return (
         <>
-            <Navbar expand="xl" className="bg-dark shadow-lg fixed-top mb-50">
+            <Navbar expand="xxl" className="bg-dark shadow-lg fixed-top mb-50">
                 <Container fluid>
                     <Navbar.Toggle className="bg-white" aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

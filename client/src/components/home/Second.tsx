@@ -111,7 +111,7 @@ export default function First() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
         >
-            <Img src={`${process.env.PUBLIC_URL}home/plate.jpg`} />
+            <Img src={`${process.env.PUBLIC_URL}home/table.jpg`} />
             <InfoContainer>
                 <Title ref={imgRef1}
                     initial={{ opacity: 0, y: 50 }}
