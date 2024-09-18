@@ -67,13 +67,13 @@ app.use('/review', reviewRouter);
 app.use('/notice', noticeRouter);
 app.use('/qna', qnaRouter);
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../Front/build')));
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'))
+    res.sendFile(path.join(__dirname, '../Front/build/index.html'))
 });
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'))
+    res.sendFile(path.join(__dirname, '../Front/build/index.html'))
 });
 
 
