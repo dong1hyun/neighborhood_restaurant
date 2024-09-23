@@ -103,3 +103,18 @@ export const InteractionItem = styled.button`
     margin-right: 5px;
   }
 `;
+
+export const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const LoadMoreBtn = styled.button`
+    border: none;
+    border-radius: 3px;
+    background-color: #3e3e3e;;
+    padding: 5px;
+    color: white;
+    width: 60px;
+`

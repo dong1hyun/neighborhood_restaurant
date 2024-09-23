@@ -53,7 +53,6 @@ router.post('/', async (req, res) => {
                 restaurantId: restaurantId,
                 comment: comment,
                 rating: rating,
-                like: 0
             });
 
             // restaurantId를 가진 리뷰의 개수 출력
@@ -94,7 +93,6 @@ function isAddressMatch(address1, address2) {
     // 주소1에서 추출한 부분과 주소2에서 추출한 부분을 비교하여 동일한 지역인지 확인
     const match1 = address1.match(regex);
     const match2 = address2.match(regex);
-    console.log('userAddress:', address1);
 
     return !!match1 && !!match2 && match1[1] === match2[1];
 }
@@ -102,19 +100,18 @@ function isAddressMatch(address1, address2) {
 
 
 
-// 리뷰 조회 요청 처리 + 5개씩 랜덤으로 조회 함.
 router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/reviews/:restaurantId'로 변경
     try {
+        const limit = 5;
+        const offset = +req.query.offset || 0
         const restaurantId = req.params.restaurantId;
-        // 음식점 아이디로 리뷰를 랜덤으로 5개 조회합니다.
         const reviews = await Review.findAll({
             where: { restaurantId: restaurantId },
-            order: Sequelize.literal('RAND()'), // 랜덤으로 정렬
-            limit: 5, // 5개의 레코드만 가져오기
-            attributes: ['reviewId', 'comment', 'rating', 'like', 'id'] // 사용자 ID를 가져오기 위해 userId 속성 추가
+            order: [['createdAt', 'DESC']],
+            limit, // 5개의 레코드만 가져오기
+            offset,
+            attributes: ['reviewId', 'comment', 'rating', 'id'] // 사용자 ID를 가져오기 위해 userId 속성 추가
         });
-
-
         // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
         const commentsWithRating = await Promise.all(reviews.map(async (review) => {
             const user = await User.findOne({ where: { id: review.id } }); // 리뷰 작성자의 사용자 정보를 가져옵니다.
@@ -123,11 +120,9 @@ router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/revie
                 reviewId: review.reviewId,
                 comment: review.comment,
                 rating: review.rating,
-                like: review.like,
                 nickName // 리뷰에 사용자 닉네임 추가
             };
         }));
-        console.log(commentsWithRating);
         res.status(200).json(commentsWithRating); // 클라이언트에게 comment와 rating 배열을 응답으로 보냄
     } catch (error) {
         console.error('리뷰 조회 중 오류가 발생했습니다:', error);
@@ -158,7 +153,7 @@ router.get('/userReviews/:sessionID', async (req, res) => {
         // 해당 사용자가 작성한 리뷰들을 조회
         const userReviews = await Review.findAll({
             where: { id: userID }, // 사용자의 ID로 리뷰 검색
-            attributes: ['comment', 'rating', 'like', 'restaurantId'] // 가져올 속성 지정에 rating 추가
+            attributes: ['comment', 'rating', 'restaurantId'] // 가져올 속성 지정에 rating 추가
         });
 
         // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
@@ -166,7 +161,6 @@ router.get('/userReviews/:sessionID', async (req, res) => {
             comment: review.comment,
             rating: review.rating,
             restaurantId: review.restaurantId,
-            like: review.like
         }));
 
         // 클라이언트에게 리뷰 데이터 및 사용자 이름을 응답으로 보냄
@@ -182,22 +176,7 @@ router.post("/like", async (req, res) => {
     try {
         const { reviewId } = req.body; // 요청 본문에서 reviewId를 추출
 
-        // 리뷰를 찾기
-        const review = await Review.findOne({ where: { reviewId } });
-
-        if (review) {
-            // 좋아요 수 증가
-            review.like += 1;
-            
-            // 변경사항을 데이터베이스에 저장
-            await review.save();
-
-            // 성공 응답
-            res.status(200).json({ success: true, message: '좋아요가 증가했습니다.', like: review.like });
-        } else {
-            // 리뷰를 찾지 못한 경우
-            res.status(404).json({ success: false, message: '리뷰를 찾을 수 없습니다.' });
-        }
+        
     } catch (error) {
         // 오류 발생 시 클라이언트에 오류 메시지 응답
         console.error('좋아요 증가 중 오류가 발생했습니다:', error);

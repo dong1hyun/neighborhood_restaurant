@@ -19,7 +19,6 @@ router.get('/:id', async (req, res) => {
         const restaurant = await Restaurant.findOne({
             where: { restaurantId: req.params.id }
         });
-        console.log("식당정보:",restaurant)
         if (!restaurant) {
             return res.status(404).json({ error: 'Restaurant not found' });
         }

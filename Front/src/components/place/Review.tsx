@@ -4,7 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import { FaThumbsUp } from "react-icons/fa";
-import { Comment, Container, Divider, InteractionContainer, InteractionItem, ProfileContainer, ProfileInfo, Rating, ReviewBox, ReviewContainer, ReviewTitle, StarInput, Title } from "../../styled-components/reviewStyle";
+import { BtnContainer, Comment, Container, Divider, InteractionContainer, InteractionItem, LoadMoreBtn, ProfileContainer, ProfileInfo, Rating, ReviewBox, ReviewContainer, ReviewTitle, StarInput, Title } from "../../styled-components/reviewStyle";
 
 interface reviewPostForm {
   rating: number;
@@ -27,8 +27,9 @@ interface ReviewComponentProps {
 const Review: React.FC<ReviewComponentProps> = ({ refreshFn }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
+  const [maxReview, setMaxReview] = useState(false);
   const [reviews, setReviews] = useState<reviewForm[]>([]);
-  // const sessionID = useRecoilValue(session);
+  const [offset, setOffset] = useState(0);
   const sessionID = sessionStorage.getItem('sessionID')
   const { register, handleSubmit, reset } = useForm<reviewPostForm>();
   const { id } = useParams();
@@ -60,6 +61,29 @@ const Review: React.FC<ReviewComponentProps> = ({ refreshFn }) => {
         throw new Error("No data received from server");
       }
       setReviews(response.data);
+    } catch (error) {
+      console.error("리뷰 데이터를 불러오는 중 오류가 발생했습니다:", error);
+    }
+  };
+
+  const loadMoreReview = async () => {
+    try {
+      setOffset(prev => prev + 5); //set 함수는 비동기적으로 작동
+      const response = await axios.get(`/review/${id}`,
+        {
+          params: {
+            offset: offset + 5 
+          }
+        }
+      );
+      if (!response.data) {
+        throw new Error("No data received from server");
+      }
+      if(response.data.length === 0) {
+        alert("모든 리뷰를 보여드렸어요!");
+        setMaxReview(true);
+      }
+      setReviews(prev => [...prev, ...response.data]);
     } catch (error) {
       console.error("리뷰 데이터를 불러오는 중 오류가 발생했습니다:", error);
     }
@@ -140,23 +164,13 @@ const Review: React.FC<ReviewComponentProps> = ({ refreshFn }) => {
           </InteractionContainer>
         </ReviewContainer>
       ))}
+      {
+        reviews.length >= 5 && !maxReview ? (<BtnContainer>
+        <LoadMoreBtn onClick={loadMoreReview}>더보기</LoadMoreBtn>
+      </BtnContainer>) : null
+      }
     </Container>
   );
 }
-
-// {reviews.map((review: { comment: string; rating: number }, index: number) => (
-//     <ReviewContainer key={index}>
-//         <Rating>&#9733; {review.rating}</Rating>
-//         <Comment>{review.comment}</Comment>
-//     </ReviewContainer>
-// ))}
-
-
-// {[{comment: "좋아요", rating: 3}].map((review: { comment: string; rating: number }, index: number) => (
-//     <ReviewContainer key={index}>
-//         <Rating>&#9733; {review.rating}</Rating>
-//         <Comment>{review.comment}</Comment>
-//     </ReviewContainer>
-// ))}
 
 export default Review;

@@ -72,12 +72,13 @@ function Home() {
     const navigate = useNavigate();
     const session =  sessionStorage.getItem('sessionID');
     const onLocationSetClick = () => {
-        navigate("/locationSet")
+        navigate("/locationSet");
     }
     useEffect(() => {
         async function fetchRestaurant() {
             try {
                 setLoading(true);
+                // await new Promise<void>((resolve) => setTimeout(() => resolve(), 3000));
                 let response = await axios.get('/restaurantData/korean');
                 let restData = response.data.restaurantData.sort(() => Math.random() - 0.5);
                 setKoeanFood(restData);

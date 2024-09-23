@@ -10,6 +10,9 @@ import { MdOutlineFoodBank } from "react-icons/md";
 import { SlMagnifier } from "react-icons/sl";
 import { useAppDispatch } from "../store";
 import searchSlice from "../slices/searchSlice";
+import nickNameSlice from "../slices/nickNameSlicke";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/reducer";
 
 const Logo = styled(motion.div)`
     text-decoration: none;
@@ -123,10 +126,10 @@ interface searchForm {
 
 export default function Header() {
     const { register, handleSubmit, watch } = useForm<searchForm>();
-    const [nickName, setNickName] = useState('');
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const sessionID = sessionStorage.getItem('sessionID')
+    const nickName = useSelector((state: RootState) => state.nickName.nickName);
     const [sessionExpiration, setSessionExpiration] = useState<Date | null>(null);
     const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -148,7 +151,7 @@ export default function Header() {
     useEffect(() => {
         const loggedInSessionID = sessionStorage.getItem('sessionID');
         const loggedInNickName = sessionStorage.getItem('nickName') ?? '';
-        setNickName(loggedInNickName);
+        dispatch(nickNameSlice.actions.setNickName(loggedInNickName));
 
         if (loggedInSessionID) {
             const expiration = new Date();

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER, // 추가: rating 컬럼 정의
             allowNull: true // rating은 null이 될 수 있음
         },
-        id: {
+        userId: {
             type: DataTypes.STRING(100),
             allowNull: false
         },
@@ -21,19 +21,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        like: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        }
-    }, 
-    {
-        charset: "utf8",
-        collate: "utf8_general_ci",
-        tableName: "Review",
-        timestamps: false,
-        paranoid: true
-    });
-  
-  
+    },
+        {
+            charset: "utf8",
+            collate: "utf8_general_ci",
+            tableName: "Review",
+            timestamps: true,
+            paranoid: true
+        });
+        
     return Review;
 };
