@@ -25,24 +25,24 @@ router.get('/:id', async (req, res) => {
         }
         
          // 리뷰 데이터 가져오기
-        //  const reviews = await Review.findAll({
-        //     where: { restaurantId: req.params.id },
-        //     attributes: ['comment']
-        // });
+         const reviews = await Review.findAll({
+            where: { restaurantId: req.params.id },
+            attributes: ['comment']
+        });
 
-        // const reviewComments = reviews.map(review => review.comment);
+        const reviewComments = reviews.map(review => review.comment);
 
         // FastAPI 서버에 리뷰 데이터를 요약 요청 (음식점 ID 포함)
-        // const response = await axios.post(`${FASTAPI_URL}/ais`, {
-        //     restaurantId: req.params.id,
-        //     reviews: reviewComments
-        // });
+        const response = await axios.post(`${FASTAPI_URL}/ais`, {
+            restaurantId: req.params.id,
+            reviews: reviewComments
+        });
 
-        // console.log(response.data);
+        console.log(response.data);
         // 음식점 정보와 요약된 리뷰 데이터를 함께 응답
         res.status(200).json({
             restaurant: restaurant,
-            // reviewSummary: response.data
+            reviewSummary: response.data
         });
     } catch (error) {
         console.error("Error fetching data:", error);
