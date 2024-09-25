@@ -19,6 +19,7 @@ const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
 const favoriteRouter = require('./routes/favorite');
 const reviewRouter = require('./routes/review');
+const likeRouter = require('./routes/like');
 const noticeRouter = require('./routes/notice');
 const qnaRouter = require('./routes/qna');
 
@@ -66,6 +67,7 @@ app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
 app.use('/notice', noticeRouter);
 app.use('/qna', qnaRouter);
+app.use('/like', likeRouter);
 
 app.use(express.static(path.join(__dirname, '../Front/build')));
 

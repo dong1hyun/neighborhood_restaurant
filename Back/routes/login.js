@@ -22,8 +22,6 @@ router.post('/', (req, res, next) => {
                 return next(loginError);
             }
             try {
-                console.log(req);
-                console.log(req.cookies);
                 // 세션 ID를 응답으로 포함시켜 클라이언트에게 전달
                 const sessionID = req.sessionID;
                 // 사용자 테이블에 세션 ID 저장

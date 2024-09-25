@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../store';
+import nickNameSlice from '../../slices/nickNameSlicke';
 
 const Container = styled.div`
     z-index: 5;
@@ -89,7 +90,8 @@ interface LoginForm {
 
 export default function Login() {
     const { register, handleSubmit } = useForm<LoginForm>();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const LoginSuccess = async (data: LoginForm) => {
         try {
             const response = await axios.post('/login', data);
@@ -98,8 +100,10 @@ export default function Login() {
                 sessionStorage.setItem('sessionID', sessionID);
                 sessionStorage.setItem('nickName', nickName);
                 alert("로그인에 성공했습니다.");
+                dispatch(nickNameSlice.actions.setNickName(nickName));
                 navigate("/");
             } else {
+                alert("잘못된 아이디 혹은 비밀번호입니다");
                 console.error('로그인 실패:', response.data.message);
             }
         } catch (error) {

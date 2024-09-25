@@ -222,7 +222,6 @@ function Place() {
     const getPlaceData = async () => {
         await axios.get(`/placeDetail/${id}`)
             .then((res) => {
-                console.log(res.data.restaurant);
                 const tempName = res.data.restaurant.restaurantName;
                 tempName.replace(' ', "\n");
                 setName(tempName.replace(' ', "\n"));
