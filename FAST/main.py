@@ -98,6 +98,7 @@
 
 
 
+# 밑에 테스트 데이터 넣기 위한 감성 코드
 
 from typing import List
 from fastapi import FastAPI
