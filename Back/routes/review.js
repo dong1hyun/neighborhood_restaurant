@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Review, User, Restaurant } = require('../models'); // 모델 가져오기
+const { Review, User, Restaurant, Like } = require('../models'); // 모델 가져오기
 const { Sequelize } = require('sequelize'); // Sequelize 객체를 불러오기
 const axios = require('axios');
 
@@ -15,8 +15,7 @@ router.post('/', async (req, res) => {
     const sessionID = req.body.sessionID;
     try {
         // 세션 아이디를 사용하여 사용자 정보 가져오기
-        const user = await User.findOne({ where: { sessionID: sessionID } });
-
+        const user = await User.findOne({ where: { sessionID } });
         if (user) {
             // 사용자가 존재하는 경우 해당 사용자의 주소 정보를 가져옴
             req.userID = user.id; // 사용자의 ID 저장
@@ -35,12 +34,10 @@ router.post('/', async (req, res) => {
 
         // 음식점 정보 가져오기
         const response = await axios.get(`https://place.map.kakao.com/m/main/v/${restaurantId}`);
-       
         const { basicInfo } = response.data;
         const { address } = basicInfo;
         const { region } = address;
         const restaurantAddress = region.fullname;
-
         // 사용자와 음식점의 주소를 비교하여 동일한 지역인지 확인
         const isSameLocation = isAddressMatch(userAddress, restaurantAddress);
 
@@ -49,7 +46,7 @@ router.post('/', async (req, res) => {
             // Review 모델을 사용하여 데이터베이스에 새로운 리뷰 생성
             // 반환은 하지 않음
             await Review.create({
-                id: userID, // 사용자 ID
+                userId: userID, // 사용자 ID
                 restaurantId: restaurantId,
                 comment: comment,
                 rating: rating,
@@ -110,20 +107,26 @@ router.get('/:restaurantId', async (req, res) => { // 엔드포인트를 '/revie
             order: [['createdAt', 'DESC']],
             limit, // 5개의 레코드만 가져오기
             offset,
-            attributes: ['reviewId', 'comment', 'rating', 'id'] // 사용자 ID를 가져오기 위해 userId 속성 추가
+            attributes: ['reviewId', 'comment', 'rating', 'userId'] // 사용자 ID를 가져오기 위해 userId 속성 추가
         });
         // 리뷰 객체에서 comment와 rating 값만 추출하여 배열로 변환
-        const commentsWithRating = await Promise.all(reviews.map(async (review) => {
-            const user = await User.findOne({ where: { id: review.id } }); // 리뷰 작성자의 사용자 정보를 가져옵니다.
+        const result = await Promise.all(reviews.map(async (review) => {
+            const user = await User.findOne({ where: { id: review.dataValues.userId } }); // 리뷰 작성자의 사용자 정보를 가져옵니다.
+            const like = await Like.count({
+                where: {
+                    reviewId: review.dataValues.reviewId
+                }
+            });
             const nickName = user ? user.nickName : "동네맛집러"; // 사용자 이름을 가져옵니다. 없으면 "동네맛집러"으로 표시합니다.
             return {
                 reviewId: review.reviewId,
                 comment: review.comment,
                 rating: review.rating,
-                nickName // 리뷰에 사용자 닉네임 추가
+                nickName, // 리뷰에 사용자 닉네임 추가
+                like,
             };
         }));
-        res.status(200).json(commentsWithRating); // 클라이언트에게 comment와 rating 배열을 응답으로 보냄
+        res.status(200).json(result); // 클라이언트에게 comment와 rating 배열을 응답으로 보냄
     } catch (error) {
         console.error('리뷰 조회 중 오류가 발생했습니다:', error);
         res.status(500).json({ success: false, message: '리뷰 조회 중 오류가 발생했습니다.' });
@@ -169,18 +172,6 @@ router.get('/userReviews/:sessionID', async (req, res) => {
         // 오류 발생 시 클라이언트에게 오류 메시지를 응답으로 보냄
         console.error('사용자 리뷰 조회 중 오류가 발생했습니다:', error);
         res.status(500).json({ success: false, message: '사용자 리뷰 조회 중 오류가 발생했습니다.' });
-    }
-});
-
-router.post("/like", async (req, res) => {
-    try {
-        const { reviewId } = req.body; // 요청 본문에서 reviewId를 추출
-
-        
-    } catch (error) {
-        // 오류 발생 시 클라이언트에 오류 메시지 응답
-        console.error('좋아요 증가 중 오류가 발생했습니다:', error);
-        res.status(500).json({ success: false, message: '좋아요 증가 중 오류가 발생했습니다.' });
     }
 });
 

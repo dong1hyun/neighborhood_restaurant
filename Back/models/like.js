@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-    const Like = sequelize.define("like", {
+    const Like = sequelize.define("Like", {
         likeId: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true // 자동으로 증가하는 기본 키 설정
         },
         userId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING(10),
             allowNull: false
         },
         reviewId: {

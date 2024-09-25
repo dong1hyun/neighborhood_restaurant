@@ -15,8 +15,8 @@ interface reviewForm {
   reviewId: number;
   comment: string;
   rating: number;
-  like: number;
   nickName: string;
+  like: number;
 }
 
 
@@ -30,7 +30,7 @@ const Review: React.FC<ReviewComponentProps> = ({ refreshFn }) => {
   const [maxReview, setMaxReview] = useState(false);
   const [reviews, setReviews] = useState<reviewForm[]>([]);
   const [offset, setOffset] = useState(0);
-  const sessionID = sessionStorage.getItem('sessionID')
+  const sessionID = sessionStorage.getItem('sessionID');
   const { register, handleSubmit, reset } = useForm<reviewPostForm>();
   const { id } = useParams();
 
@@ -72,14 +72,14 @@ const Review: React.FC<ReviewComponentProps> = ({ refreshFn }) => {
       const response = await axios.get(`/review/${id}`,
         {
           params: {
-            offset: offset + 5 
+            offset: offset + 5
           }
         }
       );
       if (!response.data) {
         throw new Error("No data received from server");
       }
-      if(response.data.length === 0) {
+      if (response.data.length === 0) {
         alert("모든 리뷰를 보여드렸어요!");
         setMaxReview(true);
       }
@@ -89,20 +89,32 @@ const Review: React.FC<ReviewComponentProps> = ({ refreshFn }) => {
     }
   };
 
-  const onLikeClick = async (reviewId: number) => {
-    await axios.post("/review/like", { reviewId })
+  const onLikeClick = async (reviewId: number, index: number) => {
+    if (!sessionID) {
+      alert("로그인을 해주세요");
+      return;
+    }
+    axios.post("/like/add", { reviewId, sessionID })
       .then((res) => {
-        setReviews(prevReviews => {
-          return (
-            prevReviews!.map((review) => 
-              (reviewId === review.reviewId ? {...review, like: review.like + 1} : review)
-            )
-          )
-        })
+        const msg = res.data
+        if(msg == "추가") {
+          setReviews((prevReviews) => {
+            const newReviews = [...prevReviews];
+            newReviews[index] = {...newReviews[index], like: newReviews[index].like + 1}
+            return newReviews;
+          });
+        }
+        if(msg == "삭제") {
+          setReviews((prevReviews) => {
+            const newReviews = [...prevReviews];
+            newReviews[index] = {...newReviews[index], like: newReviews[index].like - 1}
+            return newReviews;
+          });
+        }
       })
       .catch((err) => {
         alert(err.response.data.message);
-      })
+      });
   }
 
   useEffect(() => {
@@ -147,27 +159,29 @@ const Review: React.FC<ReviewComponentProps> = ({ refreshFn }) => {
         )}
       </form>
       <Title>방문자 평가</Title>
-      {reviews.map((review: reviewForm, index: number) => (
-        <ReviewContainer key={index}>
-          <ProfileContainer>
-            <RxAvatar size={30} />
-            <ProfileInfo>{review.nickName}</ProfileInfo>
-            <Rating>&#9733; {review.rating}</Rating>
-          </ProfileContainer>
-          <Divider />
-          <Comment>{review.comment}</Comment>
-          <InteractionContainer>
-            <InteractionItem type="submit" onClick={() => onLikeClick(review.reviewId)}>
-              <FaThumbsUp />
-              {review.like}
-            </InteractionItem>
-          </InteractionContainer>
-        </ReviewContainer>
-      ))}
+      {reviews.map((review: reviewForm, index: number) => {
+        return (
+          <ReviewContainer key={index}>
+            <ProfileContainer>
+              <RxAvatar size={30} />
+              <ProfileInfo>{review.nickName}</ProfileInfo>
+              <Rating>&#9733; {review.rating}</Rating>
+            </ProfileContainer>
+            <Divider />
+            <Comment>{review.comment}</Comment>
+            <InteractionContainer>
+              <InteractionItem type="submit" onClick={() => onLikeClick(review.reviewId, index)}>
+                <FaThumbsUp />
+                {review.like}
+              </InteractionItem>
+            </InteractionContainer>
+          </ReviewContainer>
+        )
+      })}
       {
         reviews.length >= 5 && !maxReview ? (<BtnContainer>
-        <LoadMoreBtn onClick={loadMoreReview}>더보기</LoadMoreBtn>
-      </BtnContainer>) : null
+          <LoadMoreBtn onClick={loadMoreReview}>더보기</LoadMoreBtn>
+        </BtnContainer>) : null
       }
     </Container>
   );
