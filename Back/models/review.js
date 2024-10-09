@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         charset: "utf8",
         collate: "utf8_general_ci",
         tableName: "Review",
-        timestamps: false,
+        timestamps: true,
         paranoid: true
     });
   

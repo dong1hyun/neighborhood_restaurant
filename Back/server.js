@@ -29,6 +29,8 @@ const reviewRouter = require('./routes/review');
 const noticeRouter = require('./routes/notice');
 const qnaRouter = require('./routes/qna');
 const aiRouter = require('./routes/ai');
+const likeRouter = require('./routes/like');
+
 
 dotenv.config();
 passportConfig();
@@ -76,6 +78,8 @@ app.use('/review', reviewRouter);
 app.use('/notice', noticeRouter);
 app.use('/qna', qnaRouter);
 app.use('/ai', aiRouter);
+app.use('/like', likeRouter);
+
 
 
 app.use(express.static(path.join(__dirname, '../client/build')));
@@ -100,17 +104,7 @@ https.createServer(options, app).listen(443, '192.168.0.40', () => {
 });
 
 
-// // HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
-// https.createServer(options, app).listen(443, () => {
-//     console.log(`HTTPS server started on https`);
-// });
-
-
 // HTTP 서버 시작
 http.createServer(app).listen(app.get('port'), () => {
     console.log(`HTTP server is running on port ${app.get('port')}`);
 });
-
-// app.listen(app.get('port'), () => {
-//     console.log(`Server is running on port ${app.get('port')}`);
-// });
