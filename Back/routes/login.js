@@ -15,7 +15,7 @@ router.post('/', (req, res, next) => {
             return next(authError);
         }
         if (!user) {
-            return res.status(401).json({ message: '가입되지 않은 회원입니다.' });
+            return res.status(202).json({ message: '가입되지 않은 회원입니다.' });
         }
         req.login(user, async (loginError) => {
             if (loginError) {

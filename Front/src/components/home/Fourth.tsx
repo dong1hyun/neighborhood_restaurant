@@ -1,7 +1,10 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Img } from "../../styled-components/homeStyle";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { useState } from "react";
+import Loading from "./Loading";
 
 const Container = styled(motion.div)`
     width: 100%;
@@ -23,9 +26,8 @@ const InfoContainer = styled.div`
 
 const Info = styled.div`
     width: 80%;
-    height: 150px;
     border-radius: 50px;
-    color: white;
+    color: black;
     font-size: 60px;
     font-weight: 700;
     line-height: 150%;
@@ -51,11 +53,47 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    margin-top: 30px;
+`
+const Recommendation = styled.div`
+    background-color: black;
+    color: white;
+    width: 80%;
+    margin-top: 70px;
+    padding: 10px;
+    border-radius: 10px;
+    line-height: 2.7;
+    font-family: "Noto Serif KR", serif;
+    border: 3px white solid;
+    overflow: scroll;
+    max-height: 300px;
 `
 
 export default function Fourth() {
-    const navigate = useNavigate();
+    const [recommendation, setRecommendation] = useState("");
+    const [loading, setLoading] = useState(false);
+    const sessionId = sessionStorage.getItem('sessionID');
+    const getRecommend = async () => {
+        try {
+            if (!sessionId) {
+                return alert("로그인을 먼저 해주세요");
+            }
+            setLoading(true);
+            const response = await axios.get('/ai/recommend',
+                {
+                    params: {
+                        sessionId
+                    }
+                }
+            );
+            console.log(response.data.recommendation);
+            setLoading(false);
+            setRecommendation(response.data.recommendation);
+        } catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
+    }
     return (
         <Container
             initial={{ opacity: 0 }}
@@ -69,7 +107,14 @@ export default function Fourth() {
                 <Info>
                     AI에게 우리동네 맛집을 추천받아보세요!
                 </Info>
-                <Button onClick={() => navigate("/logIn")}>맛집 추천받기</Button>
+                <Button onClick={getRecommend}>맛집 추천받기</Button>
+                {
+                    loading ?
+                        <Loading />
+                        : (
+                            recommendation ? <Recommendation>{recommendation}</Recommendation> : null
+                        )
+                }
             </InfoContainer>
         </Container>
     )

@@ -22,6 +22,7 @@ const reviewRouter = require('./routes/review');
 const likeRouter = require('./routes/like');
 const noticeRouter = require('./routes/notice');
 const qnaRouter = require('./routes/qna');
+const aiRouter = require('./routes/ai');
 
 dotenv.config();
 passportConfig();
@@ -68,6 +69,7 @@ app.use('/review', reviewRouter);
 app.use('/notice', noticeRouter);
 app.use('/qna', qnaRouter);
 app.use('/like', likeRouter);
+app.use('/ai', aiRouter);
 
 app.use(express.static(path.join(__dirname, '../Front/build')));
 

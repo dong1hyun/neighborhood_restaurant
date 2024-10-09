@@ -14,9 +14,10 @@ const Container = styled.div`
     align-items: center;
     margin-top: 200px;
     gap: 20px;
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 860px) {
         flex-direction: column;
         margin-top: 80px;
+        gap: 50px;
     }
 `
 
@@ -25,7 +26,7 @@ const Map = styled.div`
     height: 400px;
     box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
     border-radius: 20px;
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 860px) {
         height: 250px;
         width: 80%;
     }
@@ -36,7 +37,7 @@ const LocationContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 60px;
+    gap: 40px;
     border-radius: 10px;
     width: 30%;
     height: 400px;
@@ -56,9 +57,9 @@ const LocationContainer = styled.div`
         opacity: 0.5; /* 배경 이미지의 투명도 설정 */
         z-index: -1; /* 내용물 뒤에 배경을 배치 */
     }
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 860px) {
         width: 80%;
-        height: 300px;
+        height: 400px;
         gap: 40px;
 }
 `;
@@ -93,6 +94,15 @@ const SetLocationButton = styled.button`
     border-radius: 5px;
     cursor: pointer;
 `;
+
+const MyPlace = styled.div`
+    background-color: white;
+    border: solid 2px black;
+    padding: 8px;
+    border-radius: 10px;
+    min-width: 200px;
+    min-height: 30px;
+`
 
 const LocationForm = styled.form`
     display: flex;
@@ -144,7 +154,9 @@ export default function LocaionSet() {
                     console.log('검색된 위치와 사용자 위치가 동일합니다.');
                     // 여기서 서버로 값을 보내는 작업 수행
                     sendLocationToServer(sessionID, address_name);
+                    alert("동네 설정이 완료됐습니다!")
                 } else {
+                    alert("사용자 현위치와 인증 동네가 일치하지 않습니다");
                     console.log('검색된 위치와 사용자 위치가 동일하지 않습니다.');
                 }
             } else {
@@ -179,12 +191,10 @@ export default function LocaionSet() {
     //사용자의 현재 위치를 가져오는 기능 + 자신의 위도/경도 getAddressFromCoordinates로 보내서 주소로 변경
     // 사용자의 현재 위치를 가져오는 기능 + 자신의 위도/경도 getAddressFromCoordinates로 보내서 주소로 변경
     const handleGetUserLocation = () => {
-        console.log("실행됨");
         navigator.geolocation.getCurrentPosition(
             async (position) => {
                 const { latitude, longitude } = position.coords;
                 setMarker(latitude, longitude);
-                console.log(latitude, longitude);
                 setUserLocation({ x: longitude, y: latitude });
                 const address = await getAddressFromCoordinates(latitude, longitude);
                 if (address) {
@@ -240,6 +250,7 @@ export default function LocaionSet() {
             <LocationContainer>
                 <Info>위치를 가져오고 동네를 입력하면 동네인증이 완료됩니다!</Info>
                 <GetLocationButton onClick={handleGetUserLocation}><IoLocationSharp size={20} color="rgba(15, 188, 249,1.0)" /> 내 위치 가져오기</GetLocationButton>
+                <MyPlace>{userAddress}</MyPlace>
                 <LocationForm onSubmit={handleSubmit(handleSearch)}>
                     <LocationInput
                         placeholder="동네 입력"
