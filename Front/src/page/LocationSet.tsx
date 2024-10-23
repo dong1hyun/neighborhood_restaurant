@@ -207,8 +207,8 @@ export default function LocaionSet() {
                 alert(`위치 정보를 가져오지 못했습니다: ${error.message}`);
             },
             {
-                enableHighAccuracy: true, // 고정밀도 위치 정보 사용
-                timeout: 5000, // 타임아웃 설정
+                enableHighAccuracy: false, // 고정밀도 위치 정보 사용
+                timeout: 10000, // 타임아웃 설정
                 maximumAge: 0 // 캐시된 위치 정보를 사용하지 않음
             }
         );

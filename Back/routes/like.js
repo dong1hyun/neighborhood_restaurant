@@ -12,21 +12,21 @@ router.post('/add', async function(req, res) {
         const user = await User.findOne({ where: { sessionID } });
         const liked = await Like.findOne({ 
             where: {
-                userId: user.id,
+                id: user.id,
                 reviewId,
             } 
         });
         if (liked) {
             await Like.destroy({
                 where: {
-                    userId: user.id,
+                    id: user.id,
                     reviewId,
                 }
             });
             res.status(200).json("삭제");
         } else {
             await Like.create({
-                userId: user.id,
+                id: user.id,
                 reviewId
             });
             res.status(200).json("추가");

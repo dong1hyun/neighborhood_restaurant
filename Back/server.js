@@ -10,6 +10,11 @@ const passportConfig = require('./passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
+const fs = require('fs');
+const https = require('https');
+const http = require('http');
+const expressSanitizer = require("express-sanitizer");
+
 const indexRouter = require('./routes');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
@@ -19,10 +24,13 @@ const logoutRouter = require('./routes/logout');
 const placeDetailRouter = require('./routes/placeDetail');
 const favoriteRouter = require('./routes/favorite');
 const reviewRouter = require('./routes/review');
-const likeRouter = require('./routes/like');
+
+
 const noticeRouter = require('./routes/notice');
 const qnaRouter = require('./routes/qna');
 const aiRouter = require('./routes/ai');
+const likeRouter = require('./routes/like');
+
 
 dotenv.config();
 passportConfig();
@@ -33,6 +41,7 @@ app.set('port', 3001);
 sequelize.sync({ force: false })
     .then(() => console.log('데이터베이스 연결 성공'))
     .catch(err => console.error(err));
+
 
 app.use(
     morgan('dev'), //HTTP 요청을 콘솔에 로그로 기록
@@ -68,8 +77,10 @@ app.use('/favorite', favoriteRouter);
 app.use('/review', reviewRouter);
 app.use('/notice', noticeRouter);
 app.use('/qna', qnaRouter);
-app.use('/like', likeRouter);
 app.use('/ai', aiRouter);
+app.use('/like', likeRouter);
+
+
 
 app.use(express.static(path.join(__dirname, '../Front/build')));
 
@@ -81,6 +92,19 @@ app.get('*', function (req, res) {
 });
 
 
-app.listen(app.get('port'), () => {
-    console.log(`Server is running on port ${app.get('port')}`);
+const options = {
+    key: fs.readFileSync("./config/cert.key"),
+    cert: fs.readFileSync("./config/cert.crt"),
+  };
+
+
+// HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
+https.createServer(options, app).listen(443, '192.210.220.61', () => {
+    console.log(`HTTPS server started on https://192.210.220.61`);
+});
+
+
+// HTTP 서버 시작
+http.createServer(app).listen(app.get('port'), () => {
+    console.log(`HTTP server is running on port ${app.get('port')}`);
 });

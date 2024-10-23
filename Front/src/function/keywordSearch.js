@@ -59,9 +59,20 @@ function afterSearch(keyword) {
 
     // 검색 결과 목록과 마커를 표출하는 함수입니다
     function displayPlaces(places) {
+<<<<<<< HEAD
         axios.post("http://192.210.246.72:3001/restaurant", places);
         axios.post("http://192.168.0.40:3001/restaurant", places);
         axios.post("http://localhost:3001/restaurant",places);
+=======
+        // axios.post("http://192.210.246.72:3001/restaurant", places);
+        // axios.post("http://192.168.0.40:3001/restaurant", places);
+        // axios.post("http://localhost:3001/restaurant",places);
+        axios.post("https://192.168.0.40/restaurant", places);
+        axios.post("https://192.210.198.175/restaurant", places);
+        axios.post("https://192.210.220.61/restaurant", places);
+
+        
+>>>>>>> SeongJun_branch
         
         let listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),

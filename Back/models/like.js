@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true // 자동으로 증가하는 기본 키 설정
         },
-        userId: {
-            type: DataTypes.STRING(10),
+        id: {
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         reviewId: {
