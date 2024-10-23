@@ -67,6 +67,7 @@ const Recommendation = styled.div`
     border: 3px white solid;
     overflow: scroll;
     max-height: 300px;
+    text-align: justify;
 `
 
 export default function Fourth() {

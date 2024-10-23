@@ -64,6 +64,8 @@ function afterSearch(keyword) {
         // axios.post("http://localhost:3001/restaurant",places);
         axios.post("https://192.168.0.40/restaurant", places);
         axios.post("https://192.210.198.175/restaurant", places);
+        axios.post("https://192.210.220.61/restaurant", places);
+
         
         
         let listEl = document.getElementById('placesList'),
