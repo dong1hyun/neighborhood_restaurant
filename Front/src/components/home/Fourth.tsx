@@ -56,16 +56,18 @@ const Button = styled.button`
     margin-top: 30px;
 `
 const Recommendation = styled.div`
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
     width: 80%;
+    font-weight: bold;
     margin-top: 70px;
     padding: 10px;
     border-radius: 10px;
-    line-height: 2.7;
+    line-height: 2.5;
     font-family: "Noto Serif KR", serif;
-    border: 3px white solid;
+    border: 2px black solid;
     overflow: scroll;
+    font-size: large;
     max-height: 300px;
 `
 
