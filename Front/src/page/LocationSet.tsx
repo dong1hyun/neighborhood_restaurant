@@ -193,9 +193,14 @@ export default function LocaionSet() {
     const handleGetUserLocation = () => {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
-                const { latitude, longitude } = position.coords;
+                //const { latitude, longitude } = position.coords;
+                const { latitude, longitude, accuracy } = position.coords; // accuracy 값 추가
+
                 setMarker(latitude, longitude);
                 setUserLocation({ x: longitude, y: latitude });
+
+                console.log(`위도: ${latitude}, 경도: ${longitude}, 정확도: ${accuracy} 미터`);
+
                 const address = await getAddressFromCoordinates(latitude, longitude);
                 if (address) {
                     setUserAddress(address);
@@ -207,8 +212,8 @@ export default function LocaionSet() {
                 alert(`위치 정보를 가져오지 못했습니다: ${error.message}`);
             },
             {
-                enableHighAccuracy: false, // 고정밀도 위치 정보 사용
-                timeout: 10000, // 타임아웃 설정
+                enableHighAccuracy: true, // 고정밀도 위치 정보 사용
+                timeout: 30000, // 타임아웃 설정
                 maximumAge: 0 // 캐시된 위치 정보를 사용하지 않음
             }
         );

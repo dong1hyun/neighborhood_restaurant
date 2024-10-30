@@ -63,8 +63,10 @@ function afterSearch(keyword) {
         // axios.post("http://192.168.0.40:3001/restaurant", places);
         // axios.post("http://localhost:3001/restaurant",places);
         axios.post("https://192.168.0.40/restaurant", places);
-        axios.post("https://192.210.198.175/restaurant", places);
-        axios.post("https://192.210.220.61/restaurant", places);
+        // axios.post("https://172.20.10.3/restaurant", places);
+        // axios.post("https://192.210.220.61/restaurant", places);
+        
+        // axios.post("https://192.210.244.112/restaurant", places);
 
         
         

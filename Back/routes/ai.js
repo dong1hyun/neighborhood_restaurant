@@ -97,13 +97,16 @@ router.get('/recommend', async (req, res) => {
                 {
                     model: 'gpt-3.5-turbo',
                     messages: [
-                        { role: 'system', content: 'You are a helpful assistant.' },
+                        { 
+                            role: 'system', 
+                            content: '당신은 간결하고 일관성 있는 형식으로 음식점을 추천하는 도우미입니다. "음식점 이름"과 "짧은 이유"를 일관된 형식으로 제공해 주세요.' 
+                        },
                         { 
                             role: 'user', 
-                            content: `다음은 주소 "${address}" 근처에 있는 음식점들입니다: ${restaurants.map(r => r.place_name).join(', ')}. 이 음식점들 중에서 가장 좋은 곳을 추천해 주시고, 그 이유를 설명해 주세요.` 
+                            content: `다음은 주소 "${address}" 근처에 있는 음식점 목록입니다: ${restaurants.map(r => r.place_name).join(', ')}. 이 음식점들 중 하나를 추천하고, "음식점 이름"과 "짧은 추천 이유"로 응답해 주세요. 예시: "피자스쿨 의정부망월사점"을 추천합니다. 풍부한 토핑과 쫄깃한 피자빵으로 유명하며, 신선한 재료와 다채로운 메뉴로 많은 이용자들의 사랑을 받고 있습니다.` 
                         }
                     ],
-                    max_tokens: 500, // 필요에 따라 조정
+                    max_tokens: 200, // 응답 길이를 충분히 확보하기 위해 200으로 조정
                 },
                 {
                     headers: {
@@ -112,7 +115,8 @@ router.get('/recommend', async (req, res) => {
                     },
                 }
             );
-    
+            
+            
             const recommendation = gptResponse.data.choices[0].message.content;
     
             res.status(200).json({ recommendation }); // JSON 응답 반환
