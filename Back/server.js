@@ -92,16 +92,16 @@ app.get('*', function (req, res) {
 });
 
 
-const options = {
-    key: fs.readFileSync("./config/cert.key"),
-    cert: fs.readFileSync("./config/cert.crt"),
-  };
+// const options = {
+//     key: fs.readFileSync("./config/cert.key"),
+//     cert: fs.readFileSync("./config/cert.crt"),
+//   };
 
 
-// HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
-https.createServer(options, app).listen(443, '192.210.220.61', () => {
-    console.log(`HTTPS server started on https://192.210.220.61`);
-});
+// // HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
+// https.createServer(options, app).listen(443, '192.210.220.61', () => {
+//     console.log(`HTTPS server started on https://192.210.220.61`);
+// });
 
 
 // HTTP 서버 시작

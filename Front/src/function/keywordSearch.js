@@ -61,10 +61,10 @@ function afterSearch(keyword) {
     function displayPlaces(places) {
         // axios.post("http://192.210.246.72:3001/restaurant", places);
         // axios.post("http://192.168.0.40:3001/restaurant", places);
-        // axios.post("http://localhost:3001/restaurant",places);
-        axios.post("https://192.168.0.40/restaurant", places);
-        axios.post("https://192.210.198.175/restaurant", places);
-        axios.post("https://192.210.220.61/restaurant", places);
+         axios.post("http://localhost:3001/restaurant",places);
+        // axios.post("https://192.168.0.40/restaurant", places);
+        // axios.post("https://192.210.198.175/restaurant", places);
+        // axios.post("https://192.210.220.61/restaurant", places);
 
         
         
