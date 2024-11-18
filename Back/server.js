@@ -98,10 +98,10 @@ const options = {
   };
 
 
-// HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
-https.createServer(options, app).listen(443, '192.168.0.40', () => {
-    console.log(`HTTPS server started on https://192.168.0.40`);
+  https.createServer(options, app).listen(443, '0.0.0.0', () => {
+    console.log(`HTTPS server started on https://localhost`);
 });
+
 
 
 // HTTP 서버 시작
