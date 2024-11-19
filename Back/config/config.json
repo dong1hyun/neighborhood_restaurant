@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "root",
+    "username": "mariadb",
     "password": "qwer1234",
     "database": "mariadb",
     "host": "svc.sel4.cloudtype.app",
