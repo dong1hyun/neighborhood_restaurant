@@ -6,15 +6,26 @@ const path = require('path');
 const basename = path.basename(__filename);
 const db = {};
 
-console.log(config); // config 내용 출력
+// // config.json 안에 작성 된 데이터베이스 연결 - config.use_env_variable설정 없어서 else로 직접 불러옴.
+// if (config.use_env_variable) {
+//     sequelize = new Sequelize(process.env[config.use_env_variable], config);
+// } else {
+//     sequelize = new Sequelize(config.database, config.username, config.password, config);
+// }
 
 
-// config.json 안에 작성 된 데이터베이스 연결 - config.use_env_variable설정 없어서 else로 직접 불러옴.
-if (config.use_env_variable) {
-    sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-    sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+// 데이터베이스 정보 직접 입력
+const sequelize = new Sequelize(
+    'mariadb', // 데이터베이스 이름
+    'root', // 사용자명
+    'qwer1234', // 비밀번호
+    {
+        host: 'svc.sel4.cloudtype.app', // 호스트
+        port: 31676, // 포트
+        dialect: 'mariadb', // 데이터베이스 종류
+        logging: false, // 로그를 콘솔에 출력하지 않으려면 false 설정
+    }
+);
 
 // user 모델 정의
 const User = require('./user')(sequelize, Sequelize.DataTypes);
