@@ -6,6 +6,9 @@ const path = require('path');
 const basename = path.basename(__filename);
 const db = {};
 
+console.log(config); // config 내용 출력
+
+
 // config.json 안에 작성 된 데이터베이스 연결 - config.use_env_variable설정 없어서 else로 직접 불러옴.
 if (config.use_env_variable) {
     sequelize = new Sequelize(process.env[config.use_env_variable], config);
