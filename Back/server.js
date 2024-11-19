@@ -98,8 +98,8 @@ const options = {
   };
 
 
-  https.createServer(options, app).listen(443, '0.0.0.0', () => {
-    console.log(`HTTPS server started on https://localhost`);
+  https.createServer(options, app).listen(8443, '0.0.0.0', () => {
+    console.log(`HTTPS 서버가 https://localhost:8443에서 시작되었습니다.`);
 });
 
 // HTTP 서버 시작
