@@ -91,18 +91,20 @@ app.use('/like', likeRouter);
 //     res.sendFile(path.join(__dirname, '../Front/build/index.html'))
 // });
 
-// '/app/build' 경로로 정적 파일 서빙
-app.use(express.static(path.join('/app', 'build')));
+// Build 폴더를 정적 파일로 서빙 (Back 폴더 내의 build 폴더)
+app.use(express.static(path.join(__dirname, 'Back', 'build')));
 
 // 루트 경로로 들어왔을 때 React의 index.html 파일 서빙
 app.get('/', function (req, res) {
-    res.sendFile(path.join('/app', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'Back', 'build', 'index.html'));
 });
 
 // React 라우터 처리를 위한 fallback route
 app.get('*', function (req, res) {
-    res.sendFile(path.join('/app', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'Back', 'build', 'index.html'));
 });
+
+
 
 // const options = {
 //     key: fs.readFileSync("./config/cert.key"),
