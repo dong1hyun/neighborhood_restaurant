@@ -82,14 +82,26 @@ app.use('/like', likeRouter);
 
 
 
-app.use(express.static(path.join(__dirname, '../Front/build')));
+// app.use(express.static(path.join(__dirname, '../Front/build')));
+
+// app.get('/', function (req, res) {
+//     res.sendFile(path.join(__dirname, '../Front/build/index.html'))
+// });
+// app.get('*', function (req, res) {
+//     res.sendFile(path.join(__dirname, '../Front/build/index.html'))
+// });
+
+// 현재 위치와 같은 디렉터리에 있는 index.html 파일을 서빙
+app.use(express.static(path.join(__dirname, './'))); // 현재 디렉터리에서 정적 파일을 서빙
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../Front/build/index.html'))
+    res.sendFile(path.join(__dirname, './index.html')); // 현재 디렉터리에서 index.html 파일을 서빙
 });
+
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../Front/build/index.html'))
+    res.sendFile(path.join(__dirname, './index.html')); // 다른 경로로 접근 시에도 index.html 서빙
 });
+
 
 
 // const options = {
