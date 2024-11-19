@@ -82,26 +82,14 @@ app.use('/like', likeRouter);
 
 
 
-// app.use(express.static(path.join(__dirname, '../Front/build')));
-
-// app.get('/', function (req, res) {
-//     res.sendFile(path.join(__dirname, '../Front/build/index.html'))
-// });
-// app.get('*', function (req, res) {
-//     res.sendFile(path.join(__dirname, '../Front/build/index.html'))
-// });
-
-// 현재 위치와 같은 디렉터리에 있는 index.html 파일을 서빙
-app.use(express.static(path.join(__dirname, './'))); // 현재 디렉터리에서 정적 파일을 서빙
+app.use(express.static(path.join(__dirname, '../Front/build')));
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, './index.html')); // 현재 디렉터리에서 index.html 파일을 서빙
+    res.sendFile(path.join(__dirname, '../Front/build/index.html'))
 });
-
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, './index.html')); // 다른 경로로 접근 시에도 index.html 서빙
+    res.sendFile(path.join(__dirname, '../Front/build/index.html'))
 });
-
 
 
 // const options = {
@@ -110,9 +98,11 @@ app.get('*', function (req, res) {
 //   };
 
 
-//   https.createServer(options, app).listen(8443, '0.0.0.0', () => {
-//     console.log(`HTTPS 서버가 https://localhost:8443에서 시작되었습니다.`);
+// // HTTPS 의존성으로 certificate와 private key로 새로운 서버를 시작
+// https.createServer(options, app).listen(443, '192.168.0.40', () => {
+//     console.log(`HTTPS server started on https://192.168.0.40`);
 // });
+
 
 // HTTP 서버 시작
 http.createServer(app).listen(app.get('port'), () => {
